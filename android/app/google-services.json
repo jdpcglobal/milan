@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "476149862967",
+    "project_id": "milanapp-eca7a",
+    "storage_bucket": "milanapp-eca7a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:476149862967:android:cec956e8123743e49be5b2",
+        "android_client_info": {
+          "package_name": "com.datingapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfSoDp65wSnIVNwkhCM6heHs5A8NF5Abs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

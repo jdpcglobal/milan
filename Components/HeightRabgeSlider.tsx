@@ -1,0 +1,89 @@
+import React, { useCallback, useState } from 'react';
+import { View, Text } from 'react-native';
+import RangeSlider from 'rn-range-slider';
+
+type SetValues = { 
+    low : number,
+    high : number,
+    setLow: (value: any) => void,
+    setHigh: (value: any) => void
+};
+const HeightRabgeSlider = ({low,high,setLow,setHigh}:SetValues) => { 
+  const renderThumb = () => <View style={styles.thumb} />;
+  const renderRail = () => <View style={styles.rail} />;
+  const renderRailSelected = () => <View style={styles.railSelected} />;
+  const renderLabel = useCallback((value:any) => <Text style={styles.label}>{value}</Text>, []);
+  const renderNotch = () => <View style={styles.notch} />;
+  const handleValueChange = (low : number, high :number) => {
+    setLow(low);
+    setHigh(high); 
+  };
+
+  return (
+    <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
+      <RangeSlider
+        style={styles.slider}
+        min={130}
+        max={250}
+        step={1}
+        floatingLabel
+        renderThumb={renderThumb}
+        renderRail={renderRail}
+        renderRailSelected={renderRailSelected}
+         renderLabel={renderLabel}
+        renderNotch={renderNotch}
+        onValueChanged={handleValueChange}
+        low={low}
+        high={high}
+      />
+      <Text style={{color:'#4A4744', fontSize:20, fontWeight:'700', fontFamily:'georgia', marginTop:-30}}>Height Range: {low} - {high} cm</Text>
+    </View>
+  );
+};
+
+const styles = {
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  slider: {
+    width: 280,
+    height: 80,
+  },
+  thumb: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: '#bd69f0', // Changed to Dodger Blue
+  },
+  rail: {
+    flex: 1,
+    height: 5,
+    borderRadius: 4,
+    backgroundColor: '#D3D3D3', // Changed to Light Gray
+  },
+  railSelected: {
+    height: 4,
+    backgroundColor: '#bd69f0', // Changed to Dodger Blue
+    borderRadius: 2,
+  },
+  label: {
+    backgroundColor: '#bd69f0', // Changed to Dodger Blue
+    color: 'white',
+    padding: 5,
+    borderRadius: 5,
+  },
+  notch: {
+    width: 8,
+    height: 8,
+    borderLeftColor: 'transparent',
+    borderRightColor: 'transparent',
+    borderTopColor: '#4A4744', // Changed to Dodger Blue
+    borderLeftWidth: 4,
+    borderRightWidth: 4,
+    borderTopWidth: 8,
+  },
+};
+
+export default HeightRabgeSlider;

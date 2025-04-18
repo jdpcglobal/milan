@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { Button, Image, StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
 import { CommonActions, StackActions, useNavigation, useRoute } from '@react-navigation/native';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from "../Utils/Types";
@@ -12,19 +12,47 @@ import { saveAuthToken } from '../Utils/ConstFunc';
 import { useDispatch } from 'react-redux';
 import messaging from '@react-native-firebase/messaging';
 import LinearGradient from 'react-native-linear-gradient';
+import Ionicons from 'react-native-vector-icons/MaterialCommunityIcons';
+import LoaderKit from 'react-native-loader-kit';
+import AnimatedButton from './AnimatedButton';
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@gorhom/bottom-sheet';
 
 type OTPScreenRouteProp = RouteProp<RootStackParamList, 'OtpPage'>;
 type OTPScreenNavigationProp = NavigationProp<RootStackParamList, 'HomeScreen'>;
 function OTPScreen() {
   const navigation = useNavigation<OTPScreenNavigationProp>();
   const route = useRoute<OTPScreenRouteProp>();
-  const [errorMessage, setErrorMessage] = useState('');
   const [isloading, setIsLoading] = useState(false);
   const [fcmTokens, setFcmToken] = useState('');
   const dispatch = useDispatch();
   const { phoneNumber, otpS, countryCode } = route.params;
   const otpR = `${otpS}`
-  const [otp, setOtp] = useState('');
+  const [resendOtp, setResendOtp] = useState('');
+  const [otp, setOtp] = useState(new Array(4).fill(''));
+  // const [otp, setOtp] = useState('');
+  const [getOtp, setGetOtp] = useState();
+  const [resendBtn, setResendBtn] = useState(true);
+  const [verifyBtn, setVerifyBtn] = useState(true);
+  const [errorMessage, setErrorMessage] = useState('');
+
+   console.log('//////////////////', otpR);
+
+  const handleOTPChange = (text, index) => {
+    let newOtp = [...otp];
+    newOtp[index] = text;
+
+    setOtp(newOtp);
+
+    if (text && index < 3) {
+      let nextInput = `otpInput${index + 1}`;
+      this[nextInput].focus();
+    }
+
+    if (text === '' && index > 0) {
+      let prevInput = `otpInput${index - 1}`;
+      this[prevInput].focus();
+    }
+  };
 
 
   useEffect(() => {
@@ -47,121 +75,132 @@ function OTPScreen() {
     };
   }, []);
 
-  console.log('============', fcmTokens)
 
+  const ResendOtp = () => {
+    setResendBtn(false);
+    fetch('https://themilan.org/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ mobile: phoneNumber, countryCode: countryCode }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        // console.log('Received API Response:', data);
+        setResendBtn(true);
+      })
+      .catch(error => {
+        console.error('Resend OTP Error:', error);
+        setIsLoading(false);
+        setResendBtn(true);
+
+      });
+  };
 
   const handleVerifyOTP = () => {
-    setIsLoading(true);
-    setErrorMessage('');
+    setVerifyBtn(false);
+    // Convert OTP array to a numeric string
+    const otpString = otp.join('');
 
-    if (otpR.length < 4) {
-      setErrorMessage("Please Enter A Valid Otp");
+    if (otpString.length < 4) {
+      Alert.alert("Invalid OTP", "Please enter a valid 4-digit OTP.");
+      setVerifyBtn(true);
       setIsLoading(false);
       return;
     }
-
-    axios.post(`https://themilan.org/api/verifyOTP?mobile=${parseInt(phoneNumber)}&otp=${parseInt(otpR)}&device_token=${fcmTokens}&countryCode=${parseInt(countryCode)}`)
-
+    axios.post(`https://themilan.org/api/verifyOTP?mobile=${parseInt(phoneNumber)}&otp=${otpString}&device_token=${fcmTokens}&countryCode=${parseInt(countryCode)}`)
       .then((response) => {
         const data = response.data;
-        console.log("API Payload:", data);
         if (data.isSuccess) {
-          console.log('OTP verification successful');
           if (data.code === 102) {
-            navigation.navigate('RegisterPage', { phoneNumber: phoneNumber, countryCode: countryCode });
+            setVerifyBtn(true);
+            navigation.navigate('RegisterPage', { phoneNumber, countryCode });
             setIsLoading(false);
-            console.log(data);
-          }
-          else if (data.code === 201) {
-            const token = data.token; // Assuming data.Token is the token string
+          } else if (data.code === 201) {
+            const token = data.token;
             if (token) {
               storeData("Token", token).then(() => {
                 console.log("Token saved:", token);
-                // dispatch(saveToken(token));
+                setVerifyBtn(true);
                 navigation.dispatch(StackActions.replace('LoginPage', { key: Math.random() }));
               }).catch((error) => {
                 console.error("Error saving token:", error);
               });
-            } else {
-              console.log("Token not found in data");
             }
-
-
-
-            // navigation.dispatch(
-            //      CommonActions.reset({
-            //       index: 0,
-            //       routes: [
-            //         { name: 'LocationPage' },
-            //       ],
-            //     })
-            //   );
-            // navigation.dispatch(StackActions.replace('LocationPage'));
-
-          } else {
-
           }
-          // Proceed with your logic for successful OTP verification
         } else {
-          console.log('OTP verification failed:', data.message);
+          setVerifyBtn(true);
           setErrorMessage(data.message);
-          // Handle the case where OTP verification failed
         }
       })
       .catch((error) => {
-        console.error('Error:', error);
-        // Handle errors here
+        setVerifyBtn(true);
+        console.error('Error:', `https://themilan.org/api/verifyOTP?mobile=${parseInt(phoneNumber)}&otp=${otpString}&device_token=${fcmTokens}&countryCode=${parseInt(countryCode)}`);
       });
-    setIsLoading(false);
-    // Call your verify OTP API here with phoneNumber and otp
-    // If OTP verification is successful, navigate to the next screen
-
   };
+
+
 
   return (
     <View style={styles.container}>
-      <View >
-        <Image
-          source={require('../Asset/Images/Banner1.png')} // replace with your image url
+      {/* <View style={{height:SCREEN_HEIGHT/2.5, justifyContent:'center'}}>
+        <Image 
+          source={require('../Asset/Images/icon.png')} // replace with your image url
           style={[styles.image]}
+          resizeMode='contain'
         />
-      </View>
+      </View> */}
+
+      <Image source={require('../Asset/Images/icon.png')}
+        resizeMode='contain'
+        style={{ height: SCREEN_HEIGHT / 3, marginTop: SCREEN_HEIGHT / 3.8, width: SCREEN_WIDTH / 2, alignSelf: 'center', transform: [{ rotate: '-15deg' }] }}
+      >
+      </Image>
       <View style={styles.form}>
-        <Text style={[styles.text, { fontSize: 17, fontWeight: '700', color: '#bc69f0', fontFamily:'georgia' }]}>
-          Verification code Successfully sent to your Number:
-          <Text style={styles.link} >
-            {" " + phoneNumber}
-          </Text>
-        </Text>
-
-        <View style={styles.inputContainer}>
-
-          <TextInput
-            label="Enter Otp"
-            value={otpR}
-            keyboardType='numeric'
-            // onChangeText={setOtp} 
-
-            theme={theme}
-            textColor='black'
-            style={styles.input}
-            maxLength={4}
-            left={<TextInput.Icon color={'#bc69f0'} icon={'account'} />}
-          />
+        <Text style={{ fontFamily: 'georgia', fontSize: 20, fontWeight: '700', marginLeft: 20, color: "#656565", textAlign: 'center' }}>Enter Otp</Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: -20 }}>
+          <Ionicons name="account" size={40} color="#5A5552" style={{ marginTop: 20 }} />
+          <View style={styles.otpContainer}>
+            {otp.map((digit, index) => (
+              <TextInput
+                key={index}
+                ref={input => this[`otpInput${index}`] = input}
+                style={styles.otpInput}
+                keyboardType="numeric"
+                maxLength={1}
+                value={digit}
+                onChangeText={(text) => handleOTPChange(text, index)}
+              />
+            ))}
+          </View>
         </View>
-        {errorMessage.length !== 0 ? <Text style={{ fontSize: 15, color: '#bc69f0', fontWeight: 'bold', paddingHorizontal: '5%',fontFamily:'georgia' }}> {errorMessage}</Text> : null}
+        <TouchableOpacity style={{ width: 120, marginTop: -10, alignItems: 'center', alignSelf: 'flex-end', }}>
 
-        <TouchableOpacity onPress={handleVerifyOTP}>
-          <LinearGradient style={[styles.button]}
-            colors={['#ebac4e', '#ba7b1d']}
-          >
-            {!isloading ? <Text style={{ fontSize: 17, color: 'white', fontWeight: '800', fontFamily:'georgia' }}>Verify Otp</Text> : <ActivityIndicator size={'small'} />}
-          </LinearGradient>
+          {resendBtn ? (
+            <Text onPress={ResendOtp} style={{ fontSize: 15, fontWeight: '700', fontFamily: 'georgia', color: '#525252' }}>Resend OTP</Text>
+          ) : (
+            <LoaderKit style={{ width: 40, height: 40 }} name="BallClipRotateMultiple" color="#525252" />
+          )}
+
         </TouchableOpacity>
+
+        <Text style={{ fontSize: 20, color: 'red', fontFamily: 'georgia', fontWeight: '700', marginHorizontal: 20, textAlign: 'center', marginTop: 20 }}>{errorMessage}</Text>
+        <View style={[styles.button]}>
+          {verifyBtn ? (
+            <AnimatedButton
+              title="Verify Otp"
+              onPress={handleVerifyOTP}
+            />) : (
+            <LinearGradient style={{ width: 160, alignItems: 'center', borderRadius: 5, }} colors={['#f52d70', '#fe765f']}
+            >
+              <LoaderKit style={{ width: 40, height: 40 }} name="BallClipRotateMultiple" color="white" />
+            </LinearGradient>
+          )}
+        </View>
       </View>
     </View>
   );
 }
+export default OTPScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -173,18 +212,30 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   image: {
-    height: 225,
-    width: '120%',
-    resizeMode: 'cover'
+    height: 300,
+    width: 200,
+    alignSelf: 'center',
+
+    // width: '100%',
+    // resizeMode: 'cover',
   },
   form: {
-    paddingHorizontal: "4%",
-    paddingVertical: "6%",
-    marginTop: -30,
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-    backgroundColor: '#F0F6F6',
-    flex: 1,
+    // paddingHorizontal: "4%",
+    // paddingVertical: "6%",
+    // marginTop: -30,
+    // borderTopLeftRadius: 30,
+    // borderTopRightRadius: 30,
+    // backgroundColor: '#F0F6F6',
+    // flex: 1,
+
+
+    backgroundColor: 'rgba(225,225,225, 0.9)',
+    position: 'absolute',
+    alignSelf: 'center',
+    width: '100%',
+    paddingHorizontal: 10,
+    height: SCREEN_HEIGHT,
+    justifyContent: 'center'
   },
   mainY: {
     marginHorizontal: 10,
@@ -213,12 +264,11 @@ const styles = StyleSheet.create({
   button: {
     marginVertical: 16,
     paddingHorizontal: 15,
-    width: 120,
+    width: 200,
     alignSelf: 'center',
-    backgroundColor: '#ff4d6d',
     alignItems: 'center',
     padding: 9,
-    borderRadius: 15,
+    borderRadius: 5,
   },
   text: {
     textAlign: 'center',
@@ -231,7 +281,29 @@ const styles = StyleSheet.create({
     margin: 5,
     textDecorationLine: 'underline',
   },
+
+  otpInput: {
+    width: 40,
+    height: 50,
+    borderBottomWidth: 1,
+    borderBottomColor: 'transparent',
+    fontSize: 18,
+    color: 'red',
+    marginHorizontal: 10,
+    fontFamily: 'georgia',
+    backgroundColor: 'transparent'
+  },
+
+
+  otpContainer: {
+    flexDirection: 'row',
+    // justifyContent: 'space-between',
+    marginTop: 20,
+    marginBottom: 20,
+  },
+
 });
+
 
 const theme = {
   colors: {
@@ -240,4 +312,4 @@ const theme = {
   },
 };
 
-export default OTPScreen;
+

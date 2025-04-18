@@ -58,16 +58,27 @@ const AboutProfile = ({ route }) => {
         </View> */}
 
         <View >
-          <Image
+          {/* <Image
+            source={{ uri: profileData.images }}
+            style={{ width: AboutPicWidth, height: AboutPicHeight, marginTop: 20, borderRadius: 10, }}
+          ></Image> */}
+
+          {profileData.images === 110 && profileData.gender === 0 || profileData.gender === 2 ? (
+            <Image  style={{ width: AboutPicWidth, height: AboutPicHeight, marginTop: 20, borderRadius: 10, }} source={require('../Asset/Images/avatar-boy.png')} />
+          ) : profileData.images === 110 && profileData.gender === 1 ? (
+            <Image  style={{ width: AboutPicWidth, height: AboutPicHeight, marginTop: 20, borderRadius: 10, }} source={require('../Asset/Images/avatar-girl.png')} />
+          ) : (
+            <Image
             source={{ uri: profileData.images }}
             style={{ width: AboutPicWidth, height: AboutPicHeight, marginTop: 20, borderRadius: 10, }}
           ></Image>
+          )}
         </View>
 
-        <View style={{ marginTop: 15, backgroundColor: 'white', paddingHorizontal: 12, paddingTop: 15, borderRadius: 10, marginBottom: 20, paddingBottom: 5, flexDirection: 'row', flexWrap: 'wrap' }}>
+        <View style={{ marginTop: 15, backgroundColor: 'white', paddingHorizontal: 12, paddingTop: 15, borderRadius: 5, marginBottom: 20, paddingBottom: 5, flexDirection: 'row', flexWrap: 'wrap' }}>
 
-          <Text style={{ textAlign: 'center', color: 'black', fontSize: 25, fontWeight: '700', marginBottom: 10, width: '100%', fontFamily: 'georgia', }}>
-          {profileData.name}
+          <Text style={{ textAlign: 'center', color: '#6C6662', fontSize: 25, fontWeight: '700', marginBottom: 10, width: '100%', fontFamily: 'georgia', }}>
+            {profileData.name}
           </Text>
 
           {/* {profileData.name ? (
@@ -82,11 +93,11 @@ const AboutProfile = ({ route }) => {
             </View>
           ) : null}
 
-          {/* {profileData.mobile ? (
+          {profileData.mobile ? (
             <View style={styles.AboutData}>
               <Text style={styles.AboutText}>mobile: {profileData.mobile}</Text>
             </View>
-          ) : null} */}
+          ) : null}
 
           {profileData.height ? (
             <View style={styles.AboutData}>
@@ -126,7 +137,7 @@ const AboutProfile = ({ route }) => {
 
           {profileData.sexualOrientation ? (
             <View style={styles.AboutData}>
-              <Text style={styles.AboutText}><Image source={require('../Asset/Images/orientation2.png')} style={{height:25, width:25}}/> {profileData.sexualOrientation == '1' ? "Straight" : profileData.sexualOrientation == '2' ? "Gay" : profileData.sexualOrientation == '3' ? "Lesbian" : profileData.sexualOrientation == '4' ? 'Bisexual' : profileData.sexualOrientation == '5' ? 'Asexual' : profileData.sexualOrientation == '6' ? 'Demisexual' : profileData.sexualOrientation == '7' ? 'Queer' : profileData.sexualOrientation == '8' ? 'Bicurious' : profileData.sexualOrientation == '9' ? 'Aromantic' : `Didn't Mention`}</Text>
+              <Text style={styles.AboutText}><Image source={require('../Asset/Images/orientation2.png')} style={{ height: 25, width: 25 }} /> {profileData.sexualOrientation == '1' ? "Straight" : profileData.sexualOrientation == '2' ? "Gay" : profileData.sexualOrientation == '3' ? "Lesbian" : profileData.sexualOrientation == '4' ? 'Bisexual' : profileData.sexualOrientation == '5' ? 'Asexual' : profileData.sexualOrientation == '6' ? 'Demisexual' : profileData.sexualOrientation == '7' ? 'Queer' : profileData.sexualOrientation == '8' ? 'Bicurious' : profileData.sexualOrientation == '9' ? 'Aromantic' : `Didn't Mention`}</Text>
             </View>
           ) : null}
 
@@ -176,7 +187,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.30,
     shadowRadius: 4.65,
-    elevation: 4,
+    elevation: 2,
     paddingHorizontal: 8,
     marginHorizontal: 5
   },

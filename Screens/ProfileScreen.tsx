@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native';
 import SwiperCard from '../Components/Swiper.tsx';
 import ProfileImagesCard from '../Components/ProfileImagesCard.tsx';
 import MediaProfile from '../Components/MediaProfile.tsx';
@@ -22,6 +22,8 @@ import { AppContext } from '../Navigation/PlansApi';
 import LinearGradient from 'react-native-linear-gradient';
 import { SCREEN_WIDTH } from '@gorhom/bottom-sheet';
 import HeightRabgeSlider from '../Components/HeightRabgeSlider.tsx';
+import Ionicons2 from 'react-native-vector-icons/FontAwesome';
+import Ionicons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const ProfileScreen = () => {
   const [bIndex, setbIndex] = useState(-1);
@@ -32,330 +34,10 @@ const ProfileScreen = () => {
   const { callAllApi } = useContext(AppContext);
 
 
-  const CustomComponent1 = () => (
-    <View style={{ backgroundColor: '#DCDCDC', marginHorizontal: 10, borderRadius: 8, marginTop: 20, paddingVertical: 20 }}>
-      <Text style={{ textAlign: 'center', fontSize: 20, color: 'black', fontWeight: '700', fontFamily: 'georgia', }}>Your Preferences</Text>
-      <View>
-        <View style={styles.OptionsView}>
-          <TouchableOpacity style={styles.touchabale} onPress={toggleSlide7}>
-            <View style={styles.tochableView}>
-              <Icon name={'location'} size={25} style={styles.icon} />
-              <Text style={styles.innerText}> Distance </Text>
-              <Icon name={'chevron-forward-outline'} size={20} color={'white'} style={styles.icons} />
-            </View>
-          </TouchableOpacity>
-
-          {showSlide7 && (
-            <View style={styles.slideBackground}>
-              <Text style={styles.slideHeader}>{/* <Icon style={{ marginTop: 10 }} name={'trail-sign'} size={25} /> */}Distance ?</Text>
-              <View style={{ width: 'auto', paddingHorizontal: 15, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-evenly' }}>
-                <TextInput
-                  style={{ width: '100%' }}
-                  label="Enter Distance"
-                  mode="outlined"
-                  textColor='black'
-                  value={distance}
-                  onChangeText={text => setDistance(text)}
-                />
-              </View>
-            </View>
-          )}
-        </View>
-      </View>
-
-
-      <View>
-        <View style={styles.OptionsView}>
-          <TouchableOpacity style={styles.touchabale} onPress={toggleSlide8}>
-            <View style={styles.tochableView}>
-              <Icon name={'navigate'} size={25} style={styles.icon} />
-              <Text style={styles.innerText}> Distance in  </Text>
-              <Icon name={'chevron-forward-outline'} size={20} color={'white'} style={styles.icons} />
-            </View>
-          </TouchableOpacity>
-
-          {showSlide8 && (
-            <View style={styles.slideBackground}>
-              <Text style={styles.slideHeader}>{/* <Icon style={{ marginTop: 10 }} name={'trail-sign'} size={25} /> */}Your Distance ?</Text>
-              <View style={{ width: 'auto', paddingHorizontal: 15, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-evenly' }}>
-                <TouchableOpacity onPress={() => handleTextClick4('Km')}>
-                  <Text style={[styles.slideText, focusedText4 === 'Km' && styles.focusedText]}> Km </Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity onPress={() => handleTextClick4('Mi')}>
-                  <Text style={[styles.slideText, focusedText4 === 'Mi' && styles.focusedText]}> Mi </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          )}
-        </View>
-      </View>
-
-      <View>
-        <View style={styles.OptionsView}>
-          <TouchableOpacity style={styles.touchabale} onPress={toggleSlide9}>
-            <View style={styles.tochableView}>
-              <Icon name={'male-female'} size={25} style={styles.icon} />
-              <Text style={styles.innerText}> Show Me  </Text>
-              <Icon name={'chevron-forward-outline'} size={20} color={'white'} style={styles.icons} />
-            </View>
-          </TouchableOpacity>
-
-          {showSlide9 && (
-            <View style={styles.slideBackground}>
-              <Text style={styles.slideHeader}>{/* <Icon style={{ marginTop: 10 }} name={'trail-sign'} size={25} /> */}Your Distance ?</Text>
-              <View style={{ width: 'auto', paddingHorizontal: 15, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-evenly' }}>
-                <TouchableOpacity onPress={() => handleTextClick5('0')}>
-                  <Text style={[styles.slideText, focusedText5 === '0' && styles.focusedText]}> Male </Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity onPress={() => handleTextClick5('1')}>
-                  <Text style={[styles.slideText, focusedText5 === '1' && styles.focusedText]}> Female </Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity onPress={() => handleTextClick5('2')}>
-                  <Text style={[styles.slideText, focusedText5 === '2' && styles.focusedText]}> Others </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          )}
-        </View>
-      </View>
-
-      <View style={styles.OptionsView}>
-        <TouchableOpacity style={styles.touchabale} onPress={AgeRangePrefComp2}>
-          <View style={styles.tochableView}>
-            <Icon name={'person'} size={25} style={styles.icon} />
-            <Text style={styles.innerText}> Height Preferences</Text>
-            <Icon name={'chevron-forward-outline'} size={20} color={'white'} style={styles.icons} />
-          </View>
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.OptionsView}>
-        <TouchableOpacity style={styles.touchabale} onPress={AgeRangePrefComp}>
-          <View style={styles.tochableView}>
-            <Icon name={'person'} size={25} style={styles.icon} />
-            <Text style={styles.innerText}> Age Preference </Text>
-            <Icon name={'chevron-forward-outline'} size={20} color={'white'} style={styles.icons} />
-          </View>
-        </TouchableOpacity>
-      </View>
-
-    </View>
-
-  );
-  const [data, setData] = useState<string[]>(['ram', 'shayam', 'rekha', 'suresh', 'ganesh']);
-  const [userSelectedOption, setUserSelectedOption] = useState(['rekha', 'ram']);
-
-
-  const CustomComponent2 = () => (
-    <View>
-      <Text style={styles.slideHeader}> <Icon style={{ marginTop: 10 }} name={'briefcase'} size={25} />  What is your Job Title ?</Text>
-      <View style={{ width: 'auto', paddingHorizontal: 15, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-evenly' }}>
-        <TextInput
-          style={[{ width: '100%', marginTop: 50, backgroundColor: 'white' }, styles.inputs]}
-          label="Enter your job"
-          mode="outlined"
-          textColor='black'
-          maxLength={10}
-          left={<TextInput.Icon icon={'briefcase'} />}
-        />
-      </View>
-    </View>
-  );
-
-  const CustomComponent3 = () => (
-    <View>
-      <Text style={styles.slideHeader}> <Icon style={{ marginTop: 10 }} name={'trail-sign'} size={25} /> Your Address ?</Text>
-      <View style={{ width: 'auto', paddingHorizontal: 15, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-evenly' }}>
-        <TextInput
-          style={{ width: '100%', marginTop: 50, backgroundColor: 'white' }}
-          label="Enter your Address"
-          mode="outlined"
-          textColor='black'
-          maxLength={10}
-        />
-      </View>
-    </View>
-  );
-
-  const CustomComponent4 = () => (
-    <View>
-      <Text style={styles.slideHeader}> <Icon style={{ marginTop: 10 }} name={'male-female'} size={25} />  Select your Sexual Orientation ?</Text>
-      <View style={{ width: 'auto', paddingHorizontal: 15, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-evenly' }}>
-        <TouchableOpacity >
-          <Text style={styles.slideText}> Straight </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity >
-          <Text style={styles.slideText}> Gay </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity >
-          <Text style={styles.slideText}> Lesbian </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity >
-          <Text style={styles.slideText}> Bisexual </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity >
-          <Text style={styles.slideText}> Asexual </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity >
-          <Text style={styles.slideText}> Demisexual </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity >
-          <Text style={styles.slideText}> Queer  </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity >
-          <Text style={styles.slideText}> Bicurious </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity >
-          <Text style={styles.slideText}> Aromantic </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity >
-          <Text style={styles.slideText}> PanSexual </Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
-
-  const CustomComponent5 = () => (
-    <View>
-      <Text style={styles.slideHeader}> <Icon style={{ marginTop: 10 }} name={'heart'} size={25} />  What is your Relationship Goals ?</Text>
-      <View style={{ width: 'auto', paddingHorizontal: 15, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-evenly' }}>
-        <TouchableOpacity >
-          <Text style={styles.slideText}> Long-term Partner </Text>
-        </TouchableOpacity >
-
-        <TouchableOpacity >
-          <Text style={styles.slideText}> Long-term but short-term </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity >
-          <Text style={styles.slideText}> Shoer-term but long-term OK </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity >
-          <Text style={styles.slideText}> Shoer-term fun </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity >
-          <Text style={styles.slideText}> New friends </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity >
-          <Text style={styles.slideText}> Still figuring it out  </Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
-
-  const CustomComponent6 = () => (
-    <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
-      <ScrollView style={styles.slideShow}>
-        <View style={styles.slide}>
-          <Text style={styles.slideText}>Slide 2</Text>
-        </View>
-      </ScrollView>
-    </View>
-  );
-
-  const LogoutComp = () => {
-    setCustomComponent(<Logout />);
-    setbIndex(0);
-  }
-  const AgeRangePrefComp = () => {
-    setCustomComponent(<AgeRangePicker />);
-    setbIndex(0);
-  }
-  const AgeRangePrefComp2 = () => {
-    setCustomComponent(<HeightRangePicker />);
-    setbIndex(0);
-  }
-  const ProfileDetails1 = () => {
-    setCustomComponent(CustomComponent1);
-    setbIndex(0);
-  }
-  const ProfileDetails2 = () => {
-    setCustomComponent(CustomComponent2);
-    setbIndex(0);
-  }
-  const ProfileDetails3 = () => {
-    setCustomComponent(CustomComponent3);
-    setbIndex(0);
-  }
-  const ProfileDetails4 = () => {
-    setCustomComponent(CustomComponent4);
-    setbIndex(0);
-  }
-  const ProfileDetails5 = () => {
-    setCustomComponent(CustomComponent5);
-    setbIndex(0);
-  }
-  const ProfileDetails6 = () => {
-    setCustomComponent(CustomComponent6);
-    setbIndex(0);
-  }
-
-  const CallApi = () => {
-    // Function to handle option selection
-    // const handleOptionSelect = (option : string) => { 
-    //   // Here you can perform any action, such as calling an API
-    //   console.log('Option selected:', option);
-    // };
-    console.warn('hii');
-
-    // const newComponent =  (<CreateOptions options={data} isSearch={true} userSelected={userSelectedOption} onOptionSelect={handleOptionSelect}/>);
-
-  };
-
-  //  useEffect(() => {
-  //   const newComponent =  (<CreateOptions options={data} isSearch={true} userSelected={userSelectedOption} onOptionSelect={handleOptionSelect}/>);
-  //    setCustomComponent(newComponent);
-  //   // Initially set the custom component
-  //   }, [userSelectedOption]);
-  const handleOptionSelect = (option: string) => {
-    // Here you can perform any action, such as calling an API
-    setUserSelectedOption([option])
-    console.warn('Option selected:', option);
-  };
-
-  const createOption = (data: any) => {
-    return <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      {
-        data.map((option: any, index: number) => (
-          <TouchableOpacity
-            key={index}
-            onPress={() => handleOptionSelect(option)}
-            style={{ marginVertical: 5, padding: 10, backgroundColor: 'lightgray', borderRadius: 5 }}
-          >
-            <Text>{option}</Text>
-          </TouchableOpacity>
-        ))
-      }
-    </View>
-  };
 
   //*********************************************************************************//
 
   //*********************************************************************************//
-  const [showSlide1, setShowSlide1] = useState(false);
-  const [showSlide2, setShowSlide2] = useState(false);
-  const [showSlide3, setShowSlide3] = useState(false);
-  const [showSlide4, setShowSlide4] = useState(false);
-  const [showSlide5, setShowSlide5] = useState(false);
-  const [showSlide6, setShowSlide6] = useState(false);
-  const [showSlide7, setShowSlide7] = useState(false);
-  const [showSlide8, setShowSlide8] = useState(false);
-  const [showSlide9, setShowSlide9] = useState(false);
   const [focusedText, setFocusedText] = useState(null);
   const [focusedText2, setFocusedText2] = useState(null);
   const [focusedText3, setFocusedText3] = useState(null);
@@ -380,105 +62,9 @@ const ProfileScreen = () => {
     setModalVisible(!modalVisible);
   }
 
-  const toggleSlide1 = () => {
-    setShowSlide1(!showSlide1);
-    setShowSlide2(false);
-    setShowSlide3(false);
-    setShowSlide4(false);
-    setShowSlide5(false);
-    setShowSlide6(false);
-    setShowSlide7(false);
-    setShowSlide8(false);
-    setShowSlide9(false);
-  };
-  const toggleSlide2 = () => {
-    setShowSlide2(!showSlide2);
-    setShowSlide1(false);
-    setShowSlide3(false);
-    setShowSlide4(false);
-    setShowSlide5(false);
-    setShowSlide6(false);
-    setShowSlide7(false);
-    setShowSlide8(false);
-    setShowSlide9(false);
-  };
-  const toggleSlide3 = () => {
-    setShowSlide3(!showSlide3);
-    setShowSlide2(false);
-    setShowSlide1(false);
-    setShowSlide4(false);
-    setShowSlide5(false);
-    setShowSlide6(false);
-    setShowSlide7(false);
-    setShowSlide8(false);
-    setShowSlide9(false);
-  };
-  const toggleSlide4 = () => {
-    setShowSlide4(!showSlide4);
-    setShowSlide2(false);
-    setShowSlide3(false);
-    setShowSlide1(false);
-    setShowSlide5(false);
-    setShowSlide6(false);
-    setShowSlide7(false);
-    setShowSlide8(false);
-    setShowSlide9(false);
-  };
-  const toggleSlide5 = () => {
-    setShowSlide5(!showSlide5);
-    setShowSlide2(false);
-    setShowSlide3(false);
-    setShowSlide4(false);
-    setShowSlide1(false);
-    setShowSlide6(false);
-    setShowSlide7(false);
-    setShowSlide8(false);
-    setShowSlide9(false);
-  };
-  const toggleSlide6 = () => {
-    setShowSlide6(!showSlide6);
-    setShowSlide2(false);
-    setShowSlide3(false);
-    setShowSlide4(false);
-    setShowSlide5(false);
-    setShowSlide1(false);
-    setShowSlide7(false);
-    setShowSlide8(false);
-    setShowSlide9(false);
-  };
 
-  const toggleSlide7 = () => {
-    setShowSlide7(!showSlide7);
-    setShowSlide2(false);
-    setShowSlide3(false);
-    setShowSlide4(false);
-    setShowSlide5(false);
-    setShowSlide1(false);
-    setShowSlide8(false);
-    setShowSlide9(false);
-  };
 
-  const toggleSlide8 = () => {
-    setShowSlide8(!showSlide8);
-    setShowSlide2(false);
-    setShowSlide3(false);
-    setShowSlide4(false);
-    setShowSlide5(false);
-    setShowSlide1(false);
-    setShowSlide7(false);
-    setShowSlide9(false);
-  };
 
-  const toggleSlide9 = () => {
-    setShowSlide9(!showSlide9);
-    setShowSlide2(false);
-    setShowSlide3(false);
-    setShowSlide4(false);
-    setShowSlide5(false);
-    setShowSlide1(false);
-    setShowSlide7(false);
-    setShowSlide8(false);
-  };
 
   // useEffect(() => {
   //   setFocusedText(profileData1.relationshipGoals);
@@ -503,17 +89,6 @@ const ProfileScreen = () => {
 
   };
 
-  //****** EditProfile Api started ******//
-
-  // const payload =  { 
-  //   token: token,
-  //   relationshipGoals: parseFloat(focusedText).toFixed(0),
-  //   education: parseFloat(focusedText2).toFixed(0),
-  //   sexualOrientation: parseFloat(focusedText3).toFixed(0),
-  //   jobTitle: jobTitle,
-  //   living: address,
-  //   height: height,
-  // }
 
   const EditProfileApi = async () => {
     setIsLoading(true);
@@ -533,7 +108,7 @@ const ProfileScreen = () => {
       // heightto: heightTo,
       // heightfrom: heigtFrom
     }
-    console.log('EditProfile Payload ====', payload);
+    // console.log('EditProfile Payload ====', payload);
     try {
 
       const response = await fetch(
@@ -549,7 +124,7 @@ const ProfileScreen = () => {
         throw new Error(' EditProfile api error');
       }
       const data = await response.json();
-      console.log('EditProfile api =======', data);
+      // console.log('EditProfile api =======', data);
       profileData();
       toggleModal();
       setIsLoading(false);
@@ -620,7 +195,7 @@ const ProfileScreen = () => {
           <MediaProfile />
         </View>
 
-        <View style={{ backgroundColor: 'white', paddingVertical: 15, borderRadius: 20 }}>
+        <View style={{ backgroundColor: '#fafafa', paddingVertical: 15, borderRadius: 10 }}>
 
 
 
@@ -635,7 +210,9 @@ const ProfileScreen = () => {
               </TouchableOpacity> */}
               {/* {showSlide1 && ( */}
               <View >
-                <Text style={styles.slideHeader}> {/*<Icon style={{ marginTop: 10 }} name={'school'} size={25} />*/}  What is your education Levels ?</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5 }}>
+                  <Icon style={{ marginTop: 15 }} name={'school'} size={23} color={'#4A4744'} /><Text style={styles.slideHeader}>   What is your education Levels ?</Text>
+                </View>
                 <View style={{ width: 'auto', flexDirection: 'row', flexWrap: 'wrap', marginLeft: 20 }}>
                   <TouchableOpacity onPress={() => { handleTextClick2('1'); }}>
                     <Text style={[styles.slideText, focusedText2 === '1' && styles.focusedText]}>Bachelor Degree</Text>
@@ -675,7 +252,10 @@ const ProfileScreen = () => {
               </TouchableOpacity> */}
               {/* {showSlide4 && ( */}
               <View >
-                <Text style={styles.slideHeader}> {/*<Icon style={{ marginTop: 10 }} name={'male-female'} size={25} /> */} Select your Sexual Orientation ?</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5 }}>
+                  <Icon style={{ marginTop: 15 }} name={'male-female'} size={25} color={'#4A4744'} /><Text style={styles.slideHeader}> Select your Sexual Orientation ?</Text>
+                </View>
+
                 <View style={{ width: 'auto', flexDirection: 'row', flexWrap: 'wrap', marginLeft: 20 }}>
 
                   <TouchableOpacity onPress={() => handleTextClick3('1')}>
@@ -736,7 +316,9 @@ const ProfileScreen = () => {
 
               {/* {showSlide5 && ( */}
               <View >
-                <Text style={styles.slideHeader}>{/* <Icon style={{ marginTop: 10 }} name={'heart'} size={25} /> */} What is your Relationship Goals ?</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5 }}>
+                  <Ionicons2 name="eye" size={27} color="#5A5552" style={{ marginTop: 15 }} /><Text style={styles.slideHeader}>  What is your Relationship Goals ?</Text>
+                </View>
                 <View style={{ width: 'auto', flexDirection: 'row', flexWrap: 'wrap', marginLeft: 20 }}>
                   <TouchableOpacity onPress={() => handleTextClick('4')}>
                     <Text style={[styles.slideText, focusedText === '4' && styles.focusedText]}> Short-term fun </Text>
@@ -782,14 +364,16 @@ const ProfileScreen = () => {
               </TouchableOpacity> */}
               {/* {showSlide2 && ( */}
               <View >
-                <Text style={styles.slideHeader}> {/*<Icon style={{ marginTop: 10 }} name={'briefcase'} size={25} /> */} What is your Job Title ?</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5 }}>
+                  <Icon style={{ marginTop: 15 }} name={'briefcase'} size={23} color={'#4A4744'} /><Text style={styles.slideHeader}>  What is your Job Title ?</Text>
+                </View>
+
                 <View style={{ width: 'auto', flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: 15 }}>
                   <TextInput
                     style={{ width: '100%' }}
                     label="Enter your job"
                     mode="outlined"
                     textColor='black'
-                    left={<TextInput.Icon icon={'briefcase'} />}
                     value={jobTitle}
                     onChangeText={text => setJobTitle(text)}
                   />
@@ -811,7 +395,10 @@ const ProfileScreen = () => {
 
               {/* {showSlide3 && ( */}
               <View >
-                <Text style={styles.slideHeader}> {/*<Icon style={{ marginTop: 10 }} name={'trail-sign'} size={25} /> */}Your Address ?</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5 }}>
+                  <Icon style={{ marginTop: 15 }} name={'trail-sign'} size={23} color={'#4A4744'} /><Text style={styles.slideHeader}>  Your Address ?</Text>
+                </View>
+
                 <View style={{ width: 'auto', flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: 15 }}>
                   <TextInput
                     style={{ width: '100%' }}
@@ -840,10 +427,12 @@ const ProfileScreen = () => {
 
               {/* {showSlide6 && ( */}
               <View >
-                <Text style={styles.slideHeader}>{/* <Icon style={{ marginTop: 10 }} name={'trail-sign'} size={25} /> */}Your Height ?</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5 }}>
+                  <Ionicons name="human-male-height-variant" size={23} color="#5A5552" style={{ marginTop: 15 }} /><Text style={styles.slideHeader}>  Your Height ?</Text>
+                </View>
                 <View style={{ width: 'auto', flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: 15 }}>
                   <TextInput
-                    style={{ width: '100%', backgroundColor: 'white' }}
+                    style={{ width: '100%', backgroundColor: 'white', }}
                     label="Enter your Height"
                     mode="outlined"
                     textColor='black'
@@ -864,7 +453,7 @@ const ProfileScreen = () => {
             },
             shadowOpacity: 0.30,
             shadowRadius: 4.65,
-            elevation: 6,
+            elevation: 3,
             shadowColor: "#000",
           }}>
             <Text style={{ textAlign: 'center', fontSize: 20, color: '#4A4744', fontWeight: '700', fontFamily: 'georgia', }}>Your Preferences</Text>
@@ -882,7 +471,11 @@ const ProfileScreen = () => {
 
                 {/* {showSlide9 && ( */}
                 <View>
-                  <Text style={styles.slideHeader}>{/* <Icon style={{ marginTop: 10 }} name={'trail-sign'} size={25} /> */}Show Me</Text>
+
+                  <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5 }}>
+                    <Icon style={{ marginTop: 15 }} name={'male-female'} size={23} color={'#4A4744'} /><Text style={styles.slideHeader}> Show Me </Text>
+                  </View>
+
                   <View style={{ width: 'auto', flexDirection: 'row', flexWrap: 'wrap', marginLeft: 20 }}>
                     <TouchableOpacity onPress={() => handleTextClick5('0')}>
                       <Text style={[styles.slideText, focusedText5 === '0' && styles.focusedText]}> Male </Text>
@@ -913,7 +506,9 @@ const ProfileScreen = () => {
 
                 {/* {showSlide7 && ( */}
                 <View >
-                  <Text style={styles.slideHeader}>{/* <Icon style={{ marginTop: 10 }} name={'trail-sign'} size={25} /> */}Distance ?</Text>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5 }}>
+                    <Ionicons style={{ marginTop: 15 }} name={'google-maps'} size={23} color={'#4A4744'} /><Text style={styles.slideHeader}> Distance ?</Text>
+                  </View>
                   <View style={{ width: 'auto', flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: 15 }}>
                     <TextInput
                       style={{ width: '100%', backgroundColor: 'white' }}
@@ -942,7 +537,10 @@ const ProfileScreen = () => {
 
                 {/* {showSlide8 && ( */}
                 <View >
-                  <Text style={styles.slideHeader}>{/* <Icon style={{ marginTop: 10 }} name={'trail-sign'} size={25} /> */}Your Distance ?</Text>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5 }}>
+                    <Ionicons style={{ marginTop: 15 }} name={'google-maps'} size={23} color={'#4A4744'} /><Text style={styles.slideHeader}> Your Distance in ?</Text>
+                  </View>
+                  
                   <View style={{ width: 'auto', flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: 15 }}>
                     <TouchableOpacity onPress={() => handleTextClick4('km')}>
                       <Text style={[styles.slideText, focusedText4 === 'km' && styles.focusedText]}> Km </Text>
@@ -995,14 +593,14 @@ const ProfileScreen = () => {
 
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', width: '100%' }}>
             <TouchableOpacity onPress={EditProfileApi}>
-              <LinearGradient style={[{ alignItems: 'center', margin: 20, borderRadius: 30, width: SCREEN_WIDTH / 1.2, padding: 10, }, styles.submit]}
-                colors={['#ebac4e', '#ba7b1d']}
+              <LinearGradient style={[{ alignItems: 'center', margin: 20, borderRadius: 5, width: SCREEN_WIDTH / 1.3, padding: 5, }, styles.submit]}
+                colors={['#f52d70', '#fe765f']}
               >
                 {isLoading ? (
                   // Display loader here 
                   <LoaderKit style={{ width: 30, height: 30 }} name={'BallPulse'} color={'white'} />
                 ) : (
-                  <Text style={{ color: 'white', fontWeight: '700', fontSize: 20, fontFamily: 'georgia', }}> Submit </Text>
+                  <Text style={{ color: '#F6F6F6', fontWeight: '700', fontSize: 25, fontFamily: 'georgia', }}> Submit </Text>
                 )}
               </LinearGradient>
             </TouchableOpacity>
@@ -1046,6 +644,7 @@ const ProfileScreen = () => {
 const styles = StyleSheet.create({
   Container: {
     flex: .95,
+    backgroundColor: 'white'
   },
   icon: {
     color: 'black'
@@ -1078,6 +677,7 @@ const styles = StyleSheet.create({
   },
   DpImagesView: {
     flex: 1,
+    backgroundColor: 'white'
   },
   OptionsTextInput: {
     elevation: 20,
@@ -1102,17 +702,17 @@ const styles = StyleSheet.create({
     fontFamily: 'georgia',
     fontWeight: '700',
     backgroundColor: 'white',
-    borderRadius: 20,
-    paddingHorizontal: 15,
-    paddingVertical: 5,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    paddingVertical: 3,
     margin: 10, borderWidth: 1,
-    borderColor: '#A19C96',
+    borderColor: '#E5E4E2',
     borderStyle: 'solid',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 5,
+    elevation: 3,
   },
 
   slideHeader: {
@@ -1125,8 +725,8 @@ const styles = StyleSheet.create({
   },
 
   focusedText: {
-    backgroundColor: '#bd69f0',
-    color: 'white',
+    backgroundColor: '#E5E4E2',
+    color: '#5A5552',
     fontSize: 20,
     fontWeight: '800',
     borderWidth: 0.5,
@@ -1136,7 +736,8 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 5,
+    elevation: 3,
+    borderRadius: 5
   },
 
   slideBackground: {
@@ -1178,13 +779,13 @@ const styles = StyleSheet.create({
 
   submit: {
     borderWidth: 0.5,
-    borderColor: 'white',
+    borderColor: '#E5E4E2',
     borderStyle: 'solid',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 5,
+    elevation: 3,
   },
   inputs: {
     // borderWidth: 1,

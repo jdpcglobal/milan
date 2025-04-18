@@ -12,16 +12,23 @@ type cardProps = {
 };
 
 const LikeUsersCard = (props: cardProps) => {
-    const { name, surname, age, imageUrl, religion } = props.data;
+    const { name, surname, age, imageUrl, religion, gender } = props.data;
 
     return (
-        <View style={[styles.card, { width: 'auto', height: 105, justifyContent:'center' }]}>
+        <View style={[styles.card, { width: 'auto', justifyContent: 'center' }]}>
             <View style={styles.imageContainer}>
-                <Image source={{ uri: imageUrl }} style={styles.image}  />
+                {/* <Image source={{ uri: imageUrl }} style={styles.image}  /> */}
+                {imageUrl === 110 && gender === 0 || gender.gender === 2 ? (
+                    <Image style={styles.image} source={require('../Asset/Images/avatar-boy.png')} />
+                ) : imageUrl === 110 && gender === 1 ? (
+                    <Image style={styles.image} source={require('../Asset/Images/avatar-girl.png')} />
+                ) : (
+                    <Image source={{ uri: imageUrl }} style={styles.image}  />
+                )}
             </View>
             <View style={styles.infoContainer}>
                 <Text style={styles.nameText}>{name}, {age}</Text>
-                {/* <Text style={styles.infoText}>Age: {age}</Text> */}
+                <Text style={styles.infoText}>Liked your profile.</Text>
                 {/* <Text style={styles.infoText}>Religion: {religion}</Text> */}
             </View>
         </View>
@@ -33,38 +40,43 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: '#fff',
-        borderRadius: 8,
+        // borderRadius: 8,
         padding: 10,
         marginBottom: 10,
-        elevation: 2, // for shadow on Android
-        shadowColor: '#000', // for shadow on iOS
-        shadowOffset: { width: 0, height: 2 }, // for shadow on iOS
-        shadowOpacity: 0.25, // for shadow on iOS
-        shadowRadius: 3.84, // for shadow on iOS
-        borderColor:'#D6D4D2',
-        borderWidth:1
+        // elevation: 2, // for shadow on Android
+        // shadowColor: '#000', // for shadow on iOS
+        // shadowOffset: { width: 0, height: 2 }, // for shadow on iOS
+        // shadowOpacity: 0.25, // for shadow on iOS
+        // shadowRadius: 3.84, // for shadow on iOS
+        // borderColor:'#D6D4D2',
+        borderBottomColor: '#DCDCDC',
+        borderTopColor: 'transparent',
+        borderLeftColor: 'transparent',
+        borderRightColor: 'transparent',
+        borderWidth: 1
     },
     imageContainer: {
         marginRight: 10,
     },
     image: {
         width: 70,
-        height: 90,
-        borderRadius: 10,
+        height: 70,
+        borderRadius: 35,
     },
     infoContainer: {
         flex: 1,
     },
     nameText: {
-        fontSize: 18,
+        fontSize: 16,
         color: '#4A4744',
         fontWeight: 'bold',
-        fontFamily:'georgia',
+        fontFamily: 'georgia',
     },
     infoText: {
         color: 'black',
-        fontFamily:'georgia',
-        fontWeight:'600'
+        fontFamily: 'georgia',
+        fontWeight: '600',
+        fontSize: 12
     },
 });
 

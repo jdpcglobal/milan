@@ -16,7 +16,9 @@ export const AppProvider = ({ children }) => {
   useEffect(() => {
     if (token) {
       fetchPlans();
-    }
+    };
+
+    // console.log('token========',token)
   }, [token]);
 
   useEffect(() => {
@@ -34,7 +36,7 @@ export const AppProvider = ({ children }) => {
       token: token,
     };
     try {
-      console.log('666666666');
+      // console.log('666666666');
       const response = await axios.post('https://themilan.org/api/getPlans', payload, {
         headers: {
           'Content-type': 'application/json',

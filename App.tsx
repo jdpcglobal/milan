@@ -39,23 +39,6 @@ import { StripeProvider } from '@stripe/stripe-react-native';
 // import { Provider as PaperProvider, MD3LightTheme as DefaultTheme } from 'react-native-paper';
 import SplashScreen from 'react-native-splash-screen'
 
-const styles = StyleSheet.create({
-  buttonContainer: {
-    backgroundColor: '#3498db', // Change the background color to your preference
-    padding: 0,
-    borderRadius: 20,
-    margin: 0,
-    alignItems: 'baseline',
-    shadowColor: 'blue',
-
-  },
-  buttonText: {
-    color: '#ffffff', // Change the text color to your preference
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-});
-
 
 function App(): React.JSX.Element {
 useEffect(() => {
@@ -71,15 +54,6 @@ useEffect(() => {
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
-
-  // const theme = {
-  //   ...DefaultTheme,
-  //   colors: {
-  //     ...DefaultTheme.colors,
-  //     primary: '#3498db',
-  //     accent: '#f1c40f',
-  //   },
-  // };
 
   return (
     <Provider store={store}>

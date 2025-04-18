@@ -23,6 +23,8 @@ import DetailOfPlans from '../Screens/DetailOfPlans';
 import UserLikesScreen from '../Screens/UserLikesScreen'
 import ChatUsers from "../Screens/ChatUsers";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import ProfileScreens from "../Screens/ProfileScreens";
+import ProfileSection from "../Screens/ProfileSection";
 
 
 const Tab = createBottomTabNavigator();
@@ -98,10 +100,10 @@ const MainNavigator = () => {
           component={ChatUsers}
           options={{
             headerShown: true,
-            headerTitle: "Milan",
+            headerTitle: "",
             headerLeft: () => (
               <View>
-                <Image source={require('../Asset/Images/LogoMinal.png')} style={{ width: 40, height: 40, resizeMode: 'cover', borderRadius: 20, marginLeft: 10 }} />
+                <Image source={require('../Asset/Images/jpg.png')} style={{ width: 110, height: 40, resizeMode: 'cover', marginLeft: 5 }} />
               </View>
             ),
           }}
@@ -168,7 +170,7 @@ const MainNavigator = () => {
 
           options={{
             headerShown: true,
-            headerTitle: "Milan",
+            headerTitle: "",
             // headerRight: () => (
             //   <View style={{ flexDirection: 'row', marginRight: 10, }}>
             //     <Ionicons name="notifications" size={25} color="#0E103D" style={{ marginRight: 10 }} />
@@ -177,7 +179,37 @@ const MainNavigator = () => {
             // ),
             headerLeft: () => (
               <View>
-                <Image source={require('../Asset/Images/LogoMinal.png')} style={{ width: 40, height: 40, resizeMode: 'cover', borderRadius: 20, marginLeft: 10 }} />
+                <Image source={require('../Asset/Images/jpg.png')} style={{ width: 110, height: 40, resizeMode: 'cover', marginLeft: 5 }} />
+              </View>
+            ),
+          }}
+        />
+
+        <Stack.Screen
+          name="ProfileScreens"
+          component={ProfileScreens}
+          options={{
+            headerShown: true,
+            headerTitle: "",
+            headerStyle: { shadowColor: '#000',shadowOffset: { width: 0, height: 2 },shadowOpacity: 0.3,shadowRadius: 3,elevation: 5,},
+            headerLeft: () => (
+              <View>
+                <Image source={require('../Asset/Images/jpg.png')} style={{ width: 110, height: 40, resizeMode: 'cover', marginLeft: 5 }} />
+              </View>
+            ),
+          }}
+        />
+
+        <Stack.Screen
+          name="ProfileSection"
+          component={ProfileSection}
+
+          options={{
+            headerShown: true,
+            headerTitle: "",
+            headerLeft: () => (
+              <View>
+                <Image source={require('../Asset/Images/jpg.png')} style={{ width: 110, height: 40, resizeMode: 'cover', marginLeft: 5 }} />
               </View>
             ),
           }}
@@ -189,11 +221,17 @@ const MainNavigator = () => {
 
           options={{
             headerShown: true,
-            headerTitle: "Milan",
+            headerTitle: "Plans",
+            headerTitleStyle: {
+              fontFamily: 'georgia',
+              fontWeight: '700',
+              fontSize: 25,
+              color: '#5A5552'
+            },
             headerStyle: {
-              backgroundColor: '#F6F6F6',
-              borderBottomLeftRadius: 20,
-              borderBottomRightRadius: 20
+              backgroundColor: 'white',
+              // borderBottomLeftRadius: 20,
+              // borderBottomRightRadius: 20,
             },
             // headerLeft: () => (
             //   <View style={{flexDirection:'row', alignItems:'center'}}>
@@ -217,7 +255,8 @@ const MainNavigator = () => {
           name="NotificationScreen"
           component={NotificationScreen}
           options={{
-            headerStyle: { backgroundColor: '#f4f4f4' }
+            headerStyle: { shadowColor: '#000',shadowOffset: { width: 0, height: 2 },shadowOpacity: 0.3,shadowRadius: 3,elevation: 5,},
+            headerTitle: "Notification",
           }}
         />
 

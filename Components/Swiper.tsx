@@ -12,6 +12,7 @@ import { LoginState, UserProfile } from '../Utils/Types';
 import BottomSheetComponent from './BottomSheet';
 import { AppContext } from '../Navigation/PlansApi';
 import LinearGradient from 'react-native-linear-gradient';
+import AnimatedButton from '../Screens/AnimatedButton';
 
 const { width, height } = Dimensions.get('window');
 
@@ -38,7 +39,9 @@ const SwiperCard: React.FC = () => {
   const scaleAnim2 = useRef(new Animated.Value(1)).current;
   const screenWidth = Dimensions.get('window').width;
   const screenHeight = Dimensions.get('window').height;
-  // console.log('22222222', allUserData.gender); 
+  const bottomPosition = screenHeight < 750 ? '10%' : '9%';
+  const matchModalHight = screenHeight < 750 ? '37%' : '30%';
+  //  console.log('22222222', screenHeight); 
 
 
   useEffect(() => {
@@ -87,14 +90,14 @@ const SwiperCard: React.FC = () => {
       fetchProfiles();
     }, [])
   );
-
+  // console.log('...................',token);
   const fetchProfiles = async () => {
     setShowLoader(true);
     setShowLoader2(true);
     try {
       const response = await fetch(`https://themilan.org/api/users?token=${token}&page=${1}&perpageitems=${5}`, { method: 'POST' });
       const data = await response.json();
-      // console.log('==============', data);
+      // console.log('==============', data); 
       setProfileCode(data.code);
       // if (data.code == 108) {
       //   navigation.navigate('DetailOfPlans');
@@ -117,7 +120,7 @@ const SwiperCard: React.FC = () => {
     try {
       const response = await fetch(`https://themilan.org/api/likeordislike?token=${token}&cardid=${id}&profilelike=${type}`, { method: 'POST' });
       const data = await response.json()
-      //console.log('================11111', data);
+      console.log('================11111+++', data);
       setMatchImage(data);
       setLoading(false);
     } catch (error) {
@@ -213,59 +216,57 @@ const SwiperCard: React.FC = () => {
                 {profileCode === 108 ? (
                   <LinearGradient
                     style={{ height: screenHeight / 1.07, width: screenWidth, }}
-                    colors={['rgba(213,147,255,1)', 'rgba(160,32,240,255)']}
+                    colors={['white', 'white']}
                   >
                     <ScrollView >
-                      <View style={{ marginBottom: screenHeight / 7 }}>
+                      <View style={{ marginBottom: screenHeight / 7, }}>
                         <View>
-                          <Image style={[styles.image2, { width: screenWidth / 1.8, height: screenHeight / 2.2 }]} source={require('../Asset/Images/cartoon-astronaut.png')} />
+                          <Image style={[styles.image2, { width: 300, height: 280 }]} source={require('../Asset/Images/manBg.jpg')} />
                           {/* <Image style={[styles.cloud, { width: screenWidth / 2.2, height: screenHeight / 6 }]} source={require('../Asset/Images/cloud.png')} /> */}
-                          <Image style={[styles.cloud, { width: screenWidth / 2.6, height: screenHeight / 5.3 }]} source={require('../Asset/Images/moon.png')} />
+                          {/* <Image style={[styles.cloud, { width: screenWidth / 2.6, height: screenHeight / 5.3 }]} source={require('../Asset/Images/moon.png')} /> */}
                         </View>
 
                         <View>
-                          <View style={{ marginBottom: 20, marginTop: -30 }}>
-                            <Text style={styles.hang}>Hang tight, we're looking for the best possible matches</Text>
+                          <View style={{ marginBottom: 20, marginTop: -70 }}>
+                            <Text style={styles.hang}> we're looking for the best possible matches</Text>
                             <Text style={styles.meantime}>in the meantime....</Text>
                           </View>
 
                           <TouchableOpacity onPress={() => navigation.navigate('UserLikesScreen')} style={styles.touch}>
                             <View style={styles.strip}>
                               <View style={styles.iconBg}>
-                                <Icon name="thumbs-up-outline" size={30} color="#F6F6F6" style={{}} />
+                                <Icon name="thumbs-up-outline" size={30} color="#817A75" style={{}} />
                               </View>
                               <Text style={styles.stripText}>See people who liked you!</Text>
-                              <Icon name="chevron-forward" size={30} color="rgba(163,42,239,255)" style={{ marginLeft: 0 }} />
+                              <Icon name="chevron-forward" size={30} color="#817A75" style={{ marginLeft: 0 }} />
                             </View>
                           </TouchableOpacity>
 
                           <TouchableOpacity onPress={() => navigation.navigate('ChatUsers')} style={styles.touch}>
                             <View style={styles.strip}>
                               <View style={styles.iconBg}>
-                                <Icon name="heart-outline" size={40} color="#F6F6F6" style={{}} />
+                                <Icon name="heart-outline" size={40} color="#817A75" style={{}} />
                               </View>
                               <Text style={styles.stripText}>Chat with your Matches!</Text>
-                              <Icon name="chevron-forward" size={30} color="rgba(163,42,239,255)" style={{ marginLeft: 0 }} />
+                              <Icon name="chevron-forward" size={30} color="#817A75" style={{ marginLeft: 0 }} />
                             </View>
                           </TouchableOpacity>
                         </View>
 
-                        <LinearGradient
-                        style={styles.button}
-                          colors={['#fabb5d', '#bc7d1e']}>
-                          <TouchableOpacity onPress={() => navigation.navigate('Plans')} >
-                              <Text style={[styles.planText, { width: screenWidth / 1.2 }]}>
-                                Explore Plans
-                              </Text>
-                          </TouchableOpacity>
-                        </LinearGradient>
+
+                        <View style={{ marginHorizontal: 50 }}>
+                          <AnimatedButton
+                            title="Explore Plans"
+                            onPress={() => navigation.navigate('Plans')}
+                          />
+                        </View>
 
                       </View>
                     </ScrollView>
 
                   </LinearGradient>
                 ) : (
-                  <View style={{ backgroundColor: '#D6D4D2', borderRadius: 10 }}>
+                  <View style={{ backgroundColor: '#D6D4D2', borderRadius: 10, marginTop: -70 }}>
                     {/* <Image style={{ height: screenHeight/1.7, width: screenWidth/1.09, resizeMode:'contain' }} source={require('../Asset/Images/Girls.jpg')} /> */}
                     <ImageBackground
                       style={{
@@ -318,13 +319,25 @@ const SwiperCard: React.FC = () => {
                             Likes refresh every 24 hours. You can wait or get unlimited likes with our subscription
                           </Text>
                         </View>
-                        <TouchableOpacity onPress={() => navigation.navigate('Plans')} style={styles.touch2}>
-                          <View style={styles.button}>
+                        {/* <TouchableOpacity onPress={() => navigation.navigate('Plans')} style={styles.touch2}>
+                          <LinearGradient
+                            style={styles.button}
+                            colors={['#f52d70', '#fe765f']}>
+
                             <Text style={[styles.planText, { width: screenWidth / 1.2 }]}>
                               Explore Plans
                             </Text>
-                          </View>
-                        </TouchableOpacity>
+
+                          </LinearGradient>
+                        </TouchableOpacity> */}
+
+                        <View style={{ marginTop: 60, marginHorizontal: 20 }}>
+                          <AnimatedButton
+                            title='Explore Plans'
+                            onPress={() => navigation.navigate('Plans')}
+                          />
+                        </View>
+
                       </View>
                     </ImageBackground>
                   </View>
@@ -338,32 +351,86 @@ const SwiperCard: React.FC = () => {
 
         <Modal animationType="slide" transparent={true} visible={modalVisible} onRequestClose={toggleModal2}>
           <View style={styles.centeredView}>
-            <View style={[styles.modalView, { backgroundColor: '#e5e4e2', height: '30%' }]}>
+            <View style={[styles.modalView, { backgroundColor: '#e5e4e2', height: matchModalHight }]}>
               <Icon onPress={toggleModal2} name="close-circle" size={45} color="red" style={{ position: 'absolute', right: 0, top: 0 }} />
               {/* <Image source={require('../Asset/Images/BirdMatch.gif')} style={{ width: 150, height: 150, resizeMode: 'contain', position: 'absolute', top: -50 }} /> */}
 
               <View style={{ flexDirection: 'row', position: 'absolute', marginTop: 20 }}>
-                <Animated.Image
+
+                {matchImage.userImage === 110 && matchImage.userGender === 0 || matchImage.userGender === 2 ? (
+                  <Animated.Image
+                    source={require('../Asset/Images/avatar-boy.png')}
+                    style={[
+                      styles.image,
+                      { transform: [{ scale: scaleAnim1 }], marginRight: 20 },
+                    ]}
+                  />
+                ) : matchImage.userImage === 110 && matchImage.userGender === 1 ? (
+                  <Animated.Image
+                    source={require('../Asset/Images/avatar-girl.png')}
+                    style={[
+                      styles.image,
+                      { transform: [{ scale: scaleAnim1 }], marginRight: 20 },
+                    ]}
+                  />
+                ) : (
+                  <Animated.Image
+                    source={{ uri: matchImage.userImage }}
+                    style={[
+                      styles.image,
+                      { transform: [{ scale: scaleAnim1 }], marginRight: 20 },
+                    ]}
+                  />
+                )}
+
+                {matchImage.likeUserImage === 110 && matchImage.likeUserGender === 0 || matchImage.likeUserGender === 2 ? (
+                  <Animated.Image
+                    source={require('../Asset/Images/avatar-boy.png')}
+                    style={[
+                      styles.image,
+                      { transform: [{ scale: scaleAnim1 }], marginRight: 20 },
+                    ]}
+                  />
+                ) : matchImage.likeUserImage === 110 && matchImage.likeUserGender === 1 ? (
+
+                  <Animated.Image
+                    source={require('../Asset/Images/avatar-girl.png')}
+                    style={[
+                      styles.image,
+                      { transform: [{ scale: scaleAnim1 }], marginRight: 20 },
+                    ]}
+                  />
+                ) : (
+                  <Animated.Image
+                    source={{ uri: matchImage.likeUserImage }}
+                    style={[
+                      styles.image,
+                      { transform: [{ scale: scaleAnim1 }], marginRight: 20 },
+                    ]}
+                  />
+                )}
+
+                {/* <Animated.Image
                   source={{ uri: matchImage.userImage }}
                   style={[
                     styles.image,
                     { transform: [{ scale: scaleAnim1 }], marginRight: 20 },
                   ]}
-                />
-                <Animated.Image
+                /> */}
+                {/* <Animated.Image
                   source={{ uri: matchImage.likeUserImage }}
                   style={[
                     styles.image,
                     { transform: [{ scale: scaleAnim2 }] },
                   ]}
-                />
+                /> */}
               </View>
 
               <View style={{ flexDirection: 'row', alignItems: 'center', position: 'relative', top: 130 }}>
-                <Text style={{ fontSize: 20, fontWeight: '700', color: 'black', fontFamily: 'georgia' }}>{notifications} </Text>
+                <Text style={{ fontSize: 20, fontWeight: '700', color: '#464646', fontFamily: 'georgia' }}>{notifications}  </Text>
                 <Image source={require('../Asset/Images/heart.gif')} style={{ width: 50, height: 50 }} />
               </View>
-              <Text style={{ fontSize: 20, fontWeight: '700', color: 'black', fontFamily: 'georgia', position: 'relative', top: 120 }}>with {matchImage.likeUserName}</Text>
+              <Text style={{ fontSize: 20, fontWeight: '700', color: '#464646', fontFamily: 'georgia', position: 'relative', top: 120 }}>with {matchImage.likeUserName}</Text>
             </View>
           </View>
         </Modal>
@@ -409,7 +476,7 @@ const SwiperCard: React.FC = () => {
             outputCardOpacityRangeX={[0.8, 1, 1, 1, 0.8]}
             showSecondCard
             stackSeparation={1}
-            cardVerticalMargin={0}  
+            cardVerticalMargin={0}
             cardHorizontalMargin={0}
             swipeAnimationDuration={1200}
             infinite={false}
@@ -455,9 +522,14 @@ const SwiperCard: React.FC = () => {
             }}
           />
         )}
-        <View style={{ position: 'absolute', bottom: 0, alignSelf: 'center' }}>
+        <View style={{ position: 'absolute', bottom: bottomPosition, alignSelf: 'center' }}>
           <ActionButtons onActionPress={OnActionPress} swipeDirection={swipeDirection} />
         </View>
+
+        {/* <View style={{ position: 'absolute', bottom: '4%', alignSelf: 'center', backgroundColor:'red' }}>
+         
+        </View> */}
+
         <View style={StyleSheet.absoluteFillObject}>
           <BottomSheetComponent bIndex={bIndex} setbIndex={setbIndex}>
             <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
@@ -469,53 +541,114 @@ const SwiperCard: React.FC = () => {
 
       <Modal animationType="slide" transparent={true} visible={modalVisible} onRequestClose={toggleModal2}>
         <View style={styles.centeredView}>
-          <View style={[styles.modalView, { backgroundColor: '#e5e4e2', height: '30%' }]}>
+          <View style={[styles.modalView, { backgroundColor: '#e5e4e2', height: matchModalHight }]}>
             <Icon onPress={toggleModal2} name="close-circle" size={45} color="red" style={{ position: 'absolute', right: 0, top: 0 }} />
             {/* <Image source={require('../Asset/Images/BirdMatch.gif')} style={{ width: 150, height: 150, resizeMode: 'contain', position: 'absolute', top: -50 }} /> */}
 
             <View style={{ flexDirection: 'row', position: 'absolute', marginTop: 20 }}>
-              <Animated.Image
+
+              {matchImage.userImage === 110 && matchImage.userGender === 0 || matchImage.userGender === 2 ? (
+                <Animated.Image
+                  source={require('../Asset/Images/avatar-boy.png')}
+                  style={[
+                    styles.image,
+                    { transform: [{ scale: scaleAnim1 }], marginRight: 20 },
+                  ]}
+                />
+              ) : matchImage.userImage === 110 && matchImage.userGender === 1 ? (
+
+                <Animated.Image
+                  source={require('../Asset/Images/avatar-girl.png')}
+                  style={[
+                    styles.image,
+                    { transform: [{ scale: scaleAnim1 }], marginRight: 20 },
+                  ]}
+                />
+              ) : (
+                <Animated.Image
+                  source={{ uri: matchImage.userImage }}
+                  style={[
+                    styles.image,
+                    { transform: [{ scale: scaleAnim1 }], marginRight: 20 },
+                  ]}
+                />
+              )}
+
+              {matchImage.likeUserImage === 110 && matchImage.likeUserGender === 0 || matchImage.likeUserGender === 2 ? (
+                <Animated.Image
+                  source={require('../Asset/Images/avatar-boy.png')}
+                  style={[
+                    styles.image,
+                    { transform: [{ scale: scaleAnim1 }], marginRight: 20 },
+                  ]}
+                />
+              ) : matchImage.likeUserImage === 110 && matchImage.likeUserGender === 1 ? (
+
+                <Animated.Image
+                  source={require('../Asset/Images/avatar-girl.png')}
+                  style={[
+                    styles.image,
+                    { transform: [{ scale: scaleAnim1 }], marginRight: 20 },
+                  ]}
+                />
+              ) : (
+                <Animated.Image
+                  source={{ uri: matchImage.likeUserImage }}
+                  style={[
+                    styles.image,
+                    { transform: [{ scale: scaleAnim1 }], marginRight: 20 },
+                  ]}
+                />
+              )}
+
+              {/* <Animated.Image
                 source={{ uri: matchImage.userImage }}
                 style={[
                   styles.image,
                   { transform: [{ scale: scaleAnim1 }], marginRight: 20 },
                 ]}
-              />
-              <Animated.Image
+              /> */}
+              {/* <Animated.Image
                 source={{ uri: matchImage.likeUserImage }}
                 style={[
                   styles.image,
                   { transform: [{ scale: scaleAnim2 }] },
                 ]}
-              />
+              /> */}
             </View>
 
             <View style={{ flexDirection: 'row', alignItems: 'center', position: 'relative', top: 130 }}>
-              <Text style={{ fontSize: 20, fontWeight: '700', color: 'black', fontFamily: 'georgia' }}>{notifications} </Text>
+              <Text style={{ fontSize: 20, fontWeight: '700', color: '#464646', fontFamily: 'georgia' }}>{notifications} </Text>
               <Image source={require('../Asset/Images/heart.gif')} style={{ width: 50, height: 50 }} />
             </View>
-            <Text style={{ fontSize: 20, fontWeight: '700', color: 'black', fontFamily: 'georgia', position: 'relative', top: 120 }}>with {matchImage.likeUserName}</Text>
+            <Text style={{ fontSize: 20, fontWeight: '700', color: '#464646', fontFamily: 'georgia', position: 'relative', top: 120 }}>with {matchImage.likeUserName}</Text>
           </View>
         </View>
       </Modal>
 
       <Modal animationType="slide" transparent={true} visible={modalVisible2} onRequestClose={toggleModal3}>
         <View style={styles.centeredView}>
-          <View style={[styles.modalView, { height: '12%' }]}>
-            <Icon onPress={toggleModal3} name="close-circle" size={45} color="red" style={{ position: 'absolute', right: -10, top: -10 }} />
-            <Text style={{ fontSize: 20, fontWeight: '800', color: 'black', fontFamily: 'georgia', }}>Please Swipe to get Rewinds!</Text>
+          <View style={[styles.modalView, { height: '14%' }]}>
+            <Icon onPress={toggleModal3} name="close-circle" size={35} color="red" style={{ position: 'absolute', right: -5, top: -5 }} />
+            <Text style={{ fontSize: 20, fontWeight: '800', color: 'black', fontFamily: 'georgia', textAlign: 'center' }}>Please Swipe to get Rewinds!</Text>
           </View>
         </View>
       </Modal>
 
       <Modal animationType="slide" transparent={true} visible={modalVisible3} onRequestClose={toggleModal4}>
         <View style={styles.centeredView}>
-          <View style={[styles.modalView, { padding: 0, height: '15%' }]}>
-            <Icon onPress={toggleModal4} name="close-circle" size={45} color="red" style={{ position: 'absolute', right: -10, top: -10 }} />
+          <View style={[styles.modalView, { padding: 0, height: '15%', paddingTop: 10 }]}>
+            <Icon onPress={toggleModal4} name="close-circle" size={35} color="red" style={{ position: 'absolute', right: -5, top: -5 }} />
             <Text style={{ fontSize: 21, fontWeight: '800', color: 'black', marginTop: 20 }}>Please Subscribe to get Rewinds!</Text>
-            <TouchableOpacity onPress={handleNavigation} style={{ backgroundColor: '#DE3163', borderRadius: 20, width: 150, marginTop: 10 }}>
-              <Text style={{ textAlign: 'center', padding: 5, fontSize: 20, fontWeight: '800', color: 'white' }}>View Plans</Text>
-            </TouchableOpacity>
+
+            <LinearGradient style={{ backgroundColor: '#E5E4E2', borderRadius: 5, width: 150, marginTop: 10 }}
+              colors={['#f52d70', '#fe765f']}
+            >
+              <TouchableOpacity onPress={handleNavigation} >
+                <Text style={{ textAlign: 'center', padding: 5, fontSize: 20, fontWeight: '800', color: '#F6F6F6' }}>View Plans</Text>
+              </TouchableOpacity>
+            </LinearGradient>
+
           </View>
         </View>
       </Modal>
@@ -523,8 +656,8 @@ const SwiperCard: React.FC = () => {
       <Modal animationType="slide" transparent={true} visible={modalVisible4} onRequestClose={toggleModal5}>
         <View style={styles.centeredView}>
           <View style={[styles.modalView, { padding: 0, height: '15%' }]}>
-            <Icon onPress={toggleModal5} name="close-circle" size={45} color="red" style={{ position: 'absolute', right: -10, top: -10 }} />
-            <Text style={{ fontSize: 21, fontWeight: '800', color: '#5A5552', marginTop: 40, textAlign: 'center', fontFamily: 'georgia' }}>Please buy atleast gold plan to unlock Rewinds button!</Text>
+            <Icon onPress={toggleModal5} name="close-circle" size={35} color="red" style={{ position: 'absolute', right: -10, top: -10 }} />
+            <Text style={{ fontSize: 21, fontWeight: '800', color: '#5A5552', marginTop: 40, textAlign: 'center', fontFamily: 'georgia' }}>Please buy at least gold plan to unlock Rewinds button!</Text>
           </View>
         </View>
       </Modal>
@@ -560,7 +693,7 @@ const styles = StyleSheet.create({
   modalView: {
     margin: 20,
     backgroundColor: 'white',
-    borderRadius: 20,
+    borderRadius: 5,
     padding: 35,
     alignItems: 'center',
     shadowColor: '#000',
@@ -585,7 +718,7 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: '#61b0f8',
     height: 50,
-    borderRadius: 30,
+    borderRadius: 5,
     marginHorizontal: 60,
     shadowColor: 'white',
     shadowOffset: { width: 0, height: 2 },
@@ -599,8 +732,8 @@ const styles = StyleSheet.create({
 
   planText: {
     textAlign: 'center',
-    color: '#F5F5F5',
-    fontSize: 20,
+    color: '#F6F6F6',
+    fontSize: 25,
     fontWeight: '700',
     fontFamily: 'georgia',
   },
@@ -622,13 +755,16 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end'
   },
   image2: {
-    marginLeft: 30
+    alignSelf: 'center',
+    // marginVertical:90
+    marginTop: 50,
+    marginBottom: 90
   },
 
   hang: {
     fontSize: 23,
     fontWeight: '700',
-    color: 'white',
+    color: '#5A5552',
     textAlign: 'center',
     width: '80%',
     alignSelf: 'center',
@@ -643,10 +779,10 @@ const styles = StyleSheet.create({
   },
   strip: {
     flexDirection: 'row',
-    backgroundColor: '#fadfff',
+    backgroundColor: '#F6F6F6',
     height: 60,
     borderRadius: 8,
-    borderColor: 'rgba(233,118,255,1)',
+    borderColor: '#F6F6F6',
     shadowColor: 'white',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
@@ -660,11 +796,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: 'georgia',
     fontWeight: '700',
-    color: "rgba(163,42,239,255)"
+    color: "#5A5552"
   },
 
   iconBg: {
-    backgroundColor: '#c774fc',
+    backgroundColor: '#F6F6F6',
     borderRadius: 50,
     height: 50,
     width: 50,
@@ -672,8 +808,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginHorizontal: 7,
-    borderColor: 'rgba(233,118,255,1)',
-    borderWidth: 1
+    borderColor: '#D6D4D2',
+    borderWidth: 0.5
   },
 });
 

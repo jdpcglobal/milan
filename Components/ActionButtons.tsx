@@ -1,13 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, TouchableOpacity, StyleSheet, GestureResponderEvent } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 interface ActionButtonsProps {
-  onActionPress: (action: string) => void; 
+  onActionPress: (action: string) => void;
   swipeDirection: string | null;
 }
 
 const ActionButtons: React.FC<ActionButtonsProps> = ({ onActionPress, swipeDirection }) => {
+  const [highlightedAction, setHighlightedAction] = useState<string | null>(swipeDirection);
+
+  useEffect(() => {
+    if (swipeDirection) {
+      setHighlightedAction(swipeDirection);
+
+      // Reset highlight after a short delay
+      const timeout = setTimeout(() => setHighlightedAction(null), 1000); // Adjust the duration as needed
+      return () => clearTimeout(timeout); // Cleanup timeout if component unmounts or swipeDirection changes
+    }
+  }, [swipeDirection]);
 
   const actions = [
     { name: 'dislike', icon: 'close', color: '#FF3D3D' },
@@ -18,21 +29,35 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ onActionPress, swipeDirec
 
   const handlePress = (action: string) => (event: GestureResponderEvent) => {
     onActionPress(action);
+    setHighlightedAction(action);
+
+    // Reset highlight after a short delay
+    const timeout = setTimeout(() => setHighlightedAction(null), 1000); // Adjust the duration as needed
+    return () => clearTimeout(timeout);
   };
 
   const getButtonStyle = (action: { name: string; color: string }) => {
-    const isLargeButton = action.name === 'dislike' || action.name === 'like';
+    const isHighlighted = highlightedAction === action.name;
+    const showNormal = highlightedAction === null;
+
     return [
       styles.actionButton,
-      isLargeButton ? styles.largeActionButton : {},
-      { backgroundColor: swipeDirection === action.name ? action.color : 'rgba(255,54,190,0.2)', borderColor: swipeDirection === action.name ? 'white' : action.color },
+      isHighlighted && styles.highlightedButton,
+      {
+        backgroundColor: isHighlighted ? action.color : 'rgba(0, 0, 0, 0.1)',
+        opacity: showNormal || isHighlighted ? 1 : 0.1,
+      },
     ];
   };
 
+  const getIconColor = (action: { name: string }) => (highlightedAction === action.name ? 'white' : action.color);
+  
   const getIconSize = (action: { name: string }) => {
+    // console.log('///////1111', action.name);
     const isLargeButton = action.name === 'dislike' || action.name === 'like';
-    return swipeDirection === action.name ? (isLargeButton ? 45 : 35) : (isLargeButton ? 40 : 30);
+    return highlightedAction === action.name ? (isLargeButton ? 47 : 37) : (isLargeButton ? 45 : 35);
   };
+
 
   return (
     <View style={styles.actionButtonsContainer}>
@@ -42,7 +67,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ onActionPress, swipeDirec
           style={getButtonStyle(action)}
           onPress={handlePress(action.name)}
         >
-          <Icon name={action.icon} size={getIconSize(action)} color={swipeDirection === action.name ? 'white' : action.color} />
+          <Icon name={action.icon} size={getIconSize(action)} color={getIconColor(action)} />
         </TouchableOpacity>
       ))}
     </View>
@@ -53,24 +78,24 @@ const styles = StyleSheet.create({
   actionButtonsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    alignItems: 'flex-end', 
+    alignItems: 'flex-end',
     elevation: 10,
     padding: 10,
-    marginBottom:60
+    // marginBottom: 60,
   },
   actionButton: {
-    width: 45,
-    height: 45,
+    width: 55,
+    height: 55,
     borderRadius: 30,
     marginHorizontal: 15,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 2,
+    borderColor: 'transparent',
   },
-  largeActionButton: {
-    width: 52,
-    height: 52,
-    borderRadius: 35,
+  highlightedButton: {
+    borderColor: 'white',
+    elevation: 5,
   },
 });
 

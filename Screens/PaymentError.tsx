@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { LoginState } from '../Utils/Types.ts';
 import { AppContext } from '../Navigation/PlansApi.tsx';
 import LinearGradient from 'react-native-linear-gradient';
+import AnimatedButton from './AnimatedButton.tsx';
 
 const PaymentError = ({ clientSecret, orderId, duration }) => {
   const { confirmPayment, loading } = useConfirmPayment();
@@ -85,14 +86,14 @@ const PaymentError = ({ clientSecret, orderId, duration }) => {
         style={styles.cardContainer}
       />
 
-      <LinearGradient
-        colors={['#ebac4e', '#ba7b1d']}
+      {/* <LinearGradient
+        colors={['#f52d70', '#fe765f']}
         style={styles.button}
       >
         <TouchableOpacity
           onPress={handleSubmit}
           disabled={loading}
-          // style={styles.button}
+        // style={styles.button}
         >
           {loading ? (
             <ActivityIndicator color="#fff" />
@@ -100,7 +101,15 @@ const PaymentError = ({ clientSecret, orderId, duration }) => {
             <Text style={styles.buttonText}>Pay now</Text>
           )}
         </TouchableOpacity>
-      </LinearGradient>
+      </LinearGradient> */}
+      <View style={{marginHorizontal:30}}>
+        <AnimatedButton
+          title='Pay now'
+          onPress={handleSubmit}
+          disabled={loading}
+        />
+      </View>
+
       {message && <Text style={styles.message}>{message}!</Text>}
     </View>
   );
@@ -117,11 +126,13 @@ const styles = StyleSheet.create({
     marginVertical: 30,
   },
   card: {
-    backgroundColor: '#F6F6F6',
+    backgroundColor: '#DCDCDC',
+    borderRadius: 5
   },
   button: {
     // backgroundColor: '#DE3163',
-    padding: 10,
+    // padding: 10,
+    paddingVertical: 4,
     borderRadius: 5,
     alignItems: 'center',
     borderWidth: 1,
@@ -131,11 +142,11 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 6,
+    elevation: 3,
   },
   buttonText: {
-    color: '#4A4744',
-    fontSize: 20,
+    color: '#F6F6F6',
+    fontSize: 25,
     fontWeight: '700',
     fontFamily: 'georgia',
   },

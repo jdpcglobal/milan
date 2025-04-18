@@ -17,7 +17,7 @@ const Logout = () => {
   };
   const LogoutAction = () => {
     AsyncStorage.removeItem("Token");
-    console.log("hii");
+    // console.log("hii");
     navigation.dispatch(
       CommonActions.reset({
         index: 0,
@@ -33,7 +33,7 @@ const Logout = () => {
     const payload = {
       token: token,
     };
-    console.log('DeleteAccountApi Payload ====', payload);
+    // console.log('DeleteAccountApi Payload ====', payload);
     try {
       const response = await fetch(
         'https://themilan.org/api/deleteAccount', {
@@ -47,7 +47,7 @@ const Logout = () => {
         throw new Error('Create DeleteAccountApi api error');
       }
       const data = await response.json();
-      console.log('DeleteAccountApi api =======', data.isSuccess);
+      // console.log('DeleteAccountApi api =======', data.isSuccess);
       if (data.isSuccess === true) {
         LogoutAction();
       }
@@ -61,7 +61,7 @@ const Logout = () => {
         <Text style={styles.confirmationText}>Are you sure you want to logout?</Text>
         <TouchableOpacity onPress={LogoutAction}>
           <LinearGradient style={styles.button}
-            colors={['#ebac4e', '#ba7b1d']}
+            colors={['#f52d70', '#fe765f']}
           >
             <Text style={styles.buttonText}>Logout</Text>
           </LinearGradient>
@@ -69,10 +69,10 @@ const Logout = () => {
       </View>
 
       <TouchableOpacity onPress={toggleModal2} >
-        <LinearGradient style={[{ width: 130, marginTop: 100, backgroundColor: '#DE3163', borderRadius: 5, paddingVertical: 7 }, styles.delete]}
-          colors={['#ebac4e', '#ba7b1d']}
+        <LinearGradient style={[{ width: 170, marginTop: 60, borderRadius: 5, paddingVertical: 7 }, styles.delete]}
+          colors={['#f52d70', '#fe765f']}
         >
-          <Text style={{ textAlign: 'center', color: 'white', fontSize: 15, fontWeight: '700', fontFamily: 'georgia', }}>Delete Account</Text>
+          <Text style={{ textAlign: 'center', color: '#F6F6F6', fontSize: 20, fontWeight: '700', fontFamily: 'georgia', }}>Delete Account</Text>
         </LinearGradient>
       </TouchableOpacity>
 
@@ -86,12 +86,12 @@ const Logout = () => {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Icon onPress={toggleModal2} name="close-circle" size={45} color="red" style={{ marginRight: 10, position: 'absolute', right: -25, top: -15 }} />
-            <Text style={{ fontSize: 20, fontWeight: '700', color: '#bd69f0', textAlign: 'center', fontFamily: 'georgia', }}>Are you sure you want to Delete your Account</Text>
+            <Text style={{ fontSize: 20, fontWeight: '700', color: '#5A5552', textAlign: 'center', fontFamily: 'georgia', }}>Are you sure you want to Delete your Account</Text>
 
             <View style={{ flexDirection: 'row', marginTop: 50, width: 200, justifyContent: 'space-between' }}>
               <TouchableOpacity onPress={toggleModal2}>
                 <LinearGradient style={styles.button}
-                  colors={['#ebac4e', '#ba7b1d']}
+                  colors={['#f52d70', '#fe765f']}
                 >
                   <Text style={styles.buttonText}>No</Text>
                 </LinearGradient>
@@ -99,7 +99,7 @@ const Logout = () => {
 
               <TouchableOpacity onPress={DeleteAccountApi}>
                 <LinearGradient style={styles.button}
-                  colors={['#ebac4e', '#ba7b1d']}
+                  colors={['#f52d70', '#fe765f']}
                 >
                   <Text style={styles.buttonText}>Yes</Text>
                 </LinearGradient>
@@ -121,37 +121,36 @@ const styles = StyleSheet.create({
   },
   confirmationText: {
     marginTop: 50,
-    fontSize: 25,
+    fontSize: 21,
     marginBottom: 20,
     textAlign: 'center',
-    color: '#bd69f0',
+    color: '#5A5552',
     fontWeight: '800',
     fontFamily: 'georgia',
   },
   button: {
-    backgroundColor: '#DE3163',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingVertical: 7,
+    paddingHorizontal: 15,
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: 'white',
+    borderColor: '#D6D4D2',
     borderStyle: 'solid',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
+    // shadowColor: '#000',
+    // shadowOffset: { width: 0, height: 2 },
+    // shadowOpacity: 0.25,
+    // shadowRadius: 4,
+    // elevation: 3,
   },
   buttonText: {
-    color: 'white',
-    fontSize: 16,
+    color: '#F6F6F6',
+    fontSize: 20,
     fontWeight: '800',
     fontFamily: 'georgia',
   },
   modalView: {
     margin: 20,
     backgroundColor: '#F6F6F6',
-    borderRadius: 20,
+    borderRadius: 5,
     padding: 35,
     alignItems: 'center',
     justifyContent: 'center',
@@ -170,14 +169,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 22,
+    
   },
 
   delete: {
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
+    // shadowColor: '#000',
+    // shadowOffset: { width: 0, height: 2 },
+    // shadowOpacity: 0.25,
+    // shadowRadius: 4,
+    // elevation: 3,
     marginBottom: 10,
   }
 });

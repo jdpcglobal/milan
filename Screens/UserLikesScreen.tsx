@@ -15,8 +15,9 @@ import { Modal } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { AppContext } from '../Navigation/PlansApi';
 import LoaderKit from 'react-native-loader-kit'
-import { SCREEN_HEIGHT } from "@gorhom/bottom-sheet";
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from "@gorhom/bottom-sheet";
 import LinearGradient from "react-native-linear-gradient";
+import AnimatedButton from "./AnimatedButton";
 
 
 const UserLikesScreen = () => {
@@ -35,6 +36,18 @@ const UserLikesScreen = () => {
     const [showLoader, setShowLoader] = useState(false);
 
     // console.log('2222222222',plans);
+
+    useEffect(() => {
+        const unsubscribe = messaging().onMessage(async remoteMessage => {
+            console.log('Received in foreground:', remoteMessage);
+        });
+        return unsubscribe;
+    }, []);
+
+    
+
+    
+
 
     const toggleModal = () => {
         setModalVisible(!modalVisible);
@@ -82,9 +95,9 @@ const UserLikesScreen = () => {
             setFailMessage(data);
             if (data.isSuccess) {
                 setProfiles(data.users_details);
-                //console.log('2222222222',data.users_details);
+                // console.log('2222222222', data.users_details);
             } else {
-                //console.error('getLikesUsersDetail Error:', data);
+                //  console.error('getLikesUsersDetail Error:', data);
                 if (data.code == 106) {
                     setModalVisible2(true);
                 }
@@ -116,18 +129,23 @@ const UserLikesScreen = () => {
     };
 
 
-
-
     return (
-        <View style={{ backgroundColor: 'white' }}>
-            <Text style={{ backgroundColor: 'white', color: '#272423', textAlign: 'center', fontWeight: '700', fontSize: 22, paddingTop: 10, paddingBottom: 10, fontFamily: 'georgia', marginHorizontal: 10, borderRadius: 5, marginBottom: 10, borderColor: 'white', borderWidth: 0.5 }}>People who Liked your Profile</Text>
-            <ScrollView>
-                <View style={styles.container}>
-                    {failMessage.code !== 106 ? (
+        <ScrollView stickyHeaderIndices={[0]} style={{ backgroundColor: 'white' }}>
+            <View>
+                <Text style={{ backgroundColor: 'white', color: '#464646', textAlign: 'center', fontWeight: '700', fontSize: 15, paddingTop: 10, paddingBottom: 10, fontFamily: 'georgia', marginHorizontal: 10, borderRadius: 5, marginBottom: 10, borderColor: 'white', borderWidth: 0.5 }}>Your perfect match might just be a swipe away!</Text>
+            </View>
+            <View style={styles.container}>
+                {
+                    failMessage.code !== 106 && failMessage.code !== 109 ? (
                         <View>
                             {profiles && profiles.length > 0 ? (
                                 profiles.map((profile, index) => (
-                                    <TouchableOpacity key={index} onPress={() => navigation.navigate('UserChatScreen', { LikedProfileName: profile })}>
+                                    <TouchableOpacity
+                                        key={index}
+                                        onPress={() =>
+                                            navigation.navigate('UserChatScreen', { LikedProfileName: profile })
+                                        }
+                                    >
                                         <LikeUsersCard data={profile} />
                                     </TouchableOpacity>
                                 ))
@@ -135,13 +153,17 @@ const UserLikesScreen = () => {
                                 <View style={styles.noLikesContainer}>
                                     {showLoader ? (
                                         <LoaderKit
-                                            style={{ width: 150, height: 150, marginTop:50 }}
+                                            style={{ width: 150, height: 150, marginTop: 150 }}
                                             name={'BallClipRotateMultiple'}
-                                            color={'#bd69f0'}
+                                            color={'#4A4744'}
                                         />
                                     ) : (
-                                        <View>
-                                            <Image source={require('../Asset/Images/birdBg.jpg')} style={{ width: 350, height: 300, alignSelf: 'center' }} />
+                                        <View style={styles.notSubscribed}>
+                                            <Image
+                                                source={require('../Asset/Images/likes-icon.png')}
+                                                resizeMode="contain"
+                                                style={{ width: SCREEN_WIDTH/1.2, height: 320, alignSelf: 'center' }}
+                                            />
                                             <Text style={styles.noLikesText}>
                                                 Don't worry, the right likes are on their way!
                                             </Text>
@@ -149,26 +171,93 @@ const UserLikesScreen = () => {
                                     )}
                                 </View>
                             )}
-
-
                         </View>
-                    ) :
+                    ) : failMessage.code === 106 ? (
                         <View style={styles.notSubscribed}>
-                            <Image source={require('../Asset/Images/birdBg.jpg')} style={{ width: 350, height: 300, alignSelf: 'center' }} />
-                            <Text style={{ fontSize: 25, fontWeight: '800', textAlign: 'center', color: '#4A4744', fontFamily: 'georgia' }}>{failMessage.message}</Text>
-                            <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 10 }}>
-                                <TouchableOpacity onPress={() => navigation.navigate('Plans')} >
-                                    <LinearGradient style={[{ backgroundColor: '#DE3163', borderRadius: 20, width: 150 }, styles.planButton]}
-                                        colors={['#ebac4e', '#ba7b1d']}
+                            <View>
+                                <Image
+                                    source={require('../Asset/Images/likes-icon.png')}
+                                    resizeMode="contain"
+                                    style={{ width: SCREEN_WIDTH/1.2, height: 320, alignSelf: 'center' }}
+                                />
+                                <Text
+                                    style={{
+                                        fontSize: 16,
+                                        fontWeight: '800',
+                                        textAlign: 'center',
+                                        color: '#525252',
+                                        fontFamily: 'georgia',
+                                    }}
+                                >
+                                    Your profile is out there, making waves! 🌊 Subscribe now to boost
+                                    your visibility and see who’s ready to make the first move
+                                </Text>
+                                <View
+                                    style={{
+                                        flexDirection: 'row',
+                                        justifyContent: 'center',
+                                        marginTop: -10,
+                                        marginBottom: 10
+                                    }}
+                                >
+                                    <View
+                                        style={[{ borderRadius: 5, width: 250, marginTop: 30 },]}
+
                                     >
-                                        <Text style={{ textAlign: 'center', padding: 5, fontSize: 20, fontWeight: '800', color: 'white', fontFamily: 'georgia' }}>View Plans</Text>
-                                    </LinearGradient>
-                                </TouchableOpacity>
+                                        <AnimatedButton
+                                            title="View Plans"
+                                            onPress={() => navigation.navigate('Plans')}
+                                        />
+                                    </View>
+                                </View>
                             </View>
                         </View>
-                    }
 
-                    {/* <Modal
+
+                    ) : (
+                        <View style={styles.notSubscribed}>
+                            <View>
+                                <Image
+                                    source={require('../Asset/Images/likes-icon.png')}
+                                    resizeMode="contain"
+                                    style={{ width: SCREEN_WIDTH/1.2, height: 320, alignSelf: 'center' }}
+                                />
+                                <Text
+                                    style={{
+                                        fontSize: 16,
+                                        fontWeight: '800',
+                                        textAlign: 'center',
+                                        color: '#525252',
+                                        fontFamily: 'georgia',
+                                    }}
+                                >
+                                    You've got a like waiting for you. Subscribe now to uncover who's interested and keep the spark alive!
+                                </Text>
+                                <View
+                                    style={{
+                                        flexDirection: 'row',
+                                        justifyContent: 'center',
+                                        marginTop: -10,
+                                        marginBottom: -10
+                                    }}
+                                >
+                                    <View
+                                        style={[{ borderRadius: 5, width: 250, marginTop: 30 },]}
+
+                                    >
+                                        <AnimatedButton
+                                            title="View Plans"
+                                            onPress={() => navigation.navigate('Plans')}
+                                        />
+                                    </View>
+                                </View>
+                            </View>
+                        </View>
+                    )
+                }
+
+
+                {/* <Modal
                         animationType="slide"
                         transparent={true}
                         visible={modalVisible2}
@@ -184,26 +273,25 @@ const UserLikesScreen = () => {
                     </Modal> */}
 
 
-                    <Modal
-                        animationType="slide"
-                        transparent={true}
-                        visible={modalVisible}
-                        onRequestClose={() => {
-                            setModalVisible(!modalVisible);
-                        }}>
-                        <View style={styles.centeredView}>
-                            <View style={styles.modalView}>
-                                <Ionicons onPress={toggleModal} name="close-circle" size={45} color="red" style={{ marginRight: 10, position: 'absolute', right: -25, top: -20 }} />
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={modalVisible}
+                    onRequestClose={() => {
+                        setModalVisible(!modalVisible);
+                    }}>
+                    <View style={styles.centeredView}>
+                        <View style={styles.modalView}>
+                            <Ionicons onPress={toggleModal} name="close-circle" size={45} color="red" style={{ marginRight: 10, position: 'absolute', right: -25, top: -20 }} />
 
-                                <Text style={{ fontSize: 20, fontWeight: '700', color: 'black' }}>{notifications.body}</Text>
-                                <Image source={require('../Asset/Images/LikeIt.gif')} style={{ width: 150, height: 150, resizeMode: 'contain', position: 'absolute', top: -50 }} />
-                            </View>
+                            <Text style={{ fontSize: 20, fontWeight: '700', color: 'black' }}>{notifications.body}</Text>
+                            <Image source={require('../Asset/Images/LikeIt.gif')} style={{ width: 150, height: 150, resizeMode: 'contain', position: 'absolute', top: -50 }} />
                         </View>
-                    </Modal>
+                    </View>
+                </Modal>
 
-                </View>
-            </ScrollView>
-        </View>
+            </View>
+        </ScrollView>
     );
 };
 
@@ -212,8 +300,8 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         backgroundColor: 'white',
         paddingHorizontal: 15,
-        paddingBottom: 110,
-        minHeight: SCREEN_HEIGHT / 1.2
+        paddingBottom: 60, 
+        minHeight: SCREEN_HEIGHT / 1.2,
     },
 
     mainContainer: {
@@ -287,14 +375,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         padding: 20,
-        marginTop:SCREEN_HEIGHT/7.5
+        // marginTop: SCREEN_HEIGHT / 7.5
     },
     noLikesGif: {
         width: 250,
         height: 250,
     },
     noLikesText: {
-        marginTop: 10,
         fontSize: 20,
         color: '#555',
         textAlign: 'center',
@@ -326,19 +413,22 @@ const styles = StyleSheet.create({
     },
 
     notSubscribed: {
-        marginTop: 70,
+        height: '92%',
+        // backgroundColor: 'red',
+        justifyContent: 'center'
+        // marginTop: 70,
         // marginBottom: 300,
     },
 
     planButton: {
         borderWidth: 1,
-        borderColor: 'white',
+        borderColor: '#E5E4E2',
         borderStyle: 'solid',
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.25,
         shadowRadius: 4,
-        elevation: 5,
+        elevation: 3,
     }
 });
 

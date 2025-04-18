@@ -41,7 +41,7 @@ const AgeRangePicker = () => {
         throw new Error('Create AgeRangeApi api error');
       }
       const data = await response.json();
-      console.log('AgeRangeApi api =======', data);
+      // console.log('AgeRangeApi api =======', data);
       setLoading(false);
 
     } catch (error) {

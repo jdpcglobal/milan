@@ -9,7 +9,7 @@ type SetValues = {
     setHigh: (value: any) => void
 };
 const HeightRabgeSlider = ({low,high,setLow,setHigh}:SetValues) => { 
-  const renderThumb = () => <View style={styles.thumb} />;
+  const renderThumb = () => <View style={{backgroundColor:'transparent', borderRadius:50, height:50, width:50, justifyContent:'center', alignItems:'center',}}><View style={styles.thumb} /></View>;
   const renderRail = () => <View style={styles.rail} />;
   const renderRailSelected = () => <View style={styles.railSelected} />;
   const renderLabel = useCallback((value:any) => <Text style={styles.label}>{value}</Text>, []);
@@ -36,7 +36,7 @@ const HeightRabgeSlider = ({low,high,setLow,setHigh}:SetValues) => {
         low={low}
         high={high}
       />
-      <Text style={{color:'#4A4744', fontSize:20, fontWeight:'700', fontFamily:'georgia', marginTop:-30}}>Height Range: {low} - {high} cm</Text>
+      <Text style={{color:'#4A4744', fontSize:20, fontWeight:'700', fontFamily:'georgia', marginTop:-20}}>Height Range: {low} - {high} cm</Text>
     </View>
   );
 };
@@ -55,7 +55,7 @@ const styles = {
     width: 20,
     height: 20,
     borderRadius: 10,
-    backgroundColor: '#bd69f0', // Changed to Dodger Blue
+    backgroundColor: '#f52d70', // Changed to Dodger Blue
   },
   rail: {
     flex: 1,
@@ -65,11 +65,11 @@ const styles = {
   },
   railSelected: {
     height: 4,
-    backgroundColor: '#bd69f0', // Changed to Dodger Blue
+    backgroundColor: '#f52d70', // Changed to Dodger Blue
     borderRadius: 2,
   },
   label: {
-    backgroundColor: '#bd69f0', // Changed to Dodger Blue
+    backgroundColor: '#f52d70', // Changed to Dodger Blue
     color: 'white',
     padding: 5,
     borderRadius: 5,
@@ -79,7 +79,7 @@ const styles = {
     height: 8,
     borderLeftColor: 'transparent',
     borderRightColor: 'transparent',
-    borderTopColor: '#4A4744', // Changed to Dodger Blue
+    borderTopColor: '#f52d70', // Changed to Dodger Blue
     borderLeftWidth: 4,
     borderRightWidth: 4,
     borderTopWidth: 8,

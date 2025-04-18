@@ -11,6 +11,10 @@ messaging().setBackgroundMessageHandler(async remoteMessage => {
   console.log('Message handled in the background!', remoteMessage);
 });
 
+// messaging().setBackgroundMessageHandler(async remoteMessage => {
+//   console.log('Message handled in the background:', remoteMessage);
+// });
+
 if (Platform.OS === 'android') {
   messaging().onMessage(async remoteMessage => {
     //console.log('Message handled in the foreground!', remoteMessage);

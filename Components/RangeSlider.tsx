@@ -1,26 +1,26 @@
 import React, { useCallback, useState } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import RangeSlider from 'rn-range-slider';
 
-type SetValues = { 
-    low : number,
-    high : number,
-    setLow: (value: any) => void,
-    setHigh: (value: any) => void
+type SetValues = {
+  low: number,
+  high: number,
+  setLow: (value: any) => void,
+  setHigh: (value: any) => void
 };
-const RangeSliderFor = ({low,high,setLow,setHigh}:SetValues) => {
-  const renderThumb = () => <View style={styles.thumb} />;
+const RangeSliderFor = ({ low, high, setLow, setHigh }: SetValues) => {
+  const renderThumb = () => <View style={{backgroundColor:'transparent', borderRadius:50, height:50, width:50, justifyContent:'center', alignItems:'center',}}><View style={styles.thumb} /></View>;
   const renderRail = () => <View style={styles.rail} />;
   const renderRailSelected = () => <View style={styles.railSelected} />;
-  const renderLabel = useCallback((value:any) => <Text style={styles.label}>{value}</Text>, []);
+  const renderLabel = useCallback((value: any) => <Text style={styles.label}>{value}</Text>, []);
   const renderNotch = () => <View style={styles.notch} />;
-  const handleValueChange = (low : number, high :number) => {
+  const handleValueChange = (low: number, high: number) => {
     setLow(low);
-    setHigh(high); 
+    setHigh(high);
   };
 
   return (
-    <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <RangeSlider
         style={styles.slider}
         min={18}
@@ -30,13 +30,13 @@ const RangeSliderFor = ({low,high,setLow,setHigh}:SetValues) => {
         renderThumb={renderThumb}
         renderRail={renderRail}
         renderRailSelected={renderRailSelected}
-         renderLabel={renderLabel}
+        renderLabel={renderLabel}
         renderNotch={renderNotch}
         onValueChanged={handleValueChange}
         low={low}
         high={high}
       />
-      <Text style={{color:'#272423', fontSize:20, fontWeight:'700', fontFamily:'georgia', marginTop:-40}}>Age Range: {low} - {high}</Text>
+      <Text style={{ color: '#272423', fontSize: 20, fontWeight: '700', fontFamily: 'georgia', marginTop: -20 }}>Age Range: {low} - {high}</Text>
     </View>
   );
 };
@@ -55,7 +55,7 @@ const styles = {
     width: 20,
     height: 20,
     borderRadius: 10,
-    backgroundColor: '#bd69f0', // Changed to Dodger Blue
+    backgroundColor: '#f52d70', // Changed to Dodger Blue
   },
   rail: {
     flex: 1,
@@ -65,11 +65,11 @@ const styles = {
   },
   railSelected: {
     height: 4,
-    backgroundColor: '#bd69f0', // Changed to Dodger Blue
+    backgroundColor: '#f52d70', // Changed to Dodger Blue
     borderRadius: 2,
   },
   label: {
-    backgroundColor: '#bd69f0', // Changed to Dodger Blue
+    backgroundColor: '#f52d70', // Changed to Dodger Blue
     color: 'white',
     padding: 5,
     borderRadius: 5,
@@ -79,7 +79,7 @@ const styles = {
     height: 8,
     borderLeftColor: 'transparent',
     borderRightColor: 'transparent',
-    borderTopColor: '#bc69f0', // Changed to Dodger Blue
+    borderTopColor: '#f52d70', // Changed to Dodger Blue
     borderLeftWidth: 4,
     borderRightWidth: 4,
     borderTopWidth: 8,

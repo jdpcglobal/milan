@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Image, StyleSheet, ActivityIndicator, Text } from 'react-native';
+import { View, Image, StyleSheet, ActivityIndicator, Text, ImageBackground } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
@@ -9,25 +9,29 @@ import SocialIcons from '../Components/SocialIcons';
 import PageLoading from '../Components/PageLoading';
 import { getItem } from '../Utils/AsyncStorage';
 import { saveToken } from '../Fetures/Login/LoginSlice';
+import AnimatedButton from './AnimatedButton';
+import LoaderKit from 'react-native-loader-kit';
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@gorhom/bottom-sheet';
 
 type ScreenNavigationProp = NavigationProp<RootStackParamList, 'OtpPage'>;
 
 const LoginScreen = () => {
   const navigation = useNavigation<ScreenNavigationProp>();
   const dispatch = useDispatch();
-
   const [mNumber, setMNumber] = useState('');
   const [isloading, setIsLoading] = useState(false);
   const [indicatorColor, setIndicatorColor] = useState('blue');
   const [errorMessage, setErrorMessage] = useState('');
   const [isPageLoading, setIsPageLoading] = useState(true);
-  const [selected, setSelected] = useState('+91');
+
+  
+  const [selected, setSelected] = useState('+1 '); // Default dial code
   const [country, setCountry] = useState('');
   const [phone, setPhone] = useState('');
 
   const colors = ['blue', 'green', 'red', 'white'];
 
-  //console.log('1111111111111111111',selected);
+  // console.log('selected country', selected, country);
 
   useEffect(() => {
     const checkLogin = async () => {
@@ -36,6 +40,8 @@ const LoginScreen = () => {
         if (authToken) {
           dispatch(saveToken(authToken));
           navigation.navigate('LocationPage');
+
+          console.log('+++++++++++',authToken)
         } else {
           setIsPageLoading(false);
         }
@@ -71,11 +77,11 @@ const LoginScreen = () => {
     fetch('https://themilan.org/api/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ mobile: phone, countryCode:selected }),
+      body: JSON.stringify({ mobile: phone, countryCode: selected }),
     })
       .then(response => response.json())
       .then(data => {
-        navigation.navigate('OtpPage', { phoneNumber: phone, otpS: data.otp, countryCode:selected });
+        navigation.navigate('OtpPage', { phoneNumber: phone, otpS: data.otp, countryCode: selected });
         setIsLoading(false);
       })
       .catch(error => {
@@ -98,55 +104,64 @@ const LoginScreen = () => {
   return (
     !isPageLoading ? (
       <View style={styles.container}>
-        <View>
+        {/* <View style={{height:SCREEN_HEIGHT/2.5, justifyContent:'center'}}>
           <Image
-            source={require('../Asset/Images/Banner1.png')}
+            source={require('../Asset/Images/icon.png')}
             style={styles.image}
+           resizeMode='contain'
           />
-        </View>
+        </View> */}
+
+        <Image source={require('../Asset/Images/Milan1.png')}
+          resizeMode='contain'
+          style={{ height: SCREEN_HEIGHT / 2.5, marginTop: 50, width: SCREEN_WIDTH / 1.5, alignSelf: 'center', transform: [{ rotate: '-0deg' }] }}
+        >
+        </Image>
         <View style={styles.form}>
-          <CountryCodeDropdownPicker
-            selected={selected}
-            setSelected={setSelected}
-            setCountryDetails={setCountry}
-            phone={phone}
-            setPhone={setLimitedPhone}
-            countryCodeTextStyles={{ fontSize: 13 }}
-            phoneStyles={{ backgroundColor: 'white', borderWidth: 1, borderColor: '#bc69f0' }}
-          />
+
+        <CountryCodeDropdownPicker
+        selected={selected}
+        setSelected={setSelected}
+        setCountryDetails={setCountry} // Pass the entire country object
+        phone={phone}
+        setPhone={setLimitedPhone}
+        countryCodeTextStyles={{ fontSize: 13 }}
+        phoneStyles={{
+          backgroundColor: 'white',
+          borderWidth: 0.5,
+          borderColor: '#989898',
+          borderRadius: 7,
+          color: 'black',
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.3,
+          shadowRadius: 3,
+          elevation: 3,
+        }}
+      />
           {errorMessage.length !== 0 && (
-            <Text style={{ fontSize: 15, color: '#bc69f0', fontWeight: 'bold', paddingHorizontal: '5%', fontFamily: 'georgia' }}>
+            <Text style={{ fontSize: 15, color: 'red', fontWeight: 'bold', paddingHorizontal: '5%', fontFamily: 'georgia', textAlign: 'right' }}>
               {errorMessage}
             </Text>
           )}
 
-          <TouchableOpacity onPress={handleLogin}>
-            <LinearGradient style={styles.button} colors={['#ebac4e', '#ba7b1d']}>
-              {!isloading ? (
-                <Text style={{ fontSize: 17, color: 'white', fontWeight: '800' }}>Login</Text>
-              ) : (
-                <ActivityIndicator size={'small'} color={indicatorColor} />
-              )}
-            </LinearGradient>
-          </TouchableOpacity>
-
-          <Text style={[styles.text, { fontSize: 17, fontWeight: '700', fontFamily: 'georgia', color: '#bc69f0' }]}>
-            When You Tap Continue, Milan Will Send A Text With Verification Code, Message And Data Rates May Apply. The Verified Phone Number Can Be Used To Log In.
-            <Text style={styles.link} onPress={handleRegister}>
-              Learn What Happens When Your Number Changes
-            </Text>
-          </Text>
-
-          <View style={styles.socialIconsView}>
-            <Text style={{ marginTop: 10, fontSize: 15, fontWeight: 'bold', color: '#333' }}>
-              Or Sign in with
-            </Text>
-            <View style={{ flexDirection: 'row', marginTop: 7 }}>
-              <SocialIcons key={"google"} name="google" color='#34A853' url='https://www.facebook.com/littlelovenotesllc/' />
-              <SocialIcons key={"facebook"} name="facebook" color='#3b5998' url='https://www.facebook.com/littlelovenotesllc/' />
-              <SocialIcons key={"twitter"} name="twitter" color='#1da1f2' url='https://twitter.com/i/flow/login?redirect_after_login=%2Flln_llc' />
-            </View>
+          <View style={{ width: 150, alignSelf: 'center', marginVertical: 20 }}>
+            {!isloading ? (
+              <AnimatedButton
+                title="Login"
+                onPress={handleLogin}
+              />
+            ) : (
+              <LinearGradient style={styles.button} colors={['#f52d70', '#fe765f']}>
+                <LoaderKit
+                  style={{ width: 40, height: 40, }}
+                  name={'BallClipRotateMultiple'}
+                  color={'white'}
+                />
+              </LinearGradient>
+            )}
           </View>
+
         </View>
       </View>
     ) : (
@@ -161,25 +176,32 @@ export default LoginScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffff'
+    backgroundColor: 'white'
   },
   socialIconsView: {
     marginBottom: 20,
     alignItems: 'center'
   },
   image: {
-    height: 225,
-    width: '120%',
+    height: 200,
+    // marginBottom:50,
+    width: '100%',
     resizeMode: 'cover'
   },
   form: {
-    paddingHorizontal: "4%",
-    paddingVertical: "6%",
-    marginTop: -30,
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-    backgroundColor: '#F0F6F6',
-    flex: 1,
+    // paddingHorizontal: "4%",
+    // paddingVertical: "6%",
+    // marginTop: 30,
+    // borderTopLeftRadius: 30,
+    // borderTopRightRadius: 30,
+    // flex: 1,
+    backgroundColor: 'rgba(225,225,225, 0.0)',
+    position: 'absolute',
+    alignSelf: 'center',
+    width: '100%',
+    paddingHorizontal: 10,
+    height: SCREEN_HEIGHT,
+    justifyContent: 'center'
   },
   mainY: {
     marginHorizontal: 10,
@@ -204,14 +226,15 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
   },
   button: {
-    marginVertical: 16,
-    paddingHorizontal: 15,
-    width: 100,
+    marginVertical: 20,
+    // paddingHorizontal: 15,
+    width: 150,
     alignSelf: 'center',
-    backgroundColor: '#ff4d6d',
     alignItems: 'center',
-    padding: 9,
-    borderRadius: 30,
+    // padding: 9,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: '#F6F6F6',
   },
   text: {
     textAlign: 'center',

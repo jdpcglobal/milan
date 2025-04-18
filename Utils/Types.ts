@@ -10,6 +10,8 @@ export type RootStackParamList = {
     UserChatScreen : {id:number, name:string}
     AboutProfile : {id:number}
     ProfileScreen: {id:number}
+    ProfileScreens: {id:number}
+    ProfileSection: {id:number}
     MainProfile: {id:number}
     NotificationScreen: {id:number}
     Plans: {id:number}
@@ -37,7 +39,13 @@ export type RootStackParamList = {
         surname: string;
         mobile: string;
         distanceaway: string;
+        height:string;
+        sexualOrientation:number;
+        education:number;
+        relationshipGoals:string;
         images: {id:number, url:string}[];
+        interests:[], 
+        bio:string;
       };
 
       export type LikeUsers = {
@@ -47,6 +55,7 @@ export type RootStackParamList = {
         surname : string,
         imageUrl : string,
         religion : string,
+        gender : string,
       }
       export type userImage = {
         id:number|null

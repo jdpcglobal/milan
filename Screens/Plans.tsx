@@ -9,6 +9,8 @@ import PaymentError from './PaymentError';
 import { useNavigation } from '@react-navigation/native';
 import PaymentScreen from './PaymentScreen';
 import LoaderKit from 'react-native-loader-kit';
+import { SCREEN_WIDTH } from '@gorhom/bottom-sheet';
+import AnimatedButton from './AnimatedButton';
 
 const stripePublicKey = 'pk_test_51PV5rL054PH7AMe0SoAOnBdmIvQIdaLjoLNQ8hZNJRDKoXPD0c3bQXrScXiBCXK6ajBhDMlPULfSowVmwkcQZGCP00bgyXbgAU';
 
@@ -83,9 +85,9 @@ const Plans = () => {
     };
 
     const isButtonDisabled = (planName) => {
-        if (plans2.plan === 1 && planName === 'Silver') return true;
-        if (plans2.plan === 2 && (planName === 'Silver' || planName === 'Gold')) return true;
-        if (plans2.plan === 3 && (planName === 'Silver' || planName === 'Gold' || planName === 'Platinum')) return true;
+        if (plans2.plan === 1 && planName === 'Spark') return true;
+        if (plans2.plan === 2 && (planName === 'Spark' || planName === 'Flame')) return true;
+        if (plans2.plan === 3 && (planName === 'Spark' || planName === 'Flame' || planName === 'Blaze')) return true;
         return false;
     };
 
@@ -112,24 +114,29 @@ const Plans = () => {
     })();
 
 
-    
-    return (
-        <ScrollView style={{ height: screenHeight, width: screenWidth, marginTop: -50 }}>
-            <LinearGradient
-                style={{ minHeight: screenHeight, paddingTop: 50 }}
-                // colors={['rgba(213,147,255,1)', 'rgba(160,32,240,255)']}
-                colors={gradientColors}
-            >
 
-                {showLoader &&
-                    <View style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)', position: 'absolute', height: screenHeight, width: screenWidth, zIndex: 100, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                        <LoaderKit style={{ width: 150, height: 150, }} name={'BallClipRotateMultiple'} color={'white'} />
-                    </View>
-                }
+    return (
+        <ScrollView style={{ height: screenHeight, width: screenWidth, marginTop: -10, }}>
+            {/* <LinearGradient
+                style={{ minHeight: screenHeight, paddingTop: 50 }}
+                colors={['white', 'white']}
+            // colors={gradientColors}
+            > */}
+
+            {showLoader &&
+                <View style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)', position: 'absolute', height: screenHeight, width: screenWidth, zIndex: 100, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                    <LoaderKit style={{ width: 150, height: 150, }} name={'BallClipRotateMultiple'} color={'white'} />
+                </View>
+            }
+
+            <ScrollView style={{}}>
+                {/* <TouchableOpacity style={{ marginTop: 10, marginBottom: -10 }} onPress={() => navigation.goBack()} >
+                        <Ionicons name='arrow-back-circle-outline' size={40} color="#4A4744" />
+                    </TouchableOpacity> */}
 
                 {showLoader2 &&
                     <TouchableOpacity onPress={HideLair} style={{
-                        backgroundColor: 'rgba(0, 0, 0, 0.5)', position: 'absolute', height: screenHeight / 1.57, width: screenWidth, zIndex: 100, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderBottomLeftRadius: 10, borderBottomRightRadius: 10,
+                        backgroundColor: 'rgba(0, 0, 0, 0.5)', position: 'absolute', height: '100%', width: screenWidth, zIndex: 100, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderBottomLeftRadius: 10, borderBottomRightRadius: 10,
                         shadowColor: 'black',
                         shadowOffset: { width: 0, height: 2 },
                         shadowOpacity: 0.25,
@@ -141,137 +148,183 @@ const Plans = () => {
                     </TouchableOpacity>
                 }
 
-                <ScrollView style={{}}>
-                    {/* <TouchableOpacity style={{ marginTop: 10, marginBottom: -10 }} onPress={() => navigation.goBack()} >
-                        <Ionicons name='arrow-back-circle-outline' size={40} color="#4A4744" />
-                    </TouchableOpacity> */}
+                <View style={styles.PlansTab}>
+                    <ScrollView
+                        horizontal={true}
+                        contentContainerStyle={styles.scrollViewContent}
+                        onMomentumScrollEnd={handleScrollEnd}
+                        pagingEnabled
+                    >
+                        {plans.map((plan, index) => {
+                            let gradientColors = ['white', 'white', 'white'];
+                            let slideWidth = screenWidth / 1.04;
+                            let marginL = 10;
+                            let marginR = 5;
+                            let customText1 = 'Unlock exclusive access! Get personalized insights of the person who liked you and start chatting with your perfect match today!';
+                            let planImg = require('../Asset/Images/plan-spark.png');
+                            let planName = 'Spark'
+                            const buttonDisabled = isButtonDisabled(plan.Name);
 
-                    <View style={styles.PlansTab}>
-                        <ScrollView
-                            horizontal={true}
-                            contentContainerStyle={styles.scrollViewContent}
-                            onMomentumScrollEnd={handleScrollEnd}
-                            pagingEnabled
-                        >
-                            {plans.map((plan, index) => {
-                                let gradientColors = ['#C0C0C0', '#ececec', '#C0C0C0'];
-                                let slideBorder = '#A19C96';
-                                const buttonDisabled = isButtonDisabled(plan.Name);
+                            if (plan.Name === 'Flame') {
+                                gradientColors = ['white', 'white', 'white'];
+                                slideWidth = screenWidth / 1.04;
+                                marginL = 11;
+                                marginR = 5;
+                                customText1 = 'Get ready for unlimited likes and rewinds! Swipe freely and never miss a connection—rewind, relive, and match with confidence!'
+                                planImg = require('../Asset/Images/plan-flame.png');
+                            } else if (plan.Name === 'Blaze') {
+                                gradientColors = ['white', 'white', 'white'];
+                                slideWidth = screenWidth / 1.04;
+                                marginL = 1;
+                                //  marginR = 5;
+                                customText1 = 'Explore the world with our passport feature—connect globally and see who is interested in you before you decide!'
+                                planImg = require('../Asset/Images/plan-blaze.png');
+                            }
 
-                                if (plan.Name === 'Gold') {
-                                    gradientColors = ['#c2873e', '#fdea91', '#c19245'];
-                                    slideBorder = '#A19C96';
-                                } else if (plan.Name === 'Platinum') {
-                                    gradientColors = ['#ffc6ef', '#ffc6ef'];
-                                    slideBorder = '#A19C96';
-                                }
+                            return (
+                                <LinearGradient
+                                    key={index}
+                                    colors={gradientColors}
+                                    // colors={['#f1f1f1', '#f1f1f1']}
+                                    start={{ x: 0, y: 0 }}
+                                    end={{ x: 1, y: 1 }}
+                                    style={[styles.gradient, { width: slideWidth, marginLeft: marginL, marginRight: marginR }]}
+                                >
+                                    <View style={styles.plansBox}>
+                                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
 
-                                return (
-                                    <LinearGradient
-                                        key={index}
-                                        colors={gradientColors}
-                                        start={{ x: 0, y: 0 }}
-                                        end={{ x: 1, y: 1 }}
-                                        style={[styles.gradient, { width: screenWidth / 1.05, borderColor: slideBorder }]}
-                                    >
-                                        <View style={styles.plans}>
-                                            <Text style={styles.plansHead}>{plan.Name}</Text>
+                                            <LinearGradient
+                                                colors={isContinueButtonDisabled ? ['#f52d70', '#fe765f'] : ['#f52d70', '#fe765f']}
+                                                style={{ height: 40, paddingHorizontal: 10, justifyContent: 'center', alignItems: 'center', borderRadius: 10 }}
+                                            >
+
+                                                <Text style={styles.plansHead}>{plan.Name}</Text>
+
+                                            </LinearGradient>
+                                            <Image style={{ height: 60, width: 60 }} source={planImg} resizeMode='contain'></Image>
                                         </View>
-                                    </LinearGradient>
-                                );
-                            })}
-                        </ScrollView>
-                    </View>
 
-                    <View style={styles.dotContainer}>
-                        {plans.map((_, index) => (
-                            <View
-                                key={index}
-                                style={[
-                                    styles.dot,
-                                    { backgroundColor: index === selectedPlanIndex ? '#000' : '#ccc' }
-                                ]}
-                            />
-                        ))}
-                    </View>
+                                        <Text style={{ color: '#3D3D3D', fontWeight: '700', fontSize: 15, fontFamily: 'georgia', marginTop: 20 }}>{customText1}</Text>
 
-                    {/* <LinearGradient
-                        style={[styles.planDetailTab, { width: screenWidth / 1.05, alignSelf: 'center' }]}
-                        colors={gradientColors}
-                    > */}
-                    <View style={{ marginTop: 50, }}>
-                        <View style={styles.planDetail}>
-                            <Text style={{ fontSize: 22, color: '#272423', fontWeight: '700', fontFamily: 'georgia', }}>What you get:</Text>
-                            <View style={styles.ticks}>
-                                <Text style={{ fontSize: 25, color: '#272423', fontWeight: '700', marginRight: 10, fontFamily: 'georgia', }}>
-                                    {plans[selectedPlanIndex].Name}
-                                </Text>
-                            </View>
-                        </View>
-
-                        <View style={styles.planDetail}>
-                            <View>
-                                {['See who liked you.', 'Chat with your match', 'Unlimited Rewinds', 'Passport to any location', 'See who likes you', 'Unlimited likes'].map((feature, idx) => (
-                                    <Text key={idx} style={styles.youGet}>{feature}</Text>
-                                ))}
-                            </View>
-                            <View style={styles.ticks}>
-                                {plans.map((plan, index) => (
-                                    <View key={index} style={{ display: selectedPlanIndex === index ? 'flex' : 'none' }}>
-                                        {Array.from({ length: maxFeatures }).map((_, featureIndex) => (
-                                            <Text key={featureIndex} style={styles.Pre}>
-                                                <Ionicons name={plan.features[featureIndex] ? "checkmark" : "close"} size={32} color="#4A4744" />
-                                            </Text>
-                                        ))}
+                                        <View style={{ flexDirection: 'row', alignItems: 'flex-end', marginTop: 10 }}>
+                                            <Text style={styles.HeadPrize}>${plan.DiscountPrice}</Text>
+                                            <Text style={styles.HeadDuration}> per {plan.Duration}month.</Text>
+                                        </View>
                                     </View>
-                                ))}
-                            </View>
-                        </View>
-                        {/* <Image style={{ height: screenHeight/2.6, width: screenWidth, position: 'absolute', borderRadius:20 }} source={require('../Asset/Images/birdBg.jpg')} />
+
+
+                                    <View style={{ marginTop: -70, }}>
+                                        <View style={{ marginHorizontal: 15, marginVertical: 20, paddingHorizontal: 10, paddingVertical: 10, borderRadius: 5 }}>
+                                            <View style={styles.planDetail}>
+                                                <Text style={{ fontSize: 20, color: '#464646', fontWeight: '700', fontFamily: 'georgia', }}>What you get:</Text>
+                                                <View style={styles.ticks}>
+                                                    <Text style={{ fontSize: 20, color: '#464646', fontWeight: '700', marginRight: 10, fontFamily: 'georgia', }}>
+                                                        {plans[selectedPlanIndex].Name}
+                                                    </Text>
+                                                </View>
+                                            </View>
+
+                                            <View style={styles.planDetail}>
+                                                <View>
+                                                    {['Get like user detail.', 'Chat with your match.', 'Unlimited Likes.', 'Unlimited Rewinds.', 'Passport to any location.', 'See who likes you.'].map((feature, idx) => (
+                                                        <Text key={idx} style={styles.youGet}>{feature}</Text>
+                                                    ))}
+                                                </View>
+                                                <View style={styles.ticks}>
+                                                    {plans.map((plan, index) => (
+                                                        <View key={index} style={{ display: selectedPlanIndex === index ? 'flex' : 'none', marginRight: plans[selectedPlanIndex].Name == 'Platinum' ? 25 : 8 }}>
+                                                            {Array.from({ length: maxFeatures }).map((_, featureIndex) => (
+                                                                <Text key={featureIndex} style={styles.Pre}>
+                                                                    <Ionicons name={plan.features[featureIndex] ? "checkmark" : "close"} size={28} color="#656565" />
+                                                                </Text>
+                                                            ))}
+                                                        </View>
+                                                    ))}
+                                                </View>
+                                            </View>
+                                        </View>
+                                        {/* <Image style={{ height: screenHeight/2.6, width: screenWidth, position: 'absolute', borderRadius:20 }} source={require('../Asset/Images/birdBg.jpg')} />
                         
                         <View style={{ height: screenHeight/2.6, width: screenWidth, position: 'absolute', backgroundColor: 'rgba(225, 225, 225, 0.6)',  borderRadius:20}}>
                         </View> */}
-                    </View>
-                    {/* </LinearGradient> */}
+                                    </View>
 
 
-                    <TouchableOpacity
-                        onPress={() => handlePress(selectedPlanIndex, plans[selectedPlanIndex].DiscountPrice, plans[selectedPlanIndex].id, plans[selectedPlanIndex].Duration)}
-                        disabled={isContinueButtonDisabled}
-                    >
-                        <LinearGradient
-                            colors={isContinueButtonDisabled ? ['#ebac4e', '#ba7b1d'] : ['#ebac4e', '#ba7b1d']}
+                                    {/* <TouchableOpacity
+                                        onPress={() => handlePress(selectedPlanIndex, plans[selectedPlanIndex].DiscountPrice, plans[selectedPlanIndex].id, plans[selectedPlanIndex].Duration)}
+                                        disabled={isContinueButtonDisabled}
+                                    >
+                                        <LinearGradient
+                                            colors={isContinueButtonDisabled ? ['#f52d70', '#fe765f'] : ['#f52d70', '#fe765f']}
+                                            style={[
+                                                styles.continueBtn,
+                                                isContinueButtonDisabled && styles.disabledButton
+                                            ]}
+                                        >
+
+                                            <Text style={{ color: '#F6F6F6', fontSize: 20, fontWeight: '700' }}>
+                                                Continue with {plan.Name} @&nbsp;
+                                                <Text style={{ color: '#F6F6F6', fontSize: 13, fontWeight: '600', textDecorationLine: 'line-through' }}>
+                                                    ${plans[selectedPlanIndex].Price}
+                                                    ${plan.Price}&nbsp;&nbsp;
+                                                </Text>
+                                                ${plans[selectedPlanIndex].DiscountPrice}
+                                                ${plan.DiscountPrice}
+                                            </Text>
+
+                                        </LinearGradient>
+                                    </TouchableOpacity> */}
+
+                                    <View  style={{marginHorizontal:10}}>
+                                        <AnimatedButton
+                                            title={`Continue with ${plan.Name} at $${plan.DiscountPrice}`}
+                                            onPress={() => handlePress(selectedPlanIndex, plans[selectedPlanIndex].DiscountPrice, plans[selectedPlanIndex].id, plans[selectedPlanIndex].Duration)}
+                                            disabled={isContinueButtonDisabled}
+                                        />
+                                    </View>
+                                </LinearGradient>
+                            );
+                        })}
+                    </ScrollView>
+                </View>
+
+                <View style={styles.dotContainer}>
+                    {plans.map((_, index) => (
+                        <View
+                            key={index}
                             style={[
-                                styles.continueBtn,
-                                isContinueButtonDisabled && styles.disabledButton
+                                styles.dot,
+                                { backgroundColor: index === selectedPlanIndex ? '#f52d70' : '#ccc' }
                             ]}
-                        >
+                        />
+                    ))}
+                </View>
 
-                            <Text style={{ color: '#272423', fontSize: 20, fontWeight: '700' }}>
-                                Continue with {plans[selectedPlanIndex].Name} @
-                                <Text style={{ color: '#272423', fontSize: 13, fontWeight: '600', textDecorationLine: 'line-through' }}>
-                                    ${plans[selectedPlanIndex].Price}
-                                </Text>
-                                ${plans[selectedPlanIndex].DiscountPrice}
-                            </Text>
+                <View style={{ height: 27}}></View>
 
-                        </LinearGradient>
-                    </TouchableOpacity>
+                {/* <LinearGradient
+                        style={[styles.planDetailTab, { width: screenWidth / 1.05, alignSelf: 'center' }]}
+                        // colors={gradientColors}
+                        colors={['#F6F6F6', '#F6F6F6']}
+                    > */}
 
-                    <StripeProvider publishableKey={stripePublicKey}>
-                        <View>
-                            {clientSecret && <PaymentError clientSecret={clientSecret} orderId={orderId} duration={duration} />}
-                        </View>
-                    </StripeProvider>
+                {/* </LinearGradient> */}
 
-                    <StripeProvider publishableKey={stripePublicKey}>
-                        <View>
-                            {clientSecret2 && <PaymentScreen clientSecret2={clientSecret2} />}
-                        </View>
-                    </StripeProvider>
+            </ScrollView>
+            {/* </LinearGradient> */}
+            <View style={{ marginTop: -35 }}>
+                <StripeProvider publishableKey={stripePublicKey}>
+                    <View>
+                        {clientSecret && <PaymentError clientSecret={clientSecret} orderId={orderId} duration={duration} />}
+                    </View>
+                </StripeProvider>
 
-                </ScrollView>
-            </LinearGradient>
+                <StripeProvider publishableKey={stripePublicKey}>
+                    <View>
+                        {clientSecret2 && <PaymentScreen clientSecret2={clientSecret2} />}
+                    </View>
+                </StripeProvider>
+            </View>
         </ScrollView>
     );
 };
@@ -285,24 +338,26 @@ const styles = StyleSheet.create({
     },
     gradient: {
         flex: 1,
-        marginHorizontal: 5,
-        borderRadius: 10,
+        paddingBottom:25,
+        borderRadius: 15,
         padding: 2,
-        // borderWidth: 1,
         borderStyle: 'solid',
+        shadowColor: 'black',
+        marginBottom: 10,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
     },
-    plans: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingHorizontal: 20,
-        borderColor: 'red',
+    plansBox: {
+        paddingHorizontal: 10,
+        paddingVertical: 10,
+        height: SCREEN_WIDTH / 1.6
     },
     plansHead: {
-        fontSize: 30,
-        fontWeight: '900',
-        color: '#4A4744',
-        marginBottom: 10,
+        color: '#FFFFFF',
+        fontSize: 20,
+        fontWeight: '700',
         fontFamily: 'georgia',
     },
     plansButton: {
@@ -322,15 +377,15 @@ const styles = StyleSheet.create({
     planDetail: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginHorizontal: 15,
-        marginVertical: 15,
-        zIndex: 100
+        // marginHorizontal: 15,
+        // marginVertical: 15,
+        zIndex: 100,
     },
     ticks: { flexDirection: 'row', justifyContent: 'space-between' },
     planDetailTab: {
         backgroundColor: '#989898',
         marginTop: 20,
-        borderRadius: 15,
+        borderRadius: 5,
         // borderWidth: 1,
         // borderColor: '#A19C96',
         borderStyle: 'solid',
@@ -347,34 +402,37 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         textAlign: 'center',
         width: 70,
+        marginTop: 5,
+        height: 40
     },
     youGet: {
-        fontSize: 20,
-        color: '#4A4744',
-        fontWeight: '700',
+        fontSize: 18,
+        color: '#656565',
+        fontWeight: '400',
         marginTop: 5,
-        fontFamily: 'georgia',
+        // fontFamily: 'georgia',
+        height: 40
     },
     priceing: {
         textDecorationLine: 'line-through',
         fontSize: 12
     },
     continueBtn: {
-        marginTop: 20,
+        marginTop: -20,
         // backgroundColor: '#F6F6F6',
-        marginHorizontal: 30,
+        marginHorizontal: 10,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         height: 40,
-        borderRadius: 20,
+        borderRadius: 5,
         borderWidth: 1,
-        borderColor: '#A19C96',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5,
+        borderColor: '#D6D4D2',
+        // shadowColor: '#000',
+        // shadowOffset: { width: 0, height: 2 },
+        // shadowOpacity: 0.25,
+        // shadowRadius: 4,
+        // elevation: 3,
         marginBottom: 10
     },
     dotContainer: {
@@ -387,5 +445,20 @@ const styles = StyleSheet.create({
         height: 10,
         borderRadius: 5,
         marginHorizontal: 5,
+    },
+
+    HeadPrize: {
+        fontSize: 25,
+        fontWeight: '700',
+        color: '#292929',
+        fontFamily: 'georgia'
+    },
+
+    HeadDuration: {
+        fontSize: 17,
+        fontWeight: '600',
+        color: '#464646',
+        fontFamily: 'georgia',
+        marginBottom: 10
     }
 });

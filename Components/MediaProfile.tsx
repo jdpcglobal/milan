@@ -14,21 +14,17 @@ const MediaProfile = () => {
       const response = await axios.post('https://themilan.org/api/getUserImages', { token });
       if (response.data.isSuccess) {
           setImageDate(response.data.userImages);
-        //console.log("fetch images =======", response.data.userImages)
-
+        // console.log("fetch images =======", response.data.userImages);
       } else {
         // console.log('hii0009');
-
       }
     } catch (error) {
-
     }
   };
 
   useEffect(() => {
     fetchImages()
   }, []);
-
   const rData: userImage[] = [
     {
       id: 1,
@@ -38,19 +34,13 @@ const MediaProfile = () => {
 
   const renderComponents = () => {
     let displayData = imageData.length > 9 ? imageData.slice(0, 9) : [...imageData];
-
     while (displayData.length < 9) {
       displayData.push({ id: null, url: null });
     }
-
     return displayData.map((item, index) => (
       <ProfileImagesCard key={item.id || `null-${index}`} id={item.id} uri={item.url} />
     ));
   };
-
-
-
-
 
   return (
     <View style={{ flex: 1, }}>
@@ -62,9 +52,6 @@ const MediaProfile = () => {
         {renderComponents()}
       </View>
     </View>
-
   );
-
 }
-
 export default MediaProfile;

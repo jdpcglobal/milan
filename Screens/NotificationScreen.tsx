@@ -9,6 +9,9 @@ import messaging from '@react-native-firebase/messaging';
 import { useFocusEffect } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons2 from 'react-native-vector-icons/FontAwesome';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
+type ScreenNavigationProp = NavigationProp<RootStackParamList, 'UserChatScreen'>;
+import { RootStackParamList } from '../Utils/Types';
 
 const NotificationScreen = () => {
 
@@ -18,6 +21,7 @@ const NotificationScreen = () => {
     const [modalVisible, setModalVisible] = useState(false);
     const screenWidth = Dimensions.get('window').width;
     const [errorMessage, setErrorMessage] = useState('');
+    const navigation = useNavigation<ScreenNavigationProp>();
 
     const AboutPicWidth = screenWidth / 1.2;
     const AboutPicHeight = screenWidth / 0.7;
@@ -47,7 +51,7 @@ const NotificationScreen = () => {
         const payload = {
             token: token
         };
-        console.log('NotificationScreen====', payload)
+        //  console.log('NotificationScreen====', payload)
         try {
             const response = await fetch(
                 'https://themilan.org/api/notification', {
@@ -57,15 +61,14 @@ const NotificationScreen = () => {
                 },
                 body: JSON.stringify(payload),
             });
-    
+
             const data = await response.json();
-    
+
             if (data.isSuccess) {
                 setNotificationData(data.data);
-                setErrorMessage(''); // Clear any previous error message
-                console.log('NotificationScreen====', data)
+                setErrorMessage('');
+                //console.log('NotificationScreen====', data)
             } else {
-                // Set the error message if the API returns a false status
                 setErrorMessage(data.message || "Something went wrong");
             }
         } catch (error) {
@@ -105,25 +108,32 @@ const NotificationScreen = () => {
     };
     //*********** UserProfile Api ***********//
 
-
     return (
         <ScrollView style={{ paddingTop: 15, backgroundColor: 'white' }}>
 
             {errorMessage ? (
                 <View style={styles.errorContainer}>
-                    <Image source={require('../Asset/Images/manBg.jpg')} style={{height:250, width:260}}></Image>
-                    <Text style={styles.errorText}>{errorMessage}.</Text>
+                    <Image source={require('../Asset/Images/manBg.jpg')} style={{ height: 250, width: 260 }}></Image>
+                    <Text style={styles.errorText}>Looks like it’s quiet for now! 🤫, but love works in mysterious ways. 💌 Check back soon—your next connection could be closer than you think! 🌟.</Text>
                 </View>
             ) : (
                 notificationData && notificationData.map((notification, index) => (
-                    <TouchableOpacity key={index} onPress={() => toggleModal(notification.UserId)}>
-                        <View key={index} style={[styles.card, { width: 'auto', height: 105, justifyContent: 'center', marginHorizontal: 10 }]}>
+                    <TouchableOpacity key={index} onPress={() => navigation.navigate('AboutProfile', { UserData: notification.UserId })}>
+                        <View key={index} style={[styles.card, { width: 'auto', justifyContent: 'center', marginHorizontal: 10 }]}>
                             <View style={styles.imageContainer}>
-                                <Image source={{ uri: notification.image }} style={styles.image} />
+                                {/* <Image style={styles.image} source={require('../Asset/Images/avatar-boy.png')} /> */}
+
+                                {notification.image === 110 && notification.gender === 0 || notification.gender === 2 ? (
+                                    <Image style={styles.image} source={require('../Asset/Images/avatar-boy.png')} />
+                                ) : notification.image === 110 && notification.gender === 1 ? (
+                                    <Image style={styles.image} source={require('../Asset/Images/avatar-girl.png')} />
+                                ) : (
+                                    <Image source={{ uri: notification.image }} style={styles.image} />
+                                )}
                             </View>
                             <View style={styles.infoContainer}>
                                 <Text style={styles.nameText}>{notification.name}</Text>
-                                <Text style={styles.infoText}>{notification.alertMessage}</Text>
+                                <Text style={styles.infoText}>{notification.alertMessage}.</Text>
                             </View>
                         </View>
                     </TouchableOpacity>
@@ -143,15 +153,25 @@ const NotificationScreen = () => {
                         <ScrollView>
                             <View style={styles.container}>
                                 <View style={{ alignItems: 'center', backgroundColor: "white" }} >
-                                    <Image resizeMode='contain'
+                                    {/* <Image resizeMode='contain'
                                         source={{ uri: profileData.images }}
                                         style={{ width: AboutPicWidth * 1.2, height: AboutPicHeight, marginTop: 20, borderRadius: 10, }}
-                                    ></Image>
+                                    ></Image> */}
+                                    {profileData.images === 110 && profileData.gender === 0 || profileData.gender === 2 ? (
+                                        <Image style={{ width: AboutPicWidth * 1.2, height: AboutPicHeight, marginTop: 20, borderRadius: 10, }} source={require('../Asset/Images/avatar-boy.png')} />
+                                    ) : profileData.images === 110 && profileData.gender === 1 ? (
+                                        <Image style={{ width: AboutPicWidth * 1.2, height: AboutPicHeight, marginTop: 20, borderRadius: 10, }} source={require('../Asset/Images/avatar-girl.png')} />
+                                    ) : (
+                                        <Image resizeMode='contain'
+                                            source={{ uri: profileData.images }}
+                                            style={{ width: AboutPicWidth * 1.2, height: AboutPicHeight, marginTop: 20, borderRadius: 10, }}
+                                        ></Image>
+                                    )}
                                 </View>
 
                                 <View style={{ backgroundColor: 'white', paddingHorizontal: 12, paddingTop: 15, borderRadius: 10, marginBottom: 20, paddingBottom: 5, flexDirection: 'row', flexWrap: 'wrap' }}>
 
-                                    <Text style={{ textAlign: 'center', color: 'black', fontSize: 25, fontWeight: '700', marginBottom: 10, width: '100%', fontFamily: 'georgia', }}>
+                                    <Text style={{ textAlign: 'center', color: '#464646', fontSize: 25, fontWeight: '700', marginBottom: 10, width: '100%', fontFamily: 'georgia', }}>
                                         {profileData.name}
                                     </Text>
 
@@ -209,7 +229,7 @@ const NotificationScreen = () => {
                                         </View>
                                     ) : null}
 
-                                    {profileData.relationshipGoals ? (
+                                    {profileData.relationshipGoals !== '0' && profileData.relationshipGoals ? (
                                         <View style={styles.AboutData}>
                                             <Text style={styles.AboutText}><Ionicons2 name="eye" size={27} color="#5A5552" style={{}} />: {profileData.relationshipGoals == '1' ? "Long-term Partner" : profileData.relationshipGoals == '2' ? "long-term but short-term" : profileData.relationshipGoals == '3' ? "Short-term but long-term ok" : profileData.relationshipGoals == '4' ? 'Short-term fun' : profileData.relationshipGoals == '5' ? 'New friends' : profileData.relationshipGoals == "6" ? 'Still figuring out' : `Didn't Mention`}</Text>
                                         </View>
@@ -232,22 +252,27 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: '#fff',
-        borderRadius: 8,
+        // borderRadius: 8,
         padding: 10,
         marginBottom: 10,
-        elevation: 2, // for shadow on Android
-        shadowColor: '#000', // for shadow on iOS
-        shadowOffset: { width: 0, height: 2 }, // for shadow on iOS
-        shadowOpacity: 0.25, // for shadow on iOS
-        shadowRadius: 3.84, // for shadow on iOS
+        borderBottomColor: '#DCDCDC',
+        borderTopColor: 'transparent',
+        borderLeftColor: 'transparent',
+        borderRightColor: 'transparent',
+        borderWidth: 1
+        // elevation: 2, // for shadow on Android
+        // shadowColor: '#000', // for shadow on iOS
+        // shadowOffset: { width: 0, height: 2 }, // for shadow on iOS
+        // shadowOpacity: 0.25, // for shadow on iOS
+        // shadowRadius: 3.84, // for shadow on iOS
     },
     imageContainer: {
         marginRight: 10,
     },
     image: {
         width: 70,
-        height: 90,
-        borderRadius: 10,
+        height: 70,
+        borderRadius: 50,
     },
     infoContainer: {
         flex: 1,
@@ -255,14 +280,16 @@ const styles = StyleSheet.create({
         paddingLeft: 30
     },
     nameText: {
-        fontSize: 20,
-        color: 'black',
+        fontSize: 16,
+        color: '#656565',
         fontWeight: 'bold',
+        fontFamily: 'georgia'
     },
     infoText: {
-        color: 'black',
-        fontSize: 17,
-        fontWeight: '500'
+        color: '#7C7C7C',
+        fontSize: 12,
+        fontWeight: '500',
+        fontFamily: 'georgia'
     },
 
     centeredView: {
@@ -315,14 +342,14 @@ const styles = StyleSheet.create({
         padding: 20,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop:100
+        marginTop: 100
     },
     errorText: {
-        color: '#4A4744',
-        fontSize: 22,
+        color: '#525252',
+        fontSize: 18,
         textAlign: 'center',
-        fontWeight:'700',
-        fontFamily:'georgia'
+        fontWeight: '700',
+        fontFamily: 'georgia'
     },
 });
 

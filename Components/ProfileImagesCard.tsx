@@ -1,12 +1,14 @@
-// Import the libraries
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Image, ActivityIndicator, StyleSheet, TouchableOpacity, Alert, Platform, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import axios from 'axios';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { LoginState } from '../Utils/Types';
 import { useSelector } from 'react-redux';
+import LoaderKit from 'react-native-loader-kit';
 import { Snackbar } from 'react-native-paper';
+import AWS from 'aws-sdk';
+
 type Images = {
   uri: string | null,
   id: number | null,
@@ -21,56 +23,46 @@ const ProfileImagesCard = (props: Images) => {
   type MediaType = 'photo' | 'video' | 'mixed';
   const type: MediaType = 'photo'
   const token = useSelector((state: LoginState) => state.logins.auth_token);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading2, setIsLoading2] = useState(false);
 
-  // Fetch profiles from API and update state
+  const s3 = new AWS.S3({
+    accessKeyId: 'AKIA6ASUEPGOFCUR63R3',
+    secretAccessKey: '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',
+    region: 'ap-south-1',
+  });
+
+  useEffect(() => {
+    setImgId(props.id);
+    setImage(props.uri);
+  }, [props.id, props.uri]);
 
   const deleteImage = async () => {
-    console.log("hii" + image);
-
-    const image_id = imgid;
-    //  console.log(image_id);
-    try {
-      const response = await axios.post('https://themilan.org/api/editUserImages', { token, image_id });
-      if (response.data.isSuccess) {
-        setImage(null);
-
-      }
-      // handle response
-      console.log(response)
-    } catch (error) {
-      // handle error 
-      console.log(error)
+    if (!imgid) {
+      // console.log('Image ID is null or undefined. Cannot delete image.');
+      return;
     }
-
-  }
-
-
-  const handleCameraLaunch = () => {
-    const options = {
-      mediaType: type,
-      includeBase64: false,
-      maxHeight: 2000,
-      maxWidth: 2000,
-    };
-
-    launchCamera(options, response => {
-      console.log('Response = ', response);
-      if (response.didCancel) {
-        console.log('User cancelled camera');
-      } else if (response.errorCode) {
-        console.log('Camera Error: ', response.errorMessage);
+    try {
+      setIsLoading2(true);
+      const response = await axios.post('https://themilan.org/api/editUserImages', { token, image_id: imgid });
+      if (response.data.isSuccess) {
+        // Clear the image and its ID
+        setImage(null);
+        setImgId(null);
+        console.log('Image deleted successfully');
       } else {
-        // Process the captured image
-        let imageUri = response.assets?.[0]?.uri;
-        // setSelectedImage(imageUri);
-        console.warn(imageUri);
+        console.error('Failed to delete image:', response.data.message);
       }
-    });
-  }
+    } catch (error) {
+      console.error('Error deleting image:', error);
+    } finally {
+      setIsLoading2(false);
+    }
+  };
 
-  // Define a function to render the block
+
   const handleImageUpload = () => {
-    console.warn('hii');
+    // console.warn('hii');
     const options = {
       mediaType: type,
       includeBase64: false,
@@ -79,159 +71,142 @@ const ProfileImagesCard = (props: Images) => {
     };
     launchImageLibrary(options, (response) => {
       if (response.didCancel) {
-        console.log('User cancelled image picker');
+        // console.log('User cancelled image picker');
       } else if (response.errorMessage) {
-        console.log('Image picker error: ', response.errorMessage);
+        // console.log('Image picker error: ', response.errorMessage);
       } else {
         let imageUri = response.assets?.[0]?.uri;
         console.warn(imageUri);
         let imageAsset = response.assets?.[0];
+
         if (imageAsset) {
-          console.log(imageAsset);
-          //  UploadImage(imageAsset);
-          addUserImages(imageAsset)
+          uploadToS3(imageAsset);
         } else {
           console.warn('No image selected');
         }
 
       }
     });
-
   }
 
-  const addUserImages = async (imageFile: any) => {
-    const apiUrl = `https://themilan.org/api/addUserImages`;
-    const formData = new FormData();
-    formData.append('token', token);
-    formData.append('image', {
-      name: imageFile.fileName,
-      type: imageFile.type,
-      uri: Platform.OS === 'ios' ? imageFile.uri.replace('file://', '') : imageFile.uri,
-    });
-    //formData.append('image', imageFile);
-
-    // console.log(formData);
-    try {
-      // const datas = {
-      //   token: token,
-      //   image: imageFile, // Assuming imageFile is the image you want to send
-      // };
-      // const config = {
-      //   headers: {
-      //     'Content-Type': 'multipart/form-data',
-      //   },
-      // };
-      // console.log(formData)
-      // const response = await axios.post(apiUrl, formData,config);
-      // console.log(response);
-      // const data = response.data;
-      // console.log(data);
-      // return data;
-      const config = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-        body: formData,
-      };
-
-      const response = await fetch(apiUrl, config);
-      const data = await response.json();
-      if (data.isSuccess) {
-        setImage(data.image_path);
-        console.log('addUserImages ======', data)
-        console.log('', image);
-      } else {
-        console.log("hii==========");
-      }
-
-    }
-    catch (error: any) {
-      if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        console.error('Error response from server:', error.response.data);
-        console.error('Status code:', error.response.status);
-        console.error('Headers:', error.response.headers);
-      } else if (error.request) {
-        // The request was made but no response was received
-        console.error('No response received:', error.request);
-      } else {
-        // Something happened in setting up the request that triggered an Error
-        console.error('Error setting up the request:', error.message);
-      }
-      throw error;
-    }
-  };
-
-  const UploadImage = async (imageFile: any) => {
-    const formData = new FormData();
-    formData.append('key', 'KYhpThsnejTYmofkOndfmkQnci0');
-    formData.append('img', imageFile);
-    console.log(formData);
-    try {
-      const response = await fetch(
-        'https://jdpcglobal.com/cdn/api/uploadReceipts', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-        body: formData,
-
-      });
-      if (!response.ok) {
-        throw new Error("ImageUpload Error Api");
-      }
-      const data = await response.json();
-      console.log(data);
-      setUrl(imageFile.uri);
-      addUserImages(imageFile);
-      // console.log('ImageUpload api  === ', data.url);
-    } catch (error) {
-      console.error('ImageUpload Api error Last ', error);
-    }
-  }
   const loadImage = () => {
     setLoading(false);
   }
-  // Return the profile images card component as a view with a rounded border
+
+  const uploadToS3 = async (imageFile) => {
+    const file = {
+      uri: imageFile.uri,
+      name: imageFile.fileName || `image_${Date.now()}.jpg`,
+      type: imageFile.type || 'image/jpeg',
+    };
+    const fileUri = Platform.OS === 'ios' ? file.uri.replace('file://', '') : file.uri;
+    const response = await fetch(fileUri);
+    const blob = await response.blob()
+    
+    const s3Params = {
+      Bucket: 'milan-app',
+      Key: file.name,
+      Body: blob,
+      ContentType: file.type,
+    };
+    try {
+      setIsLoading(true);
+      const upload = await s3.upload(s3Params).promise();
+      console.log('Upload Success:', upload.Location);
+      const addUserImages = async () => {
+        const apiUrl = `https://themilan.org/api/addUserImages`;
+        const formData = new FormData();
+        formData.append('token', token);
+        formData.append('image', upload.Location);
+        //  console.log('>>>>>>>>>>>>>>>>>>>>', formData);
+        try {
+          setIsLoading(true);
+          const config = {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+            body: formData,
+          };
+          const response = await fetch(apiUrl, config);
+          const data = await response.json();
+          if (data.isSuccess) {
+            setImage(data.image_path);
+            setImgId(data.image_id);
+            console.log('Image uploaded successfully:', data);
+          } else {
+            console.error('Upload failed:', data.message);
+          }
+        } catch (error: any) {
+          console.error('Error uploading image:', error.message);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+      addUserImages();
+    } catch (error) {
+      console.error('Error uploading image:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <View style={styles.container}>
       {loading ? <ActivityIndicator /> : <>
         <View style={styles.imageView}>
-
           {image !== null ?
-            <Image
-              source={{ uri: image }}
-              style={styles.image}
-              onLoad={loadImage}
-              onError={(error) => console.error('Error loading image:', error)}
-            />
+            <View style={{
+              shadowColor: '#000',
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.25,
+              shadowRadius: 4,
+              elevation: 5,
+            }}>
+              <Image
+                source={{ uri: image }}
+                style={styles.image}
+                onLoad={loadImage}
+                onError={(error) => console.error('Error loading image:', error)}
+              />
+            </View>
             :
-            <Image
-              source={{
-                uri: 'https://t4.ftcdn.net/jpg/02/61/49/05/360_F_261490536_nJ5LSRAVZA0CK9Nvt2E1fXJVUfpiqvhT.jpg',
-              }}
-              style={[styles.image]}
-              onLoad={() => console.log('Default image loaded successfully')}
-              onError={(error) => console.error('Error loading default image:', error)}
-            />
+            <View style={[styles.image]}>
+            </View>
           }
         </View>
         <View style={{}}>
-          {image !== null ?
+          {image !== null ? (
             <TouchableOpacity style={styles.editButton2} onPress={deleteImage}>
-              <Icon name={'close-outline'} size={20} color={'white'} />
+              {isLoading2 ? (
+                <LoaderKit
+                  style={{ width: 30, height: 30 }}
+                  name={'BallClipRotateMultiple'}
+                  color={'#4A4744'}
+                />
+              ) : (
+                <Icon name={'close-outline'} size={20} color={'#5A5552'} />
+              )}
             </TouchableOpacity>
-            :
+          ) : (
             <TouchableOpacity style={styles.editButton} onPress={handleImageUpload}>
-              <Icon name={'add'} size={20} color={'white'} />
+              {isLoading ? (
+                <LoaderKit
+                  style={{ width: 30, height: 30 }}
+                  name={'BallClipRotateMultiple'}
+                  color={'#4A4744'}
+                />
+              ) : (
+                <Icon name={'add'} size={20} color={'#5A5552'} />
+              )}
             </TouchableOpacity>
-          }
-        </View></>}
+          )}
+        </View>
+      </>}
     </View>
   );
 };
+export default ProfileImagesCard;
 
 // Define the styles for the profile images card component
 const styles = StyleSheet.create({
@@ -248,15 +223,22 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     resizeMode: 'cover',
-    borderRadius: 30,
+    borderRadius: 10,
+    backgroundColor: '#F6F6F6',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    marginBottom: 5
   },
   editButton: {
     position: 'absolute',
     right: -10,
     bottom: -10,
     borderRadius: 20,
-    backgroundColor: '#bc55fa',
-    elevation: 10,
+    backgroundColor: 'white',
+    elevation: 4,
     padding: 10
   },
   editButton2: {
@@ -264,12 +246,12 @@ const styles = StyleSheet.create({
     right: -10,
     bottom: -10,
     borderRadius: 20,
-    backgroundColor: 'red',
-    elevation: 10,
+    backgroundColor: '#E5E4E2',
+    elevation: 5,
     padding: 6
   }
 
 });
 
 // Export the profile images card component
-export default ProfileImagesCard;
+

@@ -101,7 +101,7 @@ const LocationScreen = () => {
     })
     .then(response => response.json())
     .then(data => {
-      console.log("api called successfully 1111");
+      // console.log("api called successfully 1111");
       if (data.isSuccess) { 
         navigation.dispatch(
           CommonActions.reset({
@@ -116,12 +116,12 @@ const LocationScreen = () => {
         removeItem('Token'); 
         // Handle unsuccessful response
       }
-      console.log(data.message);
-      console.log(url);
+      // console.log(data.message);
+      // console.log(url);
     })
     .catch(error => {
       // Handle API error if needed
-      console.log(error);
+      // console.log(error);
     });
     
   }
@@ -136,9 +136,9 @@ const LocationScreen = () => {
     getLocationPermission().then((hasPermission) => {
       if (hasPermission) { 
         fetchLocation();
-        console.log("permitted");
+        // console.log("permitted");
       } else {
-        console.log("not permitted");
+        // console.log("not permitted");
         setFetching(false); 
       }
     });

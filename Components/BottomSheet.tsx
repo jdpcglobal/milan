@@ -37,7 +37,7 @@ const BottomSheetComponent: React.FC<Props> = (props) => {
         index={props.bIndex}
         ref={bottomSheetRef} 
       >
-        <BottomSheetScrollView style={{backgroundColor:'#ffffff'}}>
+        <BottomSheetScrollView style={{backgroundColor:'#ffffff', zIndex:100}}>
          <View style={{height:30}}>
           <TouchableOpacity style={styles.touchable} onPress={handleBackPress}>
             <Icons name={'close-circle-outline'} size={30} color={'black'} />

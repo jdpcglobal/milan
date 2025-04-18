@@ -51,7 +51,7 @@ const TabNavigator = () => {
       //console.log('Verify api =======', data.isSuccess);
       if (data.isSuccess === true) {
         LogoutAction();
-        console.log('Verify api =======');
+        // console.log('Verify api =======');
       }
     } catch (error) {
       console.error('Verify Error Last');
@@ -61,7 +61,7 @@ const TabNavigator = () => {
   //*********Logout Action *********//
   const LogoutAction = () => {
     AsyncStorage.removeItem("Token");
-    console.log("hii");
+    // console.log("hii");
     navigation.dispatch(
       CommonActions.reset({
         index: 0,
@@ -125,9 +125,9 @@ const TabNavigator = () => {
           padding: 10,
           elevation: 10,
           backgroundColor: '#F6F6F6',
-          borderTopLeftRadius:40,
-          borderTopRightRadius:40,
-          marginHorizontal:5
+          // borderTopLeftRadius:40,
+          // borderTopRightRadius:40,
+          // marginHorizontal:5
         },
         tabBarIcon: ({ focused, color, size }) => {
           let iconName: string = "";
@@ -151,23 +151,22 @@ const TabNavigator = () => {
           }
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: '#bd69f0',
-        tabBarInactiveTintColor: '#817A75',
+        tabBarActiveTintColor: '#f42871',
+        tabBarInactiveTintColor: '#fd755e',
       })}
-
     >
       <Tab.Screen
         name="Home"
         component={HomeScreen}
         options={{
           headerShown: true,
-          headerTitle: "Milan",
-          headerTitleStyle: { color: '#5A5552', marginLeft:-12, }, 
-          headerStyle: {   }, 
+          headerTitle: "",
+          headerTitleStyle: { color: '#5A5552', marginLeft: -12, },
+          headerStyle: { shadowColor: '#000',shadowOffset: { width: 0, height: 2 },shadowOpacity: 0.3,shadowRadius: 3,elevation: 5,},
           headerRight: () => (
             <View style={{ flexDirection: 'row', marginRight: 10, }}>
 
-              <TouchableOpacity onPress={HandleClick} style={{marginRight:10}}>
+              <TouchableOpacity onPress={HandleClick} style={{ marginRight: 10 }}>
                 <Ionicons name="notifications-outline" size={30} color="#4A4744" />
                 {showStar4 &&
                   <Text style={{ color: 'red', position: 'absolute', top: -10, right: -2, fontSize: 13, fontWeight: '700', }}>🔴</Text>
@@ -177,20 +176,20 @@ const TabNavigator = () => {
               <TouchableOpacity onPress={HandleClick2}>
                 <Ionicons name="information-circle-outline" size={30} color="#4A4744" />
               </TouchableOpacity>
-            </View>
+            </View> 
           ),
           headerLeft: () => (
             <View>
-              <Image source={require('../Asset/Images/LogoMinal.png')} style={{ width: 35, height: 35, resizeMode: 'cover', borderRadius: 20, marginLeft: 10 }} />
+              <Image source={require('../Asset/Images/jpg.png')} style={{ width: 110, height: 40, resizeMode: 'cover',  marginLeft: 5 }} />
             </View>
           ),
           tabBarLabel: ({ focused }) => (
             <View>
-              <Text style={{ fontSize: focused ? 15 : 13, fontWeight: focused ? '800' : '600', color: focused ? '#bd69f0' : '#4A4744',  fontFamily:'georgia'}}>Home</Text>
+              <Text style={{ fontSize: focused ? 15 : 13, fontWeight: focused ? '800' : '600', color: focused ? '#f42871' : '#fd755e', fontFamily: 'georgia' }}>Home</Text>
               {showStar1 &&
                 <Text style={{ color: 'red', position: 'absolute', top: -38, right: -2, fontSize: 12, fontWeight: '700', }}>🔴</Text>
               }
-            </View> 
+            </View>
           ),
         }}
 
@@ -205,11 +204,13 @@ const TabNavigator = () => {
         name="Likes"
         component={UserLikesScreen}
         options={{
+          headerTitle: "",
+          headerStyle: { shadowColor: '#000',shadowOffset: { width: 0, height: 2 },shadowOpacity: 0.3,shadowRadius: 3,elevation: 5,},
           headerShown: true,
           headerRight: () => (
             <View style={{ flexDirection: 'row', marginRight: 10, }}>
 
-              <TouchableOpacity onPress={HandleClick} style={{marginRight:10}}>
+              <TouchableOpacity onPress={HandleClick} style={{ marginRight: 10 }}>
                 <Ionicons name="notifications-outline" size={30} color="#4A4744" />
                 {showStar4 &&
                   <Text style={{ color: 'red', position: 'absolute', top: -10, right: -2, fontSize: 13, fontWeight: '700', }}>🔴</Text>
@@ -223,12 +224,12 @@ const TabNavigator = () => {
           ),
           headerLeft: () => (
             <View>
-              <Image source={require('../Asset/Images/LogoMinal.png')} style={{ width: 35, height: 35, resizeMode: 'cover', borderRadius: 20, marginLeft: 10 }} />
+              <Image source={require('../Asset/Images/jpg.png')} style={{ width: 110, height: 40, resizeMode: 'cover',  marginLeft: 5 }} />
             </View>
           ),
           tabBarLabel: ({ focused }) => (
             <View>
-              <Text style={{ fontSize: focused ? 15 : 13, fontWeight: focused ? '800' : '600',  color: focused ? '#bd69f0' : '#4A4744', fontFamily:'georgia' }}>Likes</Text>
+              <Text style={{ fontSize: focused ? 15 : 13, fontWeight: focused ? '800' : '600', color: focused ? '#f42871' : '#fd755e', fontFamily: 'georgia' }}>Likes</Text>
               {showStar2 &&
                 <Text style={{ color: 'red', position: 'absolute', top: -38, right: -8, fontSize: 12, fontWeight: '700', }}>🔴</Text>
               }
@@ -245,12 +246,13 @@ const TabNavigator = () => {
         name="Chat"
         component={ChatUsers}
         options={{
+          headerTitle: "",
           headerShown: true,
-          headerStyle:{backgroundColor:'#f4f4f4'},
+          headerStyle: { shadowColor: '#000',shadowOffset: { width: 0, height: 2 },shadowOpacity: 0.3,shadowRadius: 3,elevation: 3,},
           headerRight: () => (
             <View style={{ flexDirection: 'row', marginRight: 10, }}>
 
-              <TouchableOpacity onPress={HandleClick} style={{marginRight:10}}>
+              <TouchableOpacity onPress={HandleClick} style={{ marginRight: 10 }}>
                 <Ionicons name="notifications-outline" size={30} color="#4A4744" />
                 {showStar4 &&
                   <Text style={{ color: 'red', position: 'absolute', top: -10, right: -2, fontSize: 13, fontWeight: '700', }}>🔴</Text>
@@ -264,12 +266,12 @@ const TabNavigator = () => {
           ),
           headerLeft: () => (
             <View>
-              <Image source={require('../Asset/Images/LogoMinal.png')} style={{ width: 35, height: 35, resizeMode: 'cover', borderRadius: 20, marginLeft: 10 }} />
+              <Image source={require('../Asset/Images/jpg.png')} style={{ width: 110, height: 40, resizeMode: 'cover',  marginLeft: 5 }} />
             </View>
           ),
           tabBarLabel: ({ focused }) => (
             <View >
-              <Text style={{ fontSize: focused ? 15 : 13, fontWeight: focused ? '800' : '600',  color: focused ? '#bd69f0' : '#4A4744', fontFamily:'georgia' }}>Chat</Text>
+              <Text style={{ fontSize: focused ? 15 : 13, fontWeight: focused ? '800' : '600', color: focused ? '#f42871' : '#fd755e', fontFamily: 'georgia' }}>Chat</Text>
               {showStar &&
                 <Text style={{ color: 'red', position: 'absolute', top: -38, right: -8, fontSize: 12, fontWeight: '700', }}>🔴</Text>
               }
@@ -287,11 +289,13 @@ const TabNavigator = () => {
         //component={ProfileScreen}
         component={MainProfile}
         options={{
+          headerTitle: "",
+          headerStyle: { shadowColor: '#000',shadowOffset: { width: 0, height: 2 },shadowOpacity: 0.3,shadowRadius: 3,elevation: 5,},
           headerShown: true,
           headerRight: () => (
             <View style={{ flexDirection: 'row', marginRight: 10, }}>
 
-              <TouchableOpacity onPress={HandleClick} style={{marginRight:10}}>
+              <TouchableOpacity onPress={HandleClick} style={{ marginRight: 10 }}>
                 <Ionicons name="notifications-outline" size={30} color="#4A4744" />
                 {showStar4 &&
                   <Text style={{ color: 'red', position: 'absolute', top: -10, right: -2, fontSize: 13, fontWeight: '700', }}>🔴</Text>
@@ -305,11 +309,11 @@ const TabNavigator = () => {
           ),
           headerLeft: () => (
             <View>
-              <Image source={require('../Asset/Images/LogoMinal.png')} style={{ width: 35, height: 35, resizeMode: 'cover', borderRadius: 20, marginLeft: 10 }} />
+              <Image source={require('../Asset/Images/jpg.png')} style={{ width: 110, height: 40, resizeMode: 'cover',  marginLeft: 5 }} />
             </View>
           ),
           tabBarLabel: ({ focused }) => (
-            <Text style={{ fontSize: focused ? 15 : 13, fontWeight: focused ? '800' : '600',  color: focused ? '#bd69f0' : '#4A4744', fontFamily:'georgia' }}>Profile</Text>
+            <Text style={{ fontSize: focused ? 15 : 13, fontWeight: focused ? '800' : '600', color: focused ? '#f42871' : '#fd755e', fontFamily: 'georgia' }}>Profile</Text>
           ),
         }}
         listeners={{

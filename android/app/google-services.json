@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "476149862967",
-    "project_id": "milanapp-eca7a",
-    "storage_bucket": "milanapp-eca7a.appspot.com"
+    "project_number": "1009372848018",
+    "project_id": "milan-b2d0b",
+    "storage_bucket": "milan-b2d0b.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:476149862967:android:cec956e8123743e49be5b2",
+        "mobilesdk_app_id": "1:1009372848018:android:86f90522e4fd63eed2ab4b",
         "android_client_info": {
-          "package_name": "com.Milan"
+          "package_name": "org.themilan"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDfSoDp65wSnIVNwkhCM6heHs5A8NF5Abs"
+          "current_key": "AIzaSyBsfv33A09dQEOAvksvvqjkISSwGW_Kfg0"
         }
       ],
       "services": {

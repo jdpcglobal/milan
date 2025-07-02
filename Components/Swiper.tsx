@@ -232,7 +232,7 @@ const SwiperCard: React.FC = () => {
                             <Text style={styles.meantime}>in the meantime....</Text>
                           </View>
 
-                          <TouchableOpacity onPress={() => navigation.navigate('UserLikesScreen')} style={styles.touch}>
+                          <TouchableOpacity onPress={() => navigation.navigate('Likes')} style={styles.touch}>
                             <View style={styles.strip}>
                               <View style={styles.iconBg}>
                                 <Icon name="thumbs-up-outline" size={30} color="#817A75" style={{}} />
@@ -242,7 +242,7 @@ const SwiperCard: React.FC = () => {
                             </View>
                           </TouchableOpacity>
 
-                          <TouchableOpacity onPress={() => navigation.navigate('ChatUsers')} style={styles.touch}>
+                          <TouchableOpacity onPress={() => navigation.navigate('Chat')} style={styles.touch}>
                             <View style={styles.strip}>
                               <View style={styles.iconBg}>
                                 <Icon name="heart-outline" size={40} color="#817A75" style={{}} />
@@ -530,13 +530,13 @@ const SwiperCard: React.FC = () => {
          
         </View> */}
 
-        <View style={StyleSheet.absoluteFillObject}>
+        {/* <View style={StyleSheet.absoluteFillObject}>
           <BottomSheetComponent bIndex={bIndex} setbIndex={setbIndex}>
             <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
               {customComponent}
             </View>
           </BottomSheetComponent>
-        </View>
+        </View> */}
       </View>
 
       <Modal animationType="slide" transparent={true} visible={modalVisible} onRequestClose={toggleModal2}>

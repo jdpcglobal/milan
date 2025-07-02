@@ -24,7 +24,7 @@ const LoginScreen = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [isPageLoading, setIsPageLoading] = useState(true);
 
-  
+
   const [selected, setSelected] = useState('+1 '); // Default dial code
   const [country, setCountry] = useState('');
   const [phone, setPhone] = useState('');
@@ -35,13 +35,17 @@ const LoginScreen = () => {
 
   useEffect(() => {
     const checkLogin = async () => {
+      console.log('+++++++++++1111111');
+
       try {
         const authToken = await getItem('Token');
+        console.log('+++++++++++2222', authToken);
+
         if (authToken) {
           dispatch(saveToken(authToken));
           navigation.navigate('LocationPage');
 
-          console.log('+++++++++++',authToken)
+          console.log('+++++++++++', authToken);
         } else {
           setIsPageLoading(false);
         }
@@ -119,26 +123,32 @@ const LoginScreen = () => {
         </Image>
         <View style={styles.form}>
 
-        <CountryCodeDropdownPicker
-        selected={selected}
-        setSelected={setSelected}
-        setCountryDetails={setCountry} // Pass the entire country object
-        phone={phone}
-        setPhone={setLimitedPhone}
-        countryCodeTextStyles={{ fontSize: 13 }}
-        phoneStyles={{
-          backgroundColor: 'white',
-          borderWidth: 0.5,
-          borderColor: '#989898',
-          borderRadius: 7,
-          color: 'black',
-          shadowColor: '#000',
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.3,
-          shadowRadius: 3,
-          elevation: 3,
-        }}
-      />
+          <CountryCodeDropdownPicker
+            selected={selected}
+            setSelected={setSelected}
+            setCountryDetails={setCountry} // Pass the entire country object
+            phone={phone}
+            setPhone={setLimitedPhone}
+            countryCodeTextStyles={{ fontSize: 16, }}
+            searchStyles={{height:40, backgroundColor:'#fff'}}
+            searchTextStyles={{fontSize:17, fontWeight:'600'}}
+            phoneStyles={{
+              backgroundColor: 'white',
+              borderWidth: 0.5,
+              borderColor: '#989898',
+              borderRadius: 7,
+              color: 'black',
+              shadowColor: '#000',
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.3,
+              shadowRadius: 3,
+              elevation: 3,
+              fontSize: 18,
+              paddingVertical: 8
+            }}
+            
+          />
+          
           {errorMessage.length !== 0 && (
             <Text style={{ fontSize: 15, color: 'red', fontWeight: 'bold', paddingHorizontal: '5%', fontFamily: 'georgia', textAlign: 'right' }}>
               {errorMessage}

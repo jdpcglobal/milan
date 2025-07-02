@@ -37,6 +37,27 @@ const MainNavigator = () => {
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName='LoginPage'
+
+        screenOptions={{
+          headerTitleStyle: {
+            fontSize: 22,
+            fontWeight: 'bold',
+            fontFamily: 'georgia',
+            height: 40,
+            top: -15
+          },
+          headerStyle: {
+            // backgroundColor: 'pink',
+            height: 60,
+          },
+
+          headerBackTitleVisible: false,
+          headerTintColor: '#5A5552', // 👈 Changes icon color
+          headerBackImage: () => (
+            <Ionicons name="chevron-back" size={30} color="#5A5552" style={{ marginLeft: 10, height: 40, top: -20 }} />
+          ),
+
+        }}
       >
         <Stack.Screen
           name="LoginPage"
@@ -71,13 +92,6 @@ const MainNavigator = () => {
 
           options={{
             headerShown: false,
-            // headerTitle: "Milan",
-
-            // headerLeft: () => (
-            //   <View>
-            //     <Image source={require('../Asset/Images/LogoMinal.png')} style={{ width: 40, height: 40, resizeMode: 'cover', borderRadius: 20, marginLeft: 10 }} />
-            //   </View>
-            // ),
           }}
         />
 
@@ -115,13 +129,6 @@ const MainNavigator = () => {
 
           options={{ headerShown: false }}
         />
-
-        {/* <Stack.Screen
-          name="PlansBuy"
-          component={PlansBuy}
-         
-          options={{ headerShown: false }}
-        /> */}
 
         <Stack.Screen
           name="AboutProfile"
@@ -171,12 +178,6 @@ const MainNavigator = () => {
           options={{
             headerShown: true,
             headerTitle: "",
-            // headerRight: () => (
-            //   <View style={{ flexDirection: 'row', marginRight: 10, }}>
-            //     <Ionicons name="notifications" size={25} color="#0E103D" style={{ marginRight: 10 }} />
-            //     <Ionicons name="options" size={25} color="#0E103D" style={{ marginRight: 10 }} />
-            //   </View>
-            // ),
             headerLeft: () => (
               <View>
                 <Image source={require('../Asset/Images/jpg.png')} style={{ width: 110, height: 40, resizeMode: 'cover', marginLeft: 5 }} />
@@ -191,14 +192,44 @@ const MainNavigator = () => {
           options={{
             headerShown: true,
             headerTitle: "",
-            headerStyle: { shadowColor: '#000',shadowOffset: { width: 0, height: 2 },shadowOpacity: 0.3,shadowRadius: 3,elevation: 5,},
-            headerLeft: () => (
-              <View>
-                <Image source={require('../Asset/Images/jpg.png')} style={{ width: 110, height: 40, resizeMode: 'cover', marginLeft: 5 }} />
+            headerStyle: {
+              shadowColor: '#000',
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.3,
+              shadowRadius: 3,
+              elevation: 5,
+              height: 60,
+            },
+            headerRight: () => (
+              // <Image
+              //   source={require('../Asset/Images/jpg.png')}
+              //   style={{
+              //     width: 110,
+              //     height: 40,
+              //     resizeMode: 'cover',
+              //     // marginRight: 23,
+              //     top: -25,
+              //   }}
+              // />
+
+              <View style={{height:40,  width:"100%", marginRight:'97%'}}>
+                 <Image
+                source={require('../Asset/Images/jpg.png')}
+                style={{
+                  width: 110,
+                  height: 40,
+                  resizeMode: 'cover',
+                  // marginRight: 23,
+                  top: -25,
+                }}
+              />
               </View>
             ),
+            headerBackTitleVisible: false,
+            headerTintColor: '#5A5552',
           }}
         />
+
 
         <Stack.Screen
           name="ProfileSection"
@@ -222,25 +253,11 @@ const MainNavigator = () => {
           options={{
             headerShown: true,
             headerTitle: "Plans",
-            headerTitleStyle: {
-              fontFamily: 'georgia',
-              fontWeight: '700',
-              fontSize: 25,
-              color: '#5A5552'
-            },
+
             headerStyle: {
               backgroundColor: 'white',
-              // borderBottomLeftRadius: 20,
-              // borderBottomRightRadius: 20,
+              height: 60,
             },
-            // headerLeft: () => (
-            //   <View style={{flexDirection:'row', alignItems:'center'}}>
-            //     <TouchableOpacity style={{}}  >
-            //       <Ionicons name='arrow-back' size={30} color="black" />
-            //     </TouchableOpacity>
-            //     <Image source={require('../Asset/Images/LogoMinal.png')} style={{ width: 40, height: 40, resizeMode: 'cover', borderRadius: 20, marginLeft: 10 }} />
-            //   </View>
-            // ),
           }}
         />
 
@@ -255,13 +272,21 @@ const MainNavigator = () => {
           name="NotificationScreen"
           component={NotificationScreen}
           options={{
-            headerStyle: { shadowColor: '#000',shadowOffset: { width: 0, height: 2 },shadowOpacity: 0.3,shadowRadius: 3,elevation: 5,},
+            headerStyle: { shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.3, shadowRadius: 3, elevation: 5, },
             headerTitle: "Notification",
+            headerStyle: {
+              backgroundColor: 'white',
+              height: 60,
+            },
+            headerTitleStyle: {
+              fontSize: 22,
+              fontWeight: 'bold',
+              fontFamily: 'georgia',
+              height: 40,
+              top: -15
+            },
           }}
         />
-
-        {/* <Stack.Screen name="Profile" component={HomeScreen} />
-        <Stack.Screen name="DrawerNavigator" component={HomeScreen} /> */}
       </Stack.Navigator>
     </NavigationContainer>
   );

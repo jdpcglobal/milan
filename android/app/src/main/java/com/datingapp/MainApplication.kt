@@ -1,4 +1,4 @@
-package com.Milan
+package org.themilan
 
 import android.app.Application
 import com.facebook.react.PackageList

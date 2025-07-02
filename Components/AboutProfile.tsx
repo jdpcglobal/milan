@@ -93,11 +93,11 @@ const AboutProfile = ({ route }) => {
             </View>
           ) : null}
 
-          {profileData.mobile ? (
+          {/* {profileData.mobile ? (
             <View style={styles.AboutData}>
               <Text style={styles.AboutText}>mobile: {profileData.mobile}</Text>
             </View>
-          ) : null}
+          ) : null} */}
 
           {profileData.height ? (
             <View style={styles.AboutData}>

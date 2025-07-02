@@ -319,11 +319,11 @@ const Plans = () => {
                     </View>
                 </StripeProvider>
 
-                <StripeProvider publishableKey={stripePublicKey}>
+                {/* <StripeProvider publishableKey={stripePublicKey}>
                     <View>
                         {clientSecret2 && <PaymentScreen clientSecret2={clientSecret2} />}
                     </View>
-                </StripeProvider>
+                </StripeProvider> */}
             </View>
         </ScrollView>
     );

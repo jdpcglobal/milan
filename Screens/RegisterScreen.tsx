@@ -105,11 +105,12 @@ const RegisterScreen = () => {
       religion: religion,
       email: email,
       device_token: fcmTokens,
+      // device_token: '13141314131513415134151415',
       countryCode: countryCode,
       interest: selectedItems,
       bio: bio
     };
-    //  console.log('//////////', params)
+     console.log('//////////', params)
 
     axios.post(url, params)
       .then(response => {

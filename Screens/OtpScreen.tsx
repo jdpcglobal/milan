@@ -7,8 +7,6 @@ import { NavigationProp } from '@react-navigation/native';
 import { ActivityIndicator, TextInput } from 'react-native-paper';
 import axios from 'axios';
 import { getItem, setItem, storeData } from '../Utils/AsyncStorage';
-import { saveToken } from '../Fetures/Login/LoginSlice';
-import { saveAuthToken } from '../Utils/ConstFunc';
 import { useDispatch } from 'react-redux';
 import messaging from '@react-native-firebase/messaging';
 import LinearGradient from 'react-native-linear-gradient';
@@ -16,6 +14,7 @@ import Ionicons from 'react-native-vector-icons/MaterialCommunityIcons';
 import LoaderKit from 'react-native-loader-kit';
 import AnimatedButton from './AnimatedButton';
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@gorhom/bottom-sheet';
+import { ScrollView } from 'react-native-gesture-handler';
 
 type OTPScreenRouteProp = RouteProp<RootStackParamList, 'OtpPage'>;
 type OTPScreenNavigationProp = NavigationProp<RootStackParamList, 'HomeScreen'>;
@@ -34,8 +33,6 @@ function OTPScreen() {
   const [resendBtn, setResendBtn] = useState(true);
   const [verifyBtn, setVerifyBtn] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
-
-   console.log('//////////////////', otpR);
 
   const handleOTPChange = (text, index) => {
     let newOtp = [...otp];
@@ -59,7 +56,7 @@ function OTPScreen() {
     const getFCMToken = async () => {
       const fcmToken = await messaging().getToken();
       setFcmToken(fcmToken)
-      //console.log(' FCM token', fcmToken);
+      console.log(' FCM token,,,,,,,,,,,,,,,,,', fcmToken);
       if (fcmToken) {
       } else {
         console.log('Failed to get FCM token');
@@ -116,7 +113,7 @@ function OTPScreen() {
             navigation.navigate('RegisterPage', { phoneNumber, countryCode });
             setIsLoading(false);
           } else if (data.code === 201) {
-            const token = data.token;
+            const token = data.token; 
             if (token) {
               storeData("Token", token).then(() => {
                 console.log("Token saved:", token);
@@ -141,20 +138,16 @@ function OTPScreen() {
 
 
   return (
-    <View style={styles.container}>
-      {/* <View style={{height:SCREEN_HEIGHT/2.5, justifyContent:'center'}}>
-        <Image 
-          source={require('../Asset/Images/icon.png')} // replace with your image url
-          style={[styles.image]}
-          resizeMode='contain'
-        />
-      </View> */}
-
+    <ScrollView>
+    {/* <View style={styles.container}> */}
       <Image source={require('../Asset/Images/icon.png')}
         resizeMode='contain'
         style={{ height: SCREEN_HEIGHT / 3, marginTop: SCREEN_HEIGHT / 3.8, width: SCREEN_WIDTH / 2, alignSelf: 'center', transform: [{ rotate: '-15deg' }] }}
       >
       </Image>
+
+      
+      <View style={{ position:'absolute',  width: '100%', height: SCREEN_HEIGHT, backgroundColor: 'rgba(225,225,225, 0.9)', justifyContent:'center'}}>
       <View style={styles.form}>
         <Text style={{ fontFamily: 'georgia', fontSize: 20, fontWeight: '700', marginLeft: 20, color: "#656565", textAlign: 'center' }}>Enter Otp</Text>
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: -20 }}>
@@ -197,7 +190,11 @@ function OTPScreen() {
           )}
         </View>
       </View>
-    </View>
+
+      
+      </View>
+    {/* </View> */}
+    </ScrollView>
   );
 }
 export default OTPScreen;
@@ -215,52 +212,19 @@ const styles = StyleSheet.create({
     height: 300,
     width: 200,
     alignSelf: 'center',
-
-    // width: '100%',
-    // resizeMode: 'cover',
   },
   form: {
-    // paddingHorizontal: "4%",
-    // paddingVertical: "6%",
-    // marginTop: -30,
-    // borderTopLeftRadius: 30,
-    // borderTopRightRadius: 30,
-    // backgroundColor: '#F0F6F6',
-    // flex: 1,
-
-
-    backgroundColor: 'rgba(225,225,225, 0.9)',
-    position: 'absolute',
-    alignSelf: 'center',
-    width: '100%',
+    // backgroundColor: 'rgba(156, 27, 27, 0.9)',
+    // backgroundColor: 'rgba(225,225,225, 0.9)',
+    // position: 'absolute',
+    // alignSelf: 'center',
+    // width: '100%',
     paddingHorizontal: 10,
-    height: SCREEN_HEIGHT,
-    justifyContent: 'center'
+    marginTop:-130
+    // height: SCREEN_HEIGHT,
+    // justifyContent: 'center',
   },
-  mainY: {
-    marginHorizontal: 10,
-    zIndex: 2,
-    borderRadius: 10,
-    backgroundColor: 'black',
-    height: 'auto'
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    marginVertical: 8,
-    marginHorizontal: 15,
-  },
-  input: {
-    flex: 1,
-    marginTop: 5,
-    backgroundColor: '#F0F6F6',
 
-  },
-  checkbox: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginHorizontal: 15,
-  },
   button: {
     marginVertical: 16,
     paddingHorizontal: 15,
@@ -270,22 +234,12 @@ const styles = StyleSheet.create({
     padding: 9,
     borderRadius: 5,
   },
-  text: {
-    textAlign: 'center',
-    color: '#ff6699',
-
-  },
-  link: {
-    color: '#42BFDD',
-    fontSize: 16,
-    margin: 5,
-    textDecorationLine: 'underline',
-  },
-
+  
   otpInput: {
     width: 40,
     height: 50,
-    borderBottomWidth: 1,
+    borderBottomWidth: 1.5,
+    borderBlockColor:'#000',
     borderBottomColor: 'transparent',
     fontSize: 18,
     color: 'red',
@@ -293,7 +247,6 @@ const styles = StyleSheet.create({
     fontFamily: 'georgia',
     backgroundColor: 'transparent'
   },
-
 
   otpContainer: {
     flexDirection: 'row',
@@ -304,12 +257,5 @@ const styles = StyleSheet.create({
 
 });
 
-
-const theme = {
-  colors: {
-    primary: '#ff6699', // This will change the border color
-    text: '#ff6699', // This will change the text color
-  },
-};
 
 

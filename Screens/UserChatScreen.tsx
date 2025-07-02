@@ -48,9 +48,10 @@ const UserChatScreen = ({ route }) => {
     };
 
     const toggleModal2 = () => {
-        setVisible(false);
-        setModalVisible(false);
         setModalVisible2(!modalVisible2);
+        console.log('1qwq1qwq1qwq1qwq1qw',modalVisible2)
+        // setVisible(false);
+        setModalVisible(false);
     };
 
     const toggleModal3 = () => {
@@ -359,11 +360,11 @@ const UserChatScreen = ({ route }) => {
                                 </TouchableOpacity>
 
                                 <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end' }}>
-                                    {/* <TouchableOpacity onPress={toggleModal}>
-                                        <Ionicons name='ellipsis-vertical-sharp' size={30} color="#5A5552" style={{}} />
-                                    </TouchableOpacity> */}
+                                    <TouchableOpacity onPress={toggleModal}>
+                                        <Ionicons name='ellipsis-vertical-sharp' size={30} color="#3D3D3D" style={{}} />
+                                    </TouchableOpacity>
 
-                                    <Popover
+                                    {/* <Popover
                                         isVisible={visible}
                                         onRequestClose={() => setVisible(false)}
                                         from={
@@ -373,19 +374,17 @@ const UserChatScreen = ({ route }) => {
                                         }
                                     >
                                         <View style={styles.menuContainer}>
-                                            {/* Report Option */}
                                             <TouchableOpacity onPress={toggleModal2} style={styles.menuItem}>
                                                 <Ionicons name="flag-outline" size={20} color="black" />
                                                 <Text style={styles.menuText}>Report</Text>
                                             </TouchableOpacity>
 
-                                            {/* Block Option */}
                                             <TouchableOpacity onPress={() => BlockFunction(true)} style={styles.menuItem}>
                                                 <Ionicons name="ban-outline" size={20} color="red" />
                                                 <Text style={[styles.menuText, { color: 'red' }]}>Block</Text>
                                             </TouchableOpacity>
                                         </View>
-                                    </Popover>
+                                    </Popover> */}
 
                                 </View>
                             </View>
@@ -484,7 +483,7 @@ const UserChatScreen = ({ route }) => {
                         )}
 
 
-                        {/* <Modal
+                        <Modal
                             animationType="slide"
                             transparent={true}
                             visible={modalVisible}
@@ -514,7 +513,7 @@ const UserChatScreen = ({ route }) => {
                                     </View>
                                 </View>
                             </View>
-                        </Modal> */}
+                        </Modal>
 
                         <Modal
                             animationType="slide"
@@ -555,7 +554,7 @@ const UserChatScreen = ({ route }) => {
                                 setModalVisible2(!modalVisible2);
                             }}>
                             <View style={styles.centeredView}>
-                                <View style={styles.modalView}>
+                                <View style={[styles.modalView, { padding:0}]}>
                                     <Ionicons onPress={toggleModal2} name="close-circle" size={45} color="red" style={{ marginRight: 10, position: 'absolute', right: -25, top: -20 }} />
 
                                     <View style={{ width: '100%', height: '100%', }}>

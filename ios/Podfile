@@ -9,6 +9,9 @@ platform :ios, min_ios_version_supported
 use_modular_headers!
 prepare_react_native_project!
 
+# ✅ Force override fmt version to 8.1.1 to avoid char8_t C++20 error
+# pod 'fmt', '8.1.1' # ⬅️ Added this to fix build error related to fmt 6.2.1
+
 # If you are using a `react-native-flipper` your iOS build will fail when `NO_FLIPPER=1` is set.
 # because `react-native-flipper` depends on (FlipperKit,...) that will be excluded
 #

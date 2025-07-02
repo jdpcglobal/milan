@@ -1,20 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { View, StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native';
-import SwiperCard from '../Components/Swiper.tsx';
-import ProfileImagesCard from '../Components/ProfileImagesCard.tsx';
 import MediaProfile from '../Components/MediaProfile.tsx';
 import BottomSheetComponent from '../Components/BottomSheet.tsx';
 import Icon from 'react-native-vector-icons/Ionicons';
-import CreateOptions from '../Components/CreateOptions.tsx';
-import { removeItem } from '../Utils/AsyncStorage.ts';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { CommonActions, NavigationProp, useNavigation } from '@react-navigation/native';
 import { LoginState, RootStackParamList } from '../Utils/Types.ts';
 import { useDispatch, useSelector } from 'react-redux';
 import RangeSliderFor from '../Components/RangeSlider.tsx';
-import AgeRangePicker from '../Components/AgeRangePicker.tsx';
-import Logout from '../Components/Logout.tsx';
-import HeightRangePicker from '../Components/HeightRangePicker.tsx';
 import { Text, TextInput } from 'react-native-paper';
 import { Alert, Modal, Pressable } from 'react-native';
 import LoaderKit from 'react-native-loader-kit';
@@ -245,12 +237,9 @@ const ProfileScreens = () => {
 
 
   return (
-    <View style={styles.Container}>
-      <ScrollView>
+    <ScrollView style={styles.Container} keyboardShouldPersistTaps="handled"  contentContainerStyle={{ flexGrow: 1 }}>
+     
         <View style={styles.DpImagesView}>
-          {/* <TouchableOpacity onPress={() => navigation.navigate('MainProfile')} style={{flexDirection:'row', alignItems:'center',marginVertical:15, marginLeft:5}}>
-            <Icon name="arrow-back-circle" size={35} color="#0E103D"  /><Text style={{ fontSize: 17, fontWeight: "800" }}>Back</Text>
-          </TouchableOpacity> */}
           <MediaProfile />
         </View>
 
@@ -262,23 +251,15 @@ const ProfileScreens = () => {
           <View style={{ backgroundColor: '#fafafa', paddingVertical: 15, borderRadius: 10 }}>
             <View>
               <View style={styles.OptionsView}>
-                {/* <TouchableOpacity style={styles.touchabale} onPress={toggleSlide1}>
-                <View style={styles.tochableView}>
-                  <Icon name={'book'} size={25} style={styles.icon} />
-                  <Text style={styles.innerText}> Education </Text>
-                  <Icon name={'chevron-forward-outline'} size={20} color={'white'} style={styles.icons} />
-                </View>
-              </TouchableOpacity> */}
-                {/* {showSlide1 && ( */}
                 <View >
                   <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5 }}>
                     <Icon style={{ marginTop: 15 }} name={'school'} size={23} color={'#4A4744'} /><Text style={styles.slideHeader}>   What is your education Levels ?</Text>
                   </View>
                   <View style={{ width: 'auto', flexDirection: 'row', flexWrap: 'wrap', marginLeft: 20 }}>
-                    <TouchableOpacity onPress={() => { handleTextClick2('1'); }}>
+                    <TouchableOpacity  onPress={() => { handleTextClick2('1'); }}>
                       <Text style={[styles.slideText, focusedText2 === '1' && styles.focusedText]}>Bachelor Degree</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => handleTextClick2('2')}>
+                    <TouchableOpacity   onPress={() => handleTextClick2('2')}>
                       <Text style={[styles.slideText, focusedText2 === '2' && styles.focusedText]}>At uni</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => handleTextClick2('4')}>
@@ -301,7 +282,6 @@ const ProfileScreens = () => {
                 {/* )} */}
               </View>
             </View>
-
 
             <View>
               <View style={styles.OptionsView}>
@@ -336,14 +316,7 @@ const ProfileScreens = () => {
 
             <View>
               <View style={styles.OptionsView}>
-                {/* <TouchableOpacity style={styles.touchabale} onPress={toggleSlide4}>
-                <View style={styles.tochableView}>
-                  <Icon name={'male-female'} size={25} style={styles.icon} />
-                  <Text style={styles.innerText}> Sexual Orientation </Text>
-                  <Icon name={'chevron-forward-outline'} size={20} color={'white'} style={styles.icons} />
-                </View>
-              </TouchableOpacity> */}
-                {/* {showSlide4 && ( */}
+
                 <View >
                   <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5 }}>
                     <Icon style={{ marginTop: 15 }} name={'male-female'} size={25} color={'#4A4744'} /><Text style={styles.slideHeader}> Select your Sexual Orientation ?</Text>
@@ -387,27 +360,15 @@ const ProfileScreens = () => {
                       <Text style={[styles.slideText, focusedText3 === '9' && styles.focusedText]}> Aromantic </Text>
                     </TouchableOpacity>
 
-                    {/* <TouchableOpacity onPress={() => handleTextClick3('10PanSexual')}>
-                    <Text style={[styles.slideText, focusedText3 === '10PanSexual' && styles.focusedText]}> PanSexual </Text>
-                  </TouchableOpacity> */}
                   </View>
                 </View>
 
-                {/* )} */}
               </View>
             </View>
 
             <View>
               <View style={styles.OptionsView}>
-                {/* <TouchableOpacity style={styles.touchabale} onPress={toggleSlide5}>
-                <View style={styles.tochableView}>
-                  <Icon name={'heart-half'} size={25} style={styles.icon} />
-                  <Text style={styles.innerText}> Relationship Goals </Text>
-                  <Icon name={'chevron-forward-outline'} size={20} color={'white'} style={styles.icons} />
-                </View>
-              </TouchableOpacity> */}
 
-                {/* {showSlide5 && ( */}
                 <View >
                   <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5 }}>
                     <Ionicons2 name="eye" size={27} color="#5A5552" style={{ marginTop: 15 }} /><Text style={styles.slideHeader}>  What is your Relationship Goals ?</Text>
@@ -433,29 +394,18 @@ const ProfileScreens = () => {
                     <TouchableOpacity onPress={() => handleTextClick('3')}>
                       <Text style={[styles.slideText, focusedText === '3' && styles.focusedText]}> Short-term but long-term OK </Text>
                     </TouchableOpacity>
-
-
-
                     <TouchableOpacity onPress={() => handleTextClick('6')}>
                       <Text style={[styles.slideText, focusedText === '6' && styles.focusedText]}> Still figuring it out </Text>
                     </TouchableOpacity>
                   </View>
                 </View>
-                {/* )} */}
               </View>
 
             </View>
 
             <View>
               <View style={styles.OptionsView}>
-                {/* <TouchableOpacity style={styles.touchabale} onPress={toggleSlide2}>
-                <View style={styles.tochableView}>
-                  <Icon name={'briefcase'} size={25} style={styles.icon} />
-                  <Text style={styles.innerText}> Job Title </Text>
-                  <Icon name={'chevron-forward-outline'} size={20} color={'white'} style={styles.icons} />
-                </View>
-              </TouchableOpacity> */}
-                {/* {showSlide2 && ( */}
+
                 <View >
                   <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5 }}>
                     <Icon style={{ marginTop: 15 }} name={'briefcase'} size={23} color={'#4A4744'} /><Text style={styles.slideHeader}>  What is your Job Title ?</Text>
@@ -464,30 +414,14 @@ const ProfileScreens = () => {
                   <View style={{
                     width: 'auto', marginHorizontal: 15, paddingBottom: 1, borderRadius: 50, marginBottom: -10
                   }}>
-                    {/* <TextInput
-                      style={[
-                        styles.textInput,
-                        // isFocused && styles.textInputFocused,
-                      ]}
-                      theme={{
-                        roundness: 10,
-                        colors: {
-                          text: 'black',
-                          primary: '#83beff',
-                        },
-                      }}
-                      label="Enter your job"
-                      mode="outlined"
-                      value={jobTitle}
-                      onChangeText={text => setJobTitle(text)}
-                      onFocus={() => setIsFocused(true)}
-                      onBlur={() => setIsFocused(false)}
-                    /> */}
+
                     <CustomTextInput
                       label="Enter your job"
                       value={jobTitle}
                       onChangeText={text => setJobTitle(text)}
                     />
+
+                    
                   </View>
                 </View>
                 {/* )} */}
@@ -497,14 +431,6 @@ const ProfileScreens = () => {
 
             <View>
               <View style={styles.OptionsView}>
-                {/* <TouchableOpacity style={styles.touchabale} onPress={toggleSlide2}>
-                <View style={styles.tochableView}>
-                  <Icon name={'briefcase'} size={25} style={styles.icon} />
-                  <Text style={styles.innerText}> Job Title </Text>
-                  <Icon name={'chevron-forward-outline'} size={20} color={'white'} style={styles.icons} />
-                </View>
-              </TouchableOpacity> */}
-                {/* {showSlide2 && ( */}
                 <View >
                   <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5 }}>
                     <Icon style={{ marginTop: 15 }} name={'person'} size={23} color={'#4A4744'} /><Text style={styles.slideHeader}>  Bio </Text>
@@ -513,25 +439,6 @@ const ProfileScreens = () => {
                   <View style={{
                     width: 'auto', marginHorizontal: 15, paddingBottom: 1, borderRadius: 50, marginBottom: -10
                   }}>
-                    {/* <TextInput
-                      style={[
-                        styles.textInput,
-                        // isFocused && styles.textInputFocused,
-                      ]}
-                      theme={{
-                        roundness: 10,
-                        colors: {
-                          text: 'black',
-                          primary: '#83beff',
-                        },
-                      }}
-                      label="Enter your Bio"
-                      mode="outlined"
-                      value={selectedBio}
-                      onChangeText={text => setSelectedBio(text)}
-                      onFocus={() => setIsFocused(true)}
-                      onBlur={() => setIsFocused(false)}
-                    /> */}
 
                     <CustomTextInput
                       label="Enter your Bio"
@@ -546,36 +453,14 @@ const ProfileScreens = () => {
 
             <View>
               <View style={styles.OptionsView}>
-                {/* <TouchableOpacity style={styles.touchabale} onPress={toggleSlide3}>
-                <View style={styles.tochableView}>
-                  <Icon name={'trail-sign'} size={25} style={styles.icon} />
-                  <Text style={styles.innerText}> Living </Text>
-                  <Icon name={'chevron-forward-outline'} size={20} color={'white'} style={styles.icons} />
-                </View>
-              </TouchableOpacity> */}
-
-                {/* {showSlide3 && ( */}
+                
                 <View >
                   <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5 }}>
                     <Icon style={{ marginTop: 15 }} name={'trail-sign'} size={23} color={'#4A4744'} /><Text style={styles.slideHeader}>  Your Address ?</Text>
                   </View>
 
                   <View style={{ width: 'auto', marginHorizontal: 15, paddingBottom: 1, borderRadius: 50, marginBottom: -10 }}>
-                    {/* <TextInput
-                      style={{ width: '100%', backgroundColor: 'white', color: 'black' }}
-                      theme={{
-                        roundness: 10,
-                        colors: {
-                          text: 'black',
-                          primary: '#83beff',
-                        },
-                      }}
-                      label="Enter your Address"
-                      mode="outlined"
-                      textColor='black'
-                      value={address}
-                      onChangeText={text => setAddress(text)}
-                    /> */}
+                  
                     <CustomTextInput
                       label="Enter your Address"
                       value={address}
@@ -583,43 +468,20 @@ const ProfileScreens = () => {
                     />
                   </View>
                 </View>
-                {/* )} */}
+
               </View>
             </View>
 
 
             <View>
               <View style={styles.OptionsView}>
-                {/* <TouchableOpacity style={styles.touchabale} onPress={toggleSlide6}>
-                <View style={styles.tochableView}>
-                  <Icon name={'accessibility'} size={25} style={styles.icon} />
-                  <Text style={styles.innerText}> Height </Text>
-                  <Icon name={'chevron-forward-outline'} size={20} color={'white'} style={styles.icons} />
-                </View>
-              </TouchableOpacity> */}
 
-                {/* {showSlide6 && ( */}
                 <View >
                   <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5 }}>
                     <Ionicons name="human-male-height-variant" size={23} color="#5A5552" style={{ marginTop: 15 }} /><Text style={styles.slideHeader}>  Your Height ?</Text>
                   </View>
                   <View style={{ width: 'auto', marginHorizontal: 15, paddingBottom: 1, borderRadius: 50, marginBottom: -10 }}>
-                    {/* <TextInput
-                      style={{ width: '100%', backgroundColor: 'white', }}
-                      theme={{
-                        roundness: 10,
-                        colors: {
-                          text: 'black',
-                          primary: '#83beff',
-                        },
-                      }}
-                      label="Enter your Height"
-                      mode="outlined"
-                      textColor='black'
-                      value={height}
-                      onChangeText={text => setHeight(text)}
-                    /> */}
-
+                 
                     <CustomTextInput
                       label="Enter your Height"
                       value={address}
@@ -630,7 +492,6 @@ const ProfileScreens = () => {
                 {/* )} */}
               </View>
             </View>
-
 
             <View style={{
               backgroundColor: '#F6F6F6', marginHorizontal: 10, borderRadius: 8, marginTop: 20, paddingVertical: 20, shadowOffset: {
@@ -647,17 +508,7 @@ const ProfileScreens = () => {
 
               <View>
                 <View style={styles.OptionsView}>
-                  {/* <TouchableOpacity style={styles.touchabale} onPress={toggleSlide9}>
-                  <View style={styles.tochableView}>
-                    <Icon name={'male-female'} size={25} style={styles.icon} />
-                    <Text style={styles.innerText}> Show Me  </Text>
-                    <Icon name={'chevron-forward-outline'} size={20} color={'white'} style={styles.icons} />
-                  </View>
-                </TouchableOpacity> */}
-
-                  {/* {showSlide9 && ( */}
                   <View>
-
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5 }}>
                       <Icon style={{ marginTop: 15 }} name={'male-female'} size={23} color={'#4A4744'} /><Text style={styles.slideHeader}> Show Me </Text>
                     </View>
@@ -676,41 +527,18 @@ const ProfileScreens = () => {
                       </TouchableOpacity>
                     </View>
                   </View>
-                  {/* )} */}
+
                 </View>
               </View>
 
               <View>
                 <View style={styles.OptionsView}>
-                  {/* <TouchableOpacity style={styles.touchabale} onPress={toggleSlide7}>
-                  <View style={styles.tochableView}>
-                    <Icon name={'location'} size={25} style={styles.icon} />
-                    <Text style={styles.innerText}> Distance </Text>
-                    <Icon name={'chevron-forward-outline'} size={20} color={'white'} style={styles.icons} />
-                  </View>
-                </TouchableOpacity> */}
 
-                  {/* {showSlide7 && ( */}
                   <View >
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5 }}>
                       <Ionicons style={{ marginTop: 15 }} name={'google-maps'} size={23} color={'#4A4744'} /><Text style={styles.slideHeader}> Distance ?</Text>
                     </View>
                     <View style={{ width: 'auto', marginHorizontal: 15, paddingBottom: 1, borderRadius: 50, marginBottom: -10 }}>
-                      {/* <TextInput
-                        style={{ width: '100%', backgroundColor: 'white' }}
-                        theme={{
-                          roundness: 50,
-                          colors: {
-                            text: 'black',
-                            primary: 'green',
-                          },
-                        }}
-                        label="Enter Distance"
-                        mode="outlined"
-                        textColor='black'
-                        value={distance}
-                        onChangeText={text => setDistance(text)}
-                      /> */}
 
                       <CustomTextInput
                         label="Enter your Height"
@@ -726,15 +554,7 @@ const ProfileScreens = () => {
 
               <View>
                 <View style={styles.OptionsView}>
-                  {/* <TouchableOpacity style={styles.touchabale} onPress={toggleSlide8}>
-                  <View style={styles.tochableView}>
-                    <Icon name={'navigate'} size={25} style={styles.icon} />
-                    <Text style={styles.innerText}> Distance in  </Text>
-                    <Icon name={'chevron-forward-outline'} size={20} color={'white'} style={styles.icons} />
-                  </View>
-                </TouchableOpacity> */}
-
-                  {/* {showSlide8 && ( */}
+                 
                   <View >
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5 }}>
                       <Ionicons style={{ marginTop: 15 }} name={'google-maps'} size={23} color={'#4A4744'} /><Text style={styles.slideHeader}> Your Distance in ?</Text>
@@ -753,26 +573,6 @@ const ProfileScreens = () => {
                   {/* )} */}
                 </View>
               </View>
-
-              {/* <View style={styles.OptionsView}>
-              <TouchableOpacity style={styles.touchabale} onPress={AgeRangePrefComp2}>
-                <View style={styles.tochableView}>
-                  <Icon name={'person'} size={25} style={styles.icon} />
-                  <Text style={styles.innerText}> Height Preferences</Text>
-                  <Icon name={'chevron-forward-outline'} size={20} color={'white'} style={styles.icons} />
-                </View>
-              </TouchableOpacity>
-            </View> */}
-
-              {/* <View style={styles.OptionsView}>
-              <TouchableOpacity style={styles.touchabale} onPress={AgeRangePrefComp}>
-                <View style={styles.tochableView}>
-                  <Icon name={'person'} size={25} style={styles.icon} />
-                  <Text style={styles.innerText}> Age Preference </Text>
-                  <Icon name={'chevron-forward-outline'} size={20} color={'white'} style={styles.icons} />
-                </View>
-              </TouchableOpacity>
-            </View> */}
 
               <View >
                 <Text style={[styles.slideHeader, { marginLeft: 10, marginBottom: 20 }]}>Select age preference </Text>
@@ -824,24 +624,15 @@ const ProfileScreens = () => {
           </View>
         )}
 
-
-
-
-        {/* <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-          <TouchableOpacity style={{ alignItems: 'center', margin: 20, borderRadius: 30, width: '30%', padding: 10, backgroundColor: 'red' }} onPress={LogoutComp}>
-            <Text style={{ color: 'white', fontWeight: '700', fontSize: 20 }}> Logout </Text>
-          </TouchableOpacity>
-        </View> */}
-
         <View style={{ marginBottom: 30 }}></View>
-      </ScrollView>
+{/*     
       <View style={StyleSheet.absoluteFillObject}>
         <BottomSheetComponent bIndex={bIndex} setbIndex={setbIndex} >
           <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1, }}>
             {customComponent}
           </View>
         </BottomSheetComponent>
-      </View>
+      </View> */}
 
       <Modal
         animationType="slide"
@@ -857,10 +648,12 @@ const ProfileScreens = () => {
           </View>
         </View>
       </Modal>
-    </View>
+    </ScrollView>
   );
 
 }
+
+export default ProfileScreens;
 
 const styles = StyleSheet.create({
   Container: {
@@ -923,18 +716,19 @@ const styles = StyleSheet.create({
     fontFamily: 'georgia',
     fontWeight: '700',
     backgroundColor: 'white',
-    borderRadius: 5,
-    paddingHorizontal: 10,
-    paddingVertical: 3,
-    margin: 10, borderWidth: 1,
+    borderRadius: 5, 
+    paddingHorizontal: 15, 
+    paddingVertical: 8,
+    margin: 10, 
+    borderWidth: 1,
     borderColor: '#E5E4E2',
-    borderStyle: 'solid',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 3,
-  },
+    shadowRadius: 4, 
+    elevation: 3, 
+    overflow: 'hidden', 
+},
 
   slideHeader: {
     fontSize: 16,
@@ -1029,4 +823,3 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProfileScreens;

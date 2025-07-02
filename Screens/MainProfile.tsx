@@ -1,7 +1,7 @@
 import { ActivityIndicator, Dimensions, Image, StyleSheet, Text, View } from 'react-native'
 import React, { Component, useEffect, useState } from 'react'
 import { ScrollView } from 'react-native-gesture-handler'
-import Ionicons from 'react-native-vector-icons/Ionicons';
+// import Ionicons from 'react-native-vector-icons/Ionicons';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Ionicons2 from 'react-native-vector-icons/FontAwesome';
@@ -178,7 +178,7 @@ const MainProfile = () => {
                 </TouchableOpacity>
                 <Text style={{ top: -120, left: 50 }}>
                     <TouchableOpacity style={styles.editButton} onPress={() => navigation.navigate('ProfileScreens')}>
-                        <Ionicons name="pencil" size={21} color="#0E103D" style={{}} />
+                        <Icon name="pencil" size={21} color="#0E103D" style={{}} />
                     </TouchableOpacity>
                 </Text>
                 <Text style={styles.userText}>{userDataDetail.name}, {userDataDetail.age}</Text>
@@ -195,6 +195,7 @@ const MainProfile = () => {
             </View> */}
 
             <View style={styles.userDetail}>
+                
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <Text style={{ color: '#5A5552', fontSize: 17, fontWeight: '800', marginVertical: 15, fontFamily: 'georgia', }}>Account Settings</Text>
                     <TouchableOpacity onPress={() => navigation.navigate('ProfileScreens')}>
@@ -280,7 +281,7 @@ const MainProfile = () => {
                         {/* {userDataDetail.jobTitle ? ( */}
                             <View style={[styles.slideText]}>
                                 <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5 }}>
-                                    <Ionicons name="briefcase" size={23} color="#5A5552" style={{ marginTop: 2 }} /><Text style={styles.newText}> Job Title</Text>
+                                    <Icon name="briefcase" size={23} color="#5A5552" style={{ marginTop: 2 }} /><Text style={styles.newText}> Job Title</Text>
                                 </View>
                                 <Text style={styles.newText2}>{userDataDetail.jobTitle && userDataDetail.jobTitle !== "null" ? userDataDetail.jobTitle : ""}</Text>
                             </View>
@@ -329,7 +330,7 @@ const MainProfile = () => {
                 }}>
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
-                        <Ionicons onPress={toggleModal} name="close-circle" size={45} color="red" style={{ marginRight: 10, position: 'absolute', right: 25, top: 20 }} />
+                        <Icon onPress={toggleModal} name="close-circle" size={45} color="red" style={{ marginRight: 10, position: 'absolute', right: 25, top: 20 }} />
                         {/* <Image source={{ uri: userDataDetail.images }} style={[{ height: AboutPicHeight, width: AboutPicWidth, borderRadius: 10, marginTop: 35 }, styles.img]} /> */}
 
                         {userDataDetail.images === 110 && userDataDetail.gender === 0 || userDataDetail.gender === 2 ? (
@@ -352,7 +353,7 @@ const MainProfile = () => {
                 }}>
                 <View style={styles.centeredView2}>
                     <View style={styles.modalView2}>
-                        <Ionicons onPress={toggleModal3} name="close-circle" size={45} color="red" style={{ marginRight: 10, position: 'absolute', right: -10, top: 1 }} />
+                        <Icon onPress={toggleModal3} name="close-circle" size={45} color="red" style={{ marginRight: 10, position: 'absolute', right: -10, top: 1 }} />
 
                         <View>
                             <View style={styles.container}>

@@ -133,7 +133,7 @@ const Card = (props: CardProps) => {
           colors={['rgba(0,0,0,0.0)', 'rgba(0,0,0,0.9)']}
           style={styles.overlay}
         >
-          <View style={[{ marginBottom: screenHeight / 11, }]}>
+          <View style={[{ marginBottom: screenHeight / 5.2, }]}>
             <View style={styles.overlayTextView}>
               <View>
                 <Text style={styles.name}>{name},{age}</Text>
@@ -171,13 +171,13 @@ const Card = (props: CardProps) => {
           </View>
         </LinearGradient>
 
-        <View style={StyleSheet.absoluteFillObject}>
+        {/* <View style={StyleSheet.absoluteFillObject}>
           <BottomSheetComponent bIndex={bIndex} setbIndex={setbIndex}>
             <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
               {customComponent}
             </View>
           </BottomSheetComponent>
-        </View>
+        </View> */}
 
         <Modal
           animationType="slide"

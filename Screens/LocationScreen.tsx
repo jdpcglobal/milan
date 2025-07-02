@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, ActivityIndicator,Linking, Platform, Alert, Touchable, StyleSheet } from 'react-native';
 // import Geolocation,{GeoCoordinates}from 'react-native-geolocation-service';
-import Geolocation from '@react-native-community/geolocation';  
+// import Geolocation from '@react-native-community/geolocation';  
+import Geolocation from 'react-native-geolocation-service';
 import { check, PERMISSIONS, RESULTS, request } from 'react-native-permissions';
 import { UseSelector, useSelector } from 'react-redux';
 import { RootState } from '@reduxjs/toolkit/query';
@@ -44,7 +45,7 @@ const LocationScreen = () => {
 
   return () => clearInterval(intervalId); // Clear interval when component unmounts
 }, []);
-
+ 
    const animatedStyles = ripples.map((ripple, index) =>
     useAnimatedStyle(() => {
       return {
@@ -71,27 +72,24 @@ const LocationScreen = () => {
      
   };
      
-  const askLocationPer = async() => {
-    const requestResult = await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
-      if(requestResult === RESULTS.GRANTED){
-        setGrantPerm(true);
-        setFetching(true);
-      }
-  }
-  const getLocationPermission = async () => {
-    const result = await check(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
-
-    if (result === RESULTS.GRANTED) {
+ const requestLocationPermission = async () => {
+  try {
+    const status = await Geolocation.requestAuthorization('whenInUse');
+    
+    if (status === 'granted') {
+      setGrantPerm(true);
       setFetching(true);
       return true;
+    } else {
+      setFetching(false);
+      return false;
     }
-
-    const requestResult = await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
-      if(requestResult === RESULTS.DENIED){
-        setFetching(false);
-      }
-    return requestResult === RESULTS.GRANTED;
-  };
+  } catch (err) {
+    console.warn("Permission error:", err);
+    setFetching(false);
+    return false;
+  }
+};
 
   const callApi = (longitude :number,latitude :number) => {
   
@@ -132,17 +130,13 @@ const LocationScreen = () => {
      ); 
   };
 
-  useEffect(() => {
-    getLocationPermission().then((hasPermission) => {
-      if (hasPermission) { 
-        fetchLocation();
-        // console.log("permitted");
-      } else {
-        // console.log("not permitted");
-        setFetching(false); 
-      }
-    });
-  }, [grantPerm]);
+useEffect(() => {
+  requestLocationPermission().then((hasPermission) => {
+    if (hasPermission) {
+      fetchLocation();
+    }
+  });
+}, [grantPerm]);
 
   return (
      isPermitted ?  
@@ -160,7 +154,7 @@ const LocationScreen = () => {
     <View style={styles.container}>
       {animatedStyles.map((style, index) => (
         <Animated.View key={index} style={[styles.circle, style]} />
-      ))}
+      ))} 
        {/* <Animated.View style={[styles.circle, animatedStyles]} />  */}
        <Icon name={'location-outline'} color={'white'} size={30}/>
     </View>
@@ -182,6 +176,7 @@ const LocationScreen = () => {
 
   );
 };
+export default LocationScreen;
 
 const styles = StyleSheet.create({
   abccontainer: {
@@ -213,4 +208,4 @@ const styles = StyleSheet.create({
   },
    
 })
-export default LocationScreen;
+

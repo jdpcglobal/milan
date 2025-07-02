@@ -143,7 +143,7 @@ const ChatUsers = () => {
         <ScrollView stickyHeaderIndices={[0]} style={{ backgroundColor: 'white', marginBottom: 20 }}>
             {/* <LinearGradient
             colors={['rgba(213,147,255,1)', 'rgba(160,32,240,255)']}
-            style={{height:screenHeight}}
+            style={{height:screenHeight}}F
         > */}
 
             <View style={styles.searchContainer}>

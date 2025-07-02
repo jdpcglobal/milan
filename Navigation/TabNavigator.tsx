@@ -76,7 +76,7 @@ const TabNavigator = () => {
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
       const Body = remoteMessage.notification.title;
-      //console.log('Message handled in the background!', remoteMessage);
+      console.log('Message handled in the background!', remoteMessage);
       if (Body === 'Message' && !isTabFocused3) {
         setShowStar(true);
       }
@@ -116,7 +116,7 @@ const TabNavigator = () => {
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarStyle: {
-          height: 60,
+          height: 85,
           position: 'absolute',
           bottom: 0,
           right: 0,
@@ -125,10 +125,12 @@ const TabNavigator = () => {
           padding: 10,
           elevation: 10,
           backgroundColor: '#F6F6F6',
+          marginBottom:-25
           // borderTopLeftRadius:40,
           // borderTopRightRadius:40,
           // marginHorizontal:5
         },
+        
         tabBarIcon: ({ focused, color, size }) => {
           let iconName: string = "";
 
@@ -162,9 +164,9 @@ const TabNavigator = () => {
           headerShown: true,
           headerTitle: "",
           headerTitleStyle: { color: '#5A5552', marginLeft: -12, },
-          headerStyle: { shadowColor: '#000',shadowOffset: { width: 0, height: 2 },shadowOpacity: 0.3,shadowRadius: 3,elevation: 5,},
+          headerStyle: { height:60, shadowColor: '#000',shadowOffset: { width: 0, height: 2 },shadowOpacity: 0.3,shadowRadius: 3,elevation: 5,},
           headerRight: () => (
-            <View style={{ flexDirection: 'row', marginRight: 10, }}>
+            <View style={{ flexDirection: 'row', marginRight: 10,  top:-10, height: 50}}>
 
               <TouchableOpacity onPress={HandleClick} style={{ marginRight: 10 }}>
                 <Ionicons name="notifications-outline" size={30} color="#4A4744" />
@@ -179,7 +181,7 @@ const TabNavigator = () => {
             </View> 
           ),
           headerLeft: () => (
-            <View>
+            <View style={{top:-15, height: 50}}>
               <Image source={require('../Asset/Images/jpg.png')} style={{ width: 110, height: 40, resizeMode: 'cover',  marginLeft: 5 }} />
             </View>
           ),
@@ -205,10 +207,10 @@ const TabNavigator = () => {
         component={UserLikesScreen}
         options={{
           headerTitle: "",
-          headerStyle: { shadowColor: '#000',shadowOffset: { width: 0, height: 2 },shadowOpacity: 0.3,shadowRadius: 3,elevation: 5,},
+          headerStyle: { height:60, shadowColor: '#000',shadowOffset: { width: 0, height: 2 },shadowOpacity: 0.3,shadowRadius: 3,elevation: 5,},
           headerShown: true,
           headerRight: () => (
-            <View style={{ flexDirection: 'row', marginRight: 10, }}>
+            <View style={{ flexDirection: 'row', marginRight: 10,  top:-10, height: 50}}>
 
               <TouchableOpacity onPress={HandleClick} style={{ marginRight: 10 }}>
                 <Ionicons name="notifications-outline" size={30} color="#4A4744" />
@@ -223,7 +225,7 @@ const TabNavigator = () => {
             </View>
           ),
           headerLeft: () => (
-            <View>
+            <View style={{top:-15, height: 50}}>
               <Image source={require('../Asset/Images/jpg.png')} style={{ width: 110, height: 40, resizeMode: 'cover',  marginLeft: 5 }} />
             </View>
           ),
@@ -248,9 +250,9 @@ const TabNavigator = () => {
         options={{
           headerTitle: "",
           headerShown: true,
-          headerStyle: { shadowColor: '#000',shadowOffset: { width: 0, height: 2 },shadowOpacity: 0.3,shadowRadius: 3,elevation: 3,},
+          headerStyle: { height:60, shadowColor: '#000',shadowOffset: { width: 0, height: 2 },shadowOpacity: 0.3,shadowRadius: 3,elevation: 3,},
           headerRight: () => (
-            <View style={{ flexDirection: 'row', marginRight: 10, }}>
+            <View style={{ flexDirection: 'row', marginRight: 10, top:-10, height: 50}}>
 
               <TouchableOpacity onPress={HandleClick} style={{ marginRight: 10 }}>
                 <Ionicons name="notifications-outline" size={30} color="#4A4744" />
@@ -265,7 +267,7 @@ const TabNavigator = () => {
             </View>
           ),
           headerLeft: () => (
-            <View>
+            <View style={{top:-15, height: 50}}>
               <Image source={require('../Asset/Images/jpg.png')} style={{ width: 110, height: 40, resizeMode: 'cover',  marginLeft: 5 }} />
             </View>
           ),
@@ -290,10 +292,10 @@ const TabNavigator = () => {
         component={MainProfile}
         options={{
           headerTitle: "",
-          headerStyle: { shadowColor: '#000',shadowOffset: { width: 0, height: 2 },shadowOpacity: 0.3,shadowRadius: 3,elevation: 5,},
+          headerStyle: { height:60,shadowColor: '#000',shadowOffset: { width: 0, height: 2 },shadowOpacity: 0.3,shadowRadius: 3,elevation: 5,},
           headerShown: true,
           headerRight: () => (
-            <View style={{ flexDirection: 'row', marginRight: 10, }}>
+            <View style={{ flexDirection: 'row', marginRight: 10, top:-10, height: 50}}>
 
               <TouchableOpacity onPress={HandleClick} style={{ marginRight: 10 }}>
                 <Ionicons name="notifications-outline" size={30} color="#4A4744" />
@@ -308,7 +310,7 @@ const TabNavigator = () => {
             </View>
           ),
           headerLeft: () => (
-            <View>
+            <View style={{top:-15, height: 50}}>
               <Image source={require('../Asset/Images/jpg.png')} style={{ width: 110, height: 40, resizeMode: 'cover',  marginLeft: 5 }} />
             </View>
           ),
